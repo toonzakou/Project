@@ -1,9 +1,19 @@
 <?
 include "db_config.php";
-$id = $_GET['id'];
-$name = $_GET['txtname'];
-$upSQL = "UPDATE barcode_tb SET stu_name='".$_POST['txtname']."',stu_dep='".$_POST['txtdep']."' WHERE id = '".$_GET["id"]."'";
-$objQuery = mysql_query($upSQL);
+ob_start();
+   session_start();
+$sub_id = $_POST['txtid'];  
+$name = $_POST['txtname'];
+$start = $_POST['start_time'];
+$fin = $_POST['fin_time'];
+$date = $_POST['selected'];
+$teac_id = $_SESSION["teac_id"];
+
+
+// เพิ่มลงฐานข้อมูล
+$strSQL = "INSERT INTO subjects set  id = '' , subject_id = '$sub_id' , subject_name = '$name' , teacher_id ='$teac_id' , star_time ='$start' , fin_time='$fin' , date='$date'";
+
+$objQuery = mysql_query($strSQL);
 
 if($objQuery)
 {

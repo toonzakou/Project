@@ -1,9 +1,15 @@
 <?
 include "db_config.php";
-$id = $_GET['id'];
-$name = $_GET['txtname'];
-$upSQL = "UPDATE barcode_tb SET stu_name='".$_POST['txtname']."',stu_dep='".$_POST['txtdep']."' WHERE id = '".$_GET["id"]."'";
-$objQuery = mysql_query($upSQL);
+ob_start();
+   session_start();
+$sub_id = $_POST['txtid'];  
+$stu_id = $_POST['selected'];
+
+
+// เพิ่มลงฐานข้อมูล
+$strSQL = "INSERT INTO new_sub set  new_sub_id = '' , sub_id = '$sub_id' , stu_id = '$stu_id'";
+
+$objQuery = mysql_query($strSQL);
 
 if($objQuery)
 {

@@ -90,6 +90,7 @@ ob_start();
 <html>
 <div class="container-fluid">
 <head>
+      
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap.css" rel="stylesheet">
     <meta charset="utf-8">
@@ -100,6 +101,7 @@ ob_start();
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>STUDENT IDENTITY SYSTEM</title>
     <link rel="stylesheet" type="text/css" href="style.css"/>
+  
     </head>
 <body>
 <div id="wrapper">
@@ -109,7 +111,7 @@ ob_start();
 
     <div class="container-fluid">
 
-<ul class="nav nav-tabs">
+<!--ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
   </li>
@@ -119,16 +121,29 @@ ob_start();
   <li class="nav-item">
     <a class="nav-link active" href="subjects.php">วิชา</a>
   </li>
-  </ul>
+  </ul-->
+
+  
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="user.php">รายชื่อ</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="subject.php">วิชา</a>
+  </li>
+</ul>
   
 <?
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.subject_id , subjects.subject_name , teachers.name , teachers.teac_id FROM subjects INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id WHERE teachers.name LIKE '$name'";
+    $strSQL = "SELECT subjects.id , subjects.subject_id , subjects.subject_name , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id FROM subjects INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id WHERE teachers.name LIKE '$name'";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
 
-    $Per_Page = 10;   // Per Page
+    $Per_Page = 30;   // Per Page
     
     $Page = $_GET["Page"];
     if(!$_GET["Page"])
@@ -163,7 +178,23 @@ ob_start();
   <input name="textfield" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
   <button class="btn btn-elegant btn-rounded btn-sm my-0" type="submit">Search</button>
   </div>
-<div class="float-left"><h1>รายวิชา</h1></div>
+<div >
+<nav class=" navbar-expand-lg ">
+  <a class="navbar-brand"><h1>รายวิชา</h1></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="insert.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+</div>
+
     <div class="table-responsive" width="955" height="200" >
         <table class="table" width="955" height="200" border="0">     
     <thead>
@@ -171,31 +202,39 @@ ob_start();
         <th bgcolor="#CCCCCC" scope="col">#</th>
         <th bgcolor="#CCCCCC" scope="col">รหัสวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
-        <th bgcolor="#CCCCCC" scope="col">อาจารย์ผู้สอน</th>
+        <th bgcolor="#CCCCCC" scope="col">วัน</th>
+        <th bgcolor="#CCCCCC" scope="col">เวลา</th>
+        <th bgcolor="#CCCCCC" scope="col">เพิ่มนักศึกษา</th>
+        <th bgcolor="#CCCCCC" scope="col">แก้ไข</th>
+        <th bgcolor="#CCCCCC" scope="col">ลบ</th>
       </tr>
     </thead>
     
     <?php
-		  /*$a=1;*/
+		  $a=1;
 		  while($objResult = mysql_fetch_array($objQuery)){
 		?>
     
     <tbody>
       <tr>
-            <td bgcolor="#FFCC66"><?=$objResult["id"];?></td>
+            <td bgcolor="#FFCC66"><?echo $a?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_id"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["name"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["date"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?id=<?=$objResult["id"];?>"><img src="images/button/add.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="images/button/edit.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="images/button/garbage.png" width="33" height="33"></a></td>
         </tr>
     </tbody>
     
     <?php
-      /*$a++;*/}
+      $a++;}
     ?>
     
     <thead>
       <tr>
-      <td colspan="6" bgcolor="#CCCCCC">&nbsp;</td>
+      <td colspan="9" bgcolor="#CCCCCC">&nbsp;</td>
       </tr>
     </thead>
   </table>
@@ -221,6 +260,7 @@ echo $pages->display_pages()
 </div>   
         <script src="js/bootstrap.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery-3.3.1.min"></script>
 </body>
     </div>
 </html>

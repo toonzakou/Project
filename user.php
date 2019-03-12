@@ -148,7 +148,7 @@ ob_start();
 	$objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
 
-    $Per_Page = 10;   // Per Page
+    $Per_Page = 30;   // Per Page
     
     $Page = $_GET["Page"];
     if(!$_GET["Page"])
@@ -184,15 +184,15 @@ ob_start();
 <div class="form-inline md-form mr-auto mb-4 float-right">
   <input name="textfield" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
   <button class="btn btn-elegant btn-rounded btn-sm my-0" onclick="Bsubmit(this.form)">Search</button>
-  </div>
-   
- 
-<div class="float-left"><h1>รายชื่อนักศึกษา</h1></div>
-<br>
-  <br>
-  <br>
-  
-<div class="container"> 
+</div>
+<div >
+<nav class=" navbar-expand-lg ">
+  <a class="navbar-brand"><h1>รายชื่อ</h1></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="container"> 
 <div class="row">
 <div class="input-group col-md-8">
   <div class="input-group-prepend">
@@ -206,6 +206,10 @@ ob_start();
 </div>
 </div>
 </div>
+</nav>
+</div>
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -259,13 +263,13 @@ frm.submit();
     </thead>
     
     <?php
-		  /*$a=1;*/
+		  $a=1;
 		  while($objResult = mysql_fetch_array($objQuery)){
 		?>
     
     <tbody>
       <tr>
-            <td bgcolor="#FFCC66"><?=$objResult["id"];?></td>
+            <td bgcolor="#FFCC66"><?echo $a?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_id"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_dep"];?></td>
@@ -275,7 +279,7 @@ frm.submit();
     </tbody>
     
     <?php
-      /*$a++;*/}
+      $a++;}
     ?>
     
     <thead>
@@ -292,7 +296,7 @@ Total <?php echo $Num_Rows;?> Record
 
 $pages = new Paginator;
 $pages->items_total = $Num_Rows;
-$pages->mid_range = 10;
+$pages->mid_range = 30;
 $pages->current_page = $Page;
 $pages->default_ipp = $Per_Page;
 $pages->url_next = $_SERVER["PHP_SELF"]."?QueryString=value&Page=";

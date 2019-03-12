@@ -126,7 +126,7 @@ ob_start();
 	$objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
 
-    $Per_Page = 10;   // Per Page
+    $Per_Page = 30;   // Per Page
     
     $Page = $_GET["Page"];
     if(!$_GET["Page"])
@@ -176,13 +176,13 @@ ob_start();
     </thead>
     
     <?php
-		  /*$a=1;*/
+		  $a=1;
 		  while($objResult = mysql_fetch_array($objQuery)){
 		?>
     
     <tbody>
       <tr>
-            <td bgcolor="#FFCC66"><?=$objResult["id"];?></td>
+            <td bgcolor="#FFCC66"><? echo $a?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_id"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_dep"];?></td>
@@ -192,7 +192,7 @@ ob_start();
     </tbody>
     
     <?php
-      /*$a++;*/}
+      $a++;}
     ?>
     
     <thead>
@@ -209,7 +209,7 @@ Total <?php echo $Num_Rows;?> Record
 
 $pages = new Paginator;
 $pages->items_total = $Num_Rows;
-$pages->mid_range = 10;
+$pages->mid_range = 30;
 $pages->current_page = $Page;
 $pages->default_ipp = $Per_Page;
 $pages->url_next = $_SERVER["PHP_SELF"]."?QueryString=value&Page=";
