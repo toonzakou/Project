@@ -82,27 +82,47 @@ class Paginator{
 ?>
 <?
 
-include "db_config.php";
-
+include "../../db_config.php";
+require_once('../../vendor/php-excel-reader/excel_reader2.php');
+require_once('../../vendor/SpreadsheetReader.php');
 ob_start();
  session_start();
 	?>
 <html>
 <div class="container-fluid">
 <head>
-      
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">
+<link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap-reboot.css" rel="stylesheet">
-    <link href="css/bootstrap-reboot.min.css" rel="stylesheet">
-    <link href="css/mdb.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap-reboot.css" rel="stylesheet">
+    <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
+    <link href="../../css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>STUDENT IDENTITY SYSTEM</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-  
+    <link rel="stylesheet" type="text/css" href="../../style.css"/>
     </head>
+
+<style>
+.btn{
+ border: 2px solid black;
+  background-color: white;
+  color: black;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  border:0px solid transparent;
+ }
+ button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+</style>
+
 <body>
 <div id="wrapper">
     <h1>STUDENT IDENTITY SYSTEM</h1>
@@ -111,43 +131,21 @@ ob_start();
 
     <div class="container-fluid">
 
-<!--ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="user.php">รายชื่อ</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" href="subjects.php">วิชา</a>
-  </li>
-  </ul-->
-
-  
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
+    <a class="nav-link " href="../../homepage2.php">หน้าหลัก</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="user.php">รายชื่อ</a>
+    <a class="nav-link active" href="user.php">รายชื่อ</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="subjects.php">วิชา</a>
+    <a class="nav-link" href="../subject/subjects.php">วิชา</a>
   </li>
-</ul>
+  </ul>
   
 <?
-    $sub_id = $_GET['subject_id'];
-    $strSQL = "SELECT  new_sub.sub_id , subjects.subject_name , new_sub.stu_id , barcode_tb.stu_name  
-    FROM new_sub 
-    INNER JOIN subjects ON new_sub.sub_id = subjects.subject_id 
-    INNER JOIN barcode_tb ON new_sub.stu_id = barcode_tb.stu_id 
-    WHERE new_sub.sub_id LIKE '$sub_id'";
-
-    /*$strSQL = "SELECT  *  
-    FROM new_sub ";*/
-
-    $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
+	$strSQL = "SELECT * FROM barcode_tb WHERE (stu_id LIKE '%".$_POST["textfield"]."%' OR stu_name LIKE '%".$_POST["textfield"]."%')";
+	$objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
 
     $Per_Page = 30;   // Per Page
@@ -176,75 +174,117 @@ ob_start();
         $Num_Pages = (int)$Num_Pages;
     }
     
-    $strSQL .=" order  by new_sub_id ASC LIMIT $Page_Start , $Per_Page";
+    $strSQL .=" order  by id ASC LIMIT $Page_Start , $Per_Page";
     $objQuery  = mysql_query($strSQL);
 ?>
 <br>
-<form name="form1" method="post" action="" id="menu">
+
+<form method="post" action="" name="frmExcelImport" id="frmExcelImport" enctype="multipart/form-data">
+<form name="form1">
 <div class="form-inline md-form mr-auto mb-4 float-right">
   <input name="textfield" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-  <button class="btn btn-elegant btn-rounded btn-sm my-0" type="submit">Search</button>
-  </div>
+  <button class="btn btn-elegant btn-rounded btn-sm my-0" onclick="Bsubmit(this.form)">Search</button>
+</div>
 <div >
 <nav class=" navbar-expand-lg ">
-  <a class="navbar-brand"><h1>รายวิชา</h1></a>
+  <a class="navbar-brand"><h1>รายชื่อ</h1></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="insert.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
+  <div class="container"> 
+<div class="row">
+<div class="input-group col-md-8">
+  <div class="input-group-prepend">
+    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">Import</button></span>
   </div>
+  <div class="custom-file">
+    <input type="file" name="file" class="custom-file-input" id="file" accept=".xls,.xlsx">  
+    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+  </div>
+
+</div>
+</div>
+</div>
 </nav>
 </div>
 
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+function Asubmit(frm)
+{
+frm.action="../../import1.php";
+frm.submit();
+}
+
+function Bsubmit(frm)
+{
+frm.action="";
+frm.submit();
+}
+</script>
+
+
+<br>
+
+<!--div class="container">
+<div class="row">
+
+  <div class="input-group col-md-6">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+  </div>
+  <div class="custom-file">
+  <input type="file" name="file" class="custom-file-input" id="file" accept=".xls,.xlsx">  
+  <label class="custom-file-label" for="inputGroupFile01">Choose file</label>  
+  </div>
+  <div class="col-md-3">
+  <button type="submit" id="submit" name="import" class="btn btn-light-blue">Import</button>
+  </div>
+  </div>  
+
+</div>  
+</div--> 
     <div class="table-responsive" width="955" height="200" >
         <table class="table" width="955" height="200" border="0">     
     <thead>
       <tr>
         <th bgcolor="#CCCCCC" scope="col">#</th>
-        <th bgcolor="#CCCCCC" scope="col">รหัสวิชา</th>
-        <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
-        <th bgcolor="#CCCCCC" scope="col">วัน</th>
-        <th bgcolor="#CCCCCC" scope="col">เวลา</th>
+        <th bgcolor="#CCCCCC" scope="col">รหัสนักศึกษา</th>
+        <th bgcolor="#CCCCCC" scope="col">ชื่อ-นามสกุล</th>
+        <th bgcolor="#CCCCCC" scope="col">สาขา</th>
+        <th bgcolor="#CCCCCC" scope="col">แก้ไข</th>
+        <th bgcolor="#CCCCCC" scope="col">ลบ</th>
       </tr>
     </thead>
-  
-<? 
-    if($Num_Rows==0){
-?>
- 
- <td  colspan="5" bgcolor="#FFCC66">ไม่พบข้อมูล</td>
-
-
-<?
-}else{
-
-while($objResult = mysql_fetch_array($objQuery))
-{
-	?>
-         <tbody>
+    
+    <?php
+		  $a=1;
+		  while($objResult = mysql_fetch_array($objQuery)){
+		?>
+    
+    <tbody>
       <tr>
             <td bgcolor="#FFCC66"><?echo $a?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["sub_id"];?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_id"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_name"];?></td>
-           </tr>
+            <td bgcolor="#FFCC66"><?=$objResult["stu_dep"];?></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>" onClick="return confirm('คุณต้องการที่จะลบข้อมูลนี้หรือไม่ ?');"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>
+      </tr>
     </tbody>
-          <?
-}
-
-}
-?>
+    
+    <?php
+      $a++;}
+    ?>
     
     <thead>
       <tr>
-      <td colspan="9" bgcolor="#CCCCCC">&nbsp;</td>
+      <td colspan="6" bgcolor="#CCCCCC">&nbsp;</td>
       </tr>
     </thead>
   </table>
@@ -256,7 +296,7 @@ Total <?php echo $Num_Rows;?> Record
 
 $pages = new Paginator;
 $pages->items_total = $Num_Rows;
-$pages->mid_range = 10;
+$pages->mid_range = 30;
 $pages->current_page = $Page;
 $pages->default_ipp = $Per_Page;
 $pages->url_next = $_SERVER["PHP_SELF"]."?QueryString=value&Page=";
@@ -268,9 +308,9 @@ echo $pages->display_pages()
 </form>
 </div>
 </div>   
-        <script src="js/bootstrap.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery-3.3.1.min"></script>
+        <script src="../../js/bootstrap.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/3.3.1/jquery.min.js"></script> 
 </body>
     </div>
 </html>

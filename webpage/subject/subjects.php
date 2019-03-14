@@ -82,7 +82,7 @@ class Paginator{
 ?>
 <?
 
-include "db_config.php";
+include "../../db_config.php";
 
 ob_start();
  session_start();
@@ -91,16 +91,16 @@ ob_start();
 <div class="container-fluid">
 <head>
       
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap-reboot.css" rel="stylesheet">
-    <link href="css/bootstrap-reboot.min.css" rel="stylesheet">
-    <link href="css/mdb.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap-reboot.css" rel="stylesheet">
+    <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
+    <link href="../../css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>STUDENT IDENTITY SYSTEM</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../style.css"/>
   
     </head>
 <body>
@@ -126,10 +126,10 @@ ob_start();
   
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
+    <a class="nav-link " href="../../homepage2.php">หน้าหลัก</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="user.php">รายชื่อ</a>
+    <a class="nav-link" href="../user/user.php">รายชื่อ</a>
   </li>
   <li class="nav-item">
     <a class="nav-link active" href="subjects.php">วิชา</a>
@@ -139,7 +139,10 @@ ob_start();
 <?
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.subject_id , subjects.subject_name , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id FROM subjects INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id WHERE teachers.name LIKE '$name'";
+    $strSQL = "SELECT subjects.id , subjects.subject_id , subjects.subject_name , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id 
+    FROM subjects 
+    INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
+    WHERE teachers.name LIKE '$name'";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
 
@@ -223,10 +226,10 @@ ob_start();
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["date"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?id=<?=$objResult["id"];?>"><img src="images/button/add.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="subject_detail.php?subject_id=<?=$objResult["subject_id"];?>"><img src="images/button/padnote.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="images/button/edit.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="images/button/garbage.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?id=<?=$objResult["id"];?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="subject_detail.php?subject_id=<?=$objResult["subject_id"];?>"><img src="../../images/button/padnote.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>
         </tr>
     </tbody>
     
@@ -260,9 +263,9 @@ echo $pages->display_pages()
 </form>
 </div>
 </div>   
-        <script src="js/bootstrap.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery-3.3.1.min"></script>
+        <script src="../../js/bootstrap.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/jquery-3.3.1.min"></script>
 </body>
     </div>
 </html>

@@ -114,10 +114,10 @@ ob_start();
     <a class="nav-link active" href="homepage2.php">หน้าหลัก</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="user.php">รายชื่อ</a>
+    <a class="nav-link" href="webpage/user/user.php">รายชื่อ</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="subjects.php">วิชา</a>
+    <a class="nav-link" href="webpage/subject/subjects.php">วิชา</a>
   </li>
   </ul>
   
