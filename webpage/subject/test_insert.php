@@ -37,50 +37,49 @@ ob_start();
     <a class="nav-link" href="subjects.php">วิชา</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" >แก้ไข</a>
+    <a class="nav-link active" >เพิ่มรายวิชา</a>
   </li>
   </ul>
 <?
     $id = $_GET["id"];
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.subject_id , subjects.section , sub_manage.subject_name , subjects.date , subjects.star_time , subjects.fin_time , teachers.teac_id 
-    FROM subjects 
-    INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
-    INNER JOIN sub_manage ON subjects.subject_id = sub_manage.subject_ID 
-    WHERE subjects.id = '$id'";
+    $strSQL = "SELECT *
+    FROM sub_manage ";
 	$objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
     <br>
     <br>
     <div class="col-md-auto">
-    <form name="form1" method="post" action="code_update.php?id=<?php echo $_GET["id"];?>" >
+    <form name="form1" method="post" action="code_insert.php" >
     <table width="955" height="200" border="0">
-    <?php
+    
+      <tr>
+        <td >วิชา</td>
+        <td>&nbsp;</td>
+    <td>
+        <select name="select_id" class="form-control" id="sel1">
+        <?php
 		  
 		  while($objResult = mysql_fetch_array($objQuery)){
 		 ?>
-      <tr>
-        <td >รหัสวิชา</td>
-        <td>&nbsp;</td>
-        <td><input name="txtid" type="text" id="txtid"  class="form-control" value="<?=$objResult["subject_id"];?>" readonly /></td>
+        <option value = "<?=$objResult["subject_ID"]; ?>"><?echo $objResult["subject_ID"]." - ". $objResult["subject_name"]  ?></option>
+        <?php
+          }
+          ?>
+    </td>
       </tr>
       <tr>
-        <td >ชื่อวิชา</td>
+        <td>กลุ่ม</td>
         <td>&nbsp;</td>
-        <td><input name="txtname" type="text" id="txtname" class="form-control" value="<?=$objResult["subject_name"];?>" readonly /></td>
-      </tr>
-      <tr>
-        <td >กลุ่ม</td>
-        <td>&nbsp;</td>
-        <td><input name="txtsec" type="text" id="txtsec" class="form-control" value="<?=$objResult["section"];?>" /></td>
-      </tr>
+        <td><input name="txtsec" type="text" id="txtsec" class="form-control"/></td>
+        <tr>
       <tr>
         <td>วันที่</td>
         <td>&nbsp;</td>
         <td>
     <select name="selected" class="form-control" id="sel1">
-    <option><?echo $objResult["date"]; ?></option>
+    <option>เลือกวันสอน</option>
     <option value="Monday">Monday</option>
     <option value="Tuesday">Tuesday</option>
     <option value="Wednesday">Wednesday</option>
@@ -103,11 +102,9 @@ ob_start();
       <tr>
         <td></td>
         <td>&nbsp;</td>
-        <td><button type="submit" class="btn btn-light-blue" value="<?=$id?>">Save</button></td>
+        <td><button type="submit" class="btn btn-light-blue" >Save</button></td>
       </tr>
-      <?php
-          }
-          ?>
+    
      
     </table>
     </div>

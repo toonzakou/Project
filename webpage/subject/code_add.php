@@ -4,7 +4,7 @@ ob_start();
    session_start();
 $sub_id = $_POST['txtid'];  
 $stu_id = $_POST['selected'];
-
+$stu_name = $_POST['stu_name'];
 
 // เพิ่มลงฐานข้อมูล
 $strSQL = "INSERT INTO new_sub set  new_sub_id = '' , sub_id = '$sub_id' , stu_id = '$stu_id'";

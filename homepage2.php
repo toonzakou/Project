@@ -90,6 +90,7 @@ ob_start();
 <html>
 <div class="container-fluid">
 <head>
+      
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap.css" rel="stylesheet">
     <meta charset="utf-8">
@@ -100,6 +101,7 @@ ob_start();
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>STUDENT IDENTITY SYSTEM</title>
     <link rel="stylesheet" type="text/css" href="style.css"/>
+  
     </head>
 <body>
 <div id="wrapper">
@@ -109,21 +111,40 @@ ob_start();
 
     <div class="container-fluid">
 
+<!--ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="user.php">รายชื่อ</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="subjects.php">วิชา</a>
+  </li>
+  </ul-->
+
+  
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link active" href="homepage2.php">หน้าหลัก</a>
+    <a class="nav-link active  " href="homepage2.php">หน้าหลัก</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="webpage/user/user.php">รายชื่อ</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="webpage/subject/subjects.php">วิชา</a>
+    <a class="nav-link " href="webpage/subject/subjects.php">วิชา</a>
   </li>
-  </ul>
+</ul>
   
 <?
-	$strSQL = "SELECT * FROM barcode_tb WHERE (stu_id LIKE '%".$_POST["textfield"]."%' OR stu_name LIKE '%".$_POST["textfield"]."%')";
-	$objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
+	$name = $_SESSION["name"];
+    $teacher = $_SESSION["id"];
+    $strSQL = "SELECT subjects.id , subjects.subject_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id 
+    FROM subjects 
+    INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
+    INNER JOIN sub_manage ON subjects.subject_id = sub_manage.subject_ID 
+    WHERE teachers.name LIKE '$name'";
+    $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
 
     $Per_Page = 30;   // Per Page
@@ -152,7 +173,7 @@ ob_start();
         $Num_Pages = (int)$Num_Pages;
     }
     
-    $strSQL .=" order  by id ASC LIMIT $Page_Start , $Per_Page";
+    $strSQL .=" order  by subjects.id ASC LIMIT $Page_Start , $Per_Page";
     $objQuery  = mysql_query($strSQL);
 ?>
 <br>
@@ -161,17 +182,28 @@ ob_start();
   <input name="textfield" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
   <button class="btn btn-elegant btn-rounded btn-sm my-0" type="submit">Search</button>
   </div>
-<div class="float-left"><h1>รายชื่อนักศึกษา</h1></div>
+<div >
+<nav class=" navbar-expand-lg ">
+  <a class="navbar-brand"><h1>รายวิชา</h1></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
+</div>
+
     <div class="table-responsive" width="955" height="200" >
         <table class="table" width="955" height="200" border="0">     
     <thead>
       <tr>
         <th bgcolor="#CCCCCC" scope="col">#</th>
-        <th bgcolor="#CCCCCC" scope="col">รหัสนักศึกษา</th>
-        <th bgcolor="#CCCCCC" scope="col">ชื่อ-นามสกุล</th>
-        <th bgcolor="#CCCCCC" scope="col">สาขา</th>
-        <th bgcolor="#CCCCCC" scope="col">แก้ไข</th>
-        <th bgcolor="#CCCCCC" scope="col">ลบ</th>
+        <th bgcolor="#CCCCCC" scope="col">รหัสวิชา</th>
+        <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
+        <th bgcolor="#CCCCCC" scope="col">กลุ่ม</th>
+        <th bgcolor="#CCCCCC" scope="col">หน่วยกิต</th>
+        <th bgcolor="#CCCCCC" scope="col">วัน</th>
+        <th bgcolor="#CCCCCC" scope="col">เวลา</th>
+        <th bgcolor="#CCCCCC" scope="col">เช็คชื่อ</th>
       </tr>
     </thead>
     
@@ -182,12 +214,14 @@ ob_start();
     
     <tbody>
       <tr>
-            <td bgcolor="#FFCC66"><? echo $a?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["stu_id"];?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["stu_name"];?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["stu_dep"];?></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="images/button/edit.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>" onClick="return confirm('คุณต้องการที่จะลบข้อมูลนี้หรือไม่ ?');"><img src="images/button/garbage.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66"><?echo $a?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["subject_id"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["section"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["date"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="attend.php?subject_id=<?=$objResult["subject_id"];?>"><img src="images/button/monitor.png" width="33" height="33"></a></td>
       </tr>
     </tbody>
     
@@ -197,7 +231,7 @@ ob_start();
     
     <thead>
       <tr>
-      <td colspan="6" bgcolor="#CCCCCC">&nbsp;</td>
+      <td colspan="11" bgcolor="#CCCCCC">&nbsp;</td>
       </tr>
     </thead>
   </table>
@@ -209,7 +243,7 @@ Total <?php echo $Num_Rows;?> Record
 
 $pages = new Paginator;
 $pages->items_total = $Num_Rows;
-$pages->mid_range = 30;
+$pages->mid_range = 10;
 $pages->current_page = $Page;
 $pages->default_ipp = $Per_Page;
 $pages->url_next = $_SERVER["PHP_SELF"]."?QueryString=value&Page=";
@@ -223,6 +257,7 @@ echo $pages->display_pages()
 </div>   
         <script src="js/bootstrap.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery-3.3.1.min"></script>
 </body>
     </div>
 </html>

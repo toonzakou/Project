@@ -42,7 +42,10 @@ ob_start();
   </ul>
 <?
     $id = $_GET["id"];
-	$strSQL = "SELECT * FROM subjects WHERE id =".$_GET["id"];
+	$strSQL = "SELECT subjects.id , subjects.subject_id , sub_manage.subject_name 
+  FROM subjects 
+  INNER JOIN sub_manage ON subjects.subject_id = sub_manage.subject_ID
+  WHERE subjects.id =".$_GET["id"];
 	$objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
     <br>
@@ -64,7 +67,7 @@ ob_start();
         <td>&nbsp;</td>
         <td><input name="txtname" type="text" id="txtname" class="form-control" value="<?=$objResult["subject_name"];?>" /></td>
       </tr>
-      <tr>
+      <!--tr>
         <td>สาขา</td>
         <td>&nbsp;</td>
         <td><select name="selected" id="selected" class="form-control">
@@ -75,12 +78,12 @@ ob_start();
 			while($objResuut = mysql_fetch_array($objQuery))
 			{
 			?>
-			<option value="<?=$objResuut["stu_id"];?>"><?=$objResuut["stu_id"]." - ".$objResuut["stu_name"];?></option>
+			<option value="<?=$objResuut["stu_id"];?>"><?=$objResuut["stu_id"]?> - <?=$objResuut["stu_name"]?></option>
 			<?
 			}
 			?>
 		  </select></td>
-      </tr>
+      </tr-->
       <tr>
         <td></td>
         <td>&nbsp;</td>
@@ -129,7 +132,7 @@ frm.submit();
 
 function Bsubmit(frm)
 {
-frm.action="code_add.php";
+frm.action="code_add.php?stu_name=<?=$objResuut["stu_name"]?>";
 frm.submit();
 }
 </script>

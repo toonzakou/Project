@@ -139,9 +139,10 @@ ob_start();
 <?
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.subject_id , subjects.subject_name , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id 
+    $strSQL = "SELECT subjects.id , subjects.subject_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id 
     FROM subjects 
     INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
+    INNER JOIN sub_manage ON subjects.subject_id = sub_manage.subject_ID 
     WHERE teachers.name LIKE '$name'";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
@@ -191,7 +192,7 @@ ob_start();
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="insert.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="test_insert.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
       </li>
     </ul>
   </div>
@@ -205,6 +206,8 @@ ob_start();
         <th bgcolor="#CCCCCC" scope="col">#</th>
         <th bgcolor="#CCCCCC" scope="col">รหัสวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
+        <th bgcolor="#CCCCCC" scope="col">กลุ่ม</th>
+        <th bgcolor="#CCCCCC" scope="col">หน่วยกิต</th>
         <th bgcolor="#CCCCCC" scope="col">วัน</th>
         <th bgcolor="#CCCCCC" scope="col">เวลา</th>
         <th bgcolor="#CCCCCC" scope="col">เพิ่มนักศึกษา</th>
@@ -224,6 +227,8 @@ ob_start();
             <td bgcolor="#FFCC66"><?echo $a?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_id"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["section"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["date"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
             <td bgcolor="#FFCC66">&nbsp;<a href="add.php?id=<?=$objResult["id"];?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
@@ -239,7 +244,7 @@ ob_start();
     
     <thead>
       <tr>
-      <td colspan="9" bgcolor="#CCCCCC">&nbsp;</td>
+      <td colspan="11" bgcolor="#CCCCCC">&nbsp;</td>
       </tr>
     </thead>
   </table>

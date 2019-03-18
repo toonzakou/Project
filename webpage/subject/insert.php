@@ -20,6 +20,13 @@ ob_start();
     </head>
 </head>
 <body>
+
+<?
+    $id = $_GET['selected_id'];
+    $strSQL = "SELECT *
+    FROM sub_manage WHERE subject_ID = '$id' ";
+    $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");{
+    ?>
 <div id="wrapper">
     <h1>STUDENT IDENTITY SYSTEM</h1>
     <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
@@ -46,12 +53,17 @@ ob_start();
     <div class="col-md-auto">
     <form name="form1" method="post" action="code_insert.php" >
     <table width="955" height="200" border="0">
+   
     
       <tr>
         <td >รหัสวิชา</td>
         <td>&nbsp;</td>
-        <td><input name="txtid" type="text" id="txtid"  class="form-control" value=""  /></td>
+        <!--td><input name="txtid" type="text" id="txtid"  class="form-control" value=""  /></td-->
+        <td><select name="selected_id" class="form-control" id="sel1">
+        <option value="<?=$objResult["subject_ID"];?>"><?echo $objResult["subject_ID"];?></option>
+        </select></td>
       </tr>
+     
       <tr>
         <td >ชื่อวิชา</td>
         <td>&nbsp;</td>
@@ -88,13 +100,15 @@ ob_start();
         <td><button type="submit" class="btn btn-light-blue" value="<?=$id?>">Save</button></td>
       </tr>
      
-     
     </table>
     </div>
 
     </form>
     </div>
-</div>   
+</div>
+<?php
+          }
+      ?>
 </body>
 </div>
 </html>

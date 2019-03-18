@@ -2,8 +2,7 @@
 include "../../db_config.php";
 $id = $_GET['id'];
 $name = $_GET['txtname'];
-$upSQL = "UPDATE subjects SET subject_name='".$_POST['txtname']."',date='".$_POST['selected']."'
-,star_time='".$_POST['start_time']."' ,fin_time='".$_POST['fin_time']."' 
+$upSQL = "UPDATE subjects SET date='".$_POST['selected']."' ,star_time='".$_POST['start_time']."' ,fin_time='".$_POST['fin_time']."' ,section='".$_POST['txtsec']."'
  WHERE id = '".$_GET["id"]."'";
 $objQuery = mysql_query($upSQL);
 

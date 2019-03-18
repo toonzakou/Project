@@ -132,15 +132,18 @@ ob_start();
     <a class="nav-link" href="../user/user.php">รายชื่อ</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="subjects.php">วิชา</a>
+    <a class="nav-link " href="subjects.php">วิชา</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" >รายชื่อนักศึกษาในรายวิชา</a>
   </li>
 </ul>
   
 <?
     $sub_id = $_GET['subject_id'];
-    $strSQL = "SELECT  new_sub.sub_id , subjects.subject_name , new_sub.stu_id , barcode_tb.stu_name  
+    $strSQL = "SELECT  new_sub.sub_id , sub_manage.subject_name , new_sub.stu_id , barcode_tb.stu_name  
     FROM new_sub 
-    INNER JOIN subjects ON new_sub.sub_id = subjects.subject_id 
+    INNER JOIN sub_manage ON new_sub.sub_id = sub_manage.subject_ID 
     INNER JOIN barcode_tb ON new_sub.stu_id = barcode_tb.stu_id 
     WHERE new_sub.sub_id LIKE '$sub_id'";
 
@@ -192,13 +195,6 @@ ob_start();
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="insert.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-  </div>
 </nav>
 </div>
 
