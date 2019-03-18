@@ -2,7 +2,7 @@
 <?
 
 include "db_config.php";
-
+date_default_timezone_set('Asia/Bangkok');
 ob_start();
  session_start();
 	?>
@@ -78,6 +78,10 @@ ob_start();
 		  while($objResult = mysql_fetch_array($objQuery)){
         $sub_id = $objResult["subject_ID"];
         $sub_name = $objResult["subject_name"];
+        $start = $objResult["star_time"];
+        $fin = $objResult["fin_time"];
+        $start_t = strtotime($start);
+        $fin_t = strtotime($fin);
 		?>
     
 <nav class=" navbar-expand-lg ">
@@ -88,20 +92,29 @@ ob_start();
   </button>
 </nav>
 </div>
-    <label for="exampleForm2">ครั้งที่</label>
-    <input type="text" style = "width:3%" id="exampleForm2" class="form-control">
+<div class ="form-inline ">
+<label for="exampleForm2">ครั้งที่ &nbsp;
+<input type="text" style = "width:20%" id="exampleForm2" class="form-control">
+</label>
+<label for="exampleForm2">เริ่ม &nbsp;
+<input type="text" style = "width:20%" id="exampleForm2" class="form-control" value = "<?echo date('h:i', $start_t);?>">&nbsp; - &nbsp;
+<input type="text" style = "width:20%" id="exampleForm2" class="form-control" value = "<?echo date('h:i', $fin_t);?>"> 
+</label>
+</div>
+    
     <?php
       }
     ?>
 <br>
 
 <?
+    $late = strtotime($start) + 900;
     $strSQL1 = "SELECT * FROM barcode_tb WHERE (stu_id LIKE '%".$_POST["textfield"]."%' OR stu_name LIKE '%".$_POST["textfield"]."%')";
     $objQuery1 = mysql_query($strSQL1) or die ("Error Query[".$strSQL1."]");
 ?>
 
 <form name="form1" method="post" action="" id="menu">
-<div class="form-inline md-form mr-auto mb-4 float-right">
+<div class="md-form mr-auto mb-4 float-right">
   <input name="textfield" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
   <button class="btn btn-elegant btn-rounded btn-sm my-0" type="submit">Search</button>
   </div>
@@ -132,7 +145,15 @@ ob_start();
             <td bgcolor="#FFCC66"> <?=$objResult1["stu_id"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["stu_name"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["stu_dep"];?></td>
-            <td bgcolor="#FFCC66"></td>
+    <?
+    if (date('H') > date('H',$late)) {
+      $pre2pm = 5;
+    } else {
+      $pre2pm = 10;
+    }
+    
+    ?>        
+            <td bgcolor="#FFCC66"><?echo $pre2pm?></td>
             <td bgcolor="#FFCC66"></td>
             <td bgcolor="#FFCC66"></td>
             <td bgcolor="#FFCC66"></td>
