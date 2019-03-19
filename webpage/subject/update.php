@@ -30,9 +30,9 @@ ob_start();
   <li class="nav-item">
     <a class="nav-link " href="../../homepage2.php">หน้าหลัก</a>
   </li>
-  <li class="nav-item">
+  <!--li class="nav-item">
     <a class="nav-link" href="../user/user.php">รายชื่อ</a>
-  </li>
+  </li-->
   <li class="nav-item">
     <a class="nav-link" href="subjects.php">วิชา</a>
   </li>
@@ -44,10 +44,10 @@ ob_start();
     $id = $_GET["id"];
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.subject_id , subjects.section , sub_manage.subject_name , subjects.date , subjects.star_time , subjects.fin_time , teachers.teac_id 
+    $strSQL = "SELECT subjects.id , subjects.sub_id , subjects.section , sub_manage.subject_name , subjects.date , subjects.star_time , subjects.fin_time , teachers.teac_id 
     FROM subjects 
     INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
-    INNER JOIN sub_manage ON subjects.subject_id = sub_manage.subject_ID 
+    INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID 
     WHERE subjects.id = '$id'";
 	$objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
@@ -63,7 +63,7 @@ ob_start();
       <tr>
         <td >รหัสวิชา</td>
         <td>&nbsp;</td>
-        <td><input name="txtid" type="text" id="txtid"  class="form-control" value="<?=$objResult["subject_id"];?>" readonly /></td>
+        <td><input name="txtid" type="text" id="txtid"  class="form-control" value="<?=$objResult["sub_id"];?>" readonly /></td>
       </tr>
       <tr>
         <td >ชื่อวิชา</td>

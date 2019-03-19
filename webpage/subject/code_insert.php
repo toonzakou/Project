@@ -2,16 +2,19 @@
 include "../../db_config.php";
 ob_start();
    session_start();
+   
+$year = $_POST['txtyear'];
+$term = $_POST["txtterm"];
 $sub_id = $_POST['select_id'];  
-$name = $_POST['txtsec'];
+$sec = $_POST['txtsec'];
 $start = $_POST['start_time'];
 $fin = $_POST['fin_time'];
 $date = $_POST['selected'];
 $teac_id = $_SESSION["teac_id"];
-
+$primary = $year.$term.$sub_id.$sec;
 
 // เพิ่มลงฐานข้อมูล
-$strSQL = "INSERT INTO subjects set  id = '' , section = '$name', subject_id = '$sub_id' , teacher_id ='$teac_id' , star_time ='$start' , fin_time='$fin' , date='$date'";
+$strSQL = "INSERT INTO subjects set  id = '' , section = '$sec', sub_id = '$sub_id' , full_id = '$primary', teacher_id ='$teac_id' , star_time ='$start' , fin_time='$fin' , date='$date'";
 
 $objQuery = mysql_query($strSQL);
 

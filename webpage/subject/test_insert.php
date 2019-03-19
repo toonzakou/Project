@@ -1,8 +1,9 @@
 <?
 include "../../db_config.php";
-
+date_default_timezone_set('Asia/Bangkok');
 ob_start();
-	session_start();
+  session_start();
+  
 	?>
 <html>
 <div class="container-fluid">
@@ -30,9 +31,9 @@ ob_start();
   <li class="nav-item">
     <a class="nav-link " href="../../homepage2.php">หน้าหลัก</a>
   </li>
-  <li class="nav-item">
+  <!--li class="nav-item">
     <a class="nav-link" href="../user/user.php">รายชื่อ</a>
-  </li>
+  </li-->
   <li class="nav-item">
     <a class="nav-link" href="subjects.php">วิชา</a>
   </li>
@@ -53,7 +54,17 @@ ob_start();
     <div class="col-md-auto">
     <form name="form1" method="post" action="code_insert.php" >
     <table width="955" height="200" border="0">
-    
+    <tr>
+        <td>ปีการศึกษา</td>
+        <td>&nbsp;</td>
+        <td><input name="txtyear" type="text" id="txtyear" class="form-control"/></td>
+      </tr>
+      <tr>
+        <td>เทอม</td>
+        <td>&nbsp;</td>
+        <td><input name="txtterm" type="text" id="txtterm" class="form-control"/></td>
+      </tr>
+      
       <tr>
         <td >วิชา</td>
         <td>&nbsp;</td>
@@ -69,11 +80,12 @@ ob_start();
           ?>
     </td>
       </tr>
+
       <tr>
         <td>กลุ่ม</td>
         <td>&nbsp;</td>
-        <td><input name="txtsec" type="text" id="txtsec" class="form-control"/></td>
-        <tr>
+        <td><input name="txtsec" type="number" id="txtsec"  class="form-control"/></td>
+      </tr>
       <tr>
         <td>วันที่</td>
         <td>&nbsp;</td>

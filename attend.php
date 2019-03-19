@@ -46,9 +46,9 @@ ob_start();
   <li class="nav-item">
     <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
   </li>
-  <li class="nav-item">
+  <!--li class="nav-item">
     <a class="nav-link" href="webpage/user/user.php">รายชื่อ</a>
-  </li>
+  </li-->
   <li class="nav-item">
     <a class="nav-link " href="webpage/subject/subjects.php">วิชา</a>
   </li>
@@ -58,13 +58,14 @@ ob_start();
 </ul>
   
 <?
-    $id = $_GET['subject_id'];
+    $id = $_GET['sub_id'];
+    $sec = $_GET['section'];
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
     $strSQL = "SELECT sub_manage.subject_ID , sub_manage.subject_name , subjects.star_time , subjects.fin_time , subjects.section , subjects.date 
     FROM sub_manage 
-    INNER JOIN subjects ON sub_manage.subject_ID = subjects.subject_id
-    WHERE sub_manage.subject_ID LIKE '$id'";
+    INNER JOIN subjects ON sub_manage.subject_ID = subjects.sub_id
+    WHERE sub_manage.subject_ID LIKE '$id' AND subjects.section = '$sec'";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
 <br>
@@ -92,16 +93,29 @@ ob_start();
   </button>
 </nav>
 </div>
-<div class ="form-inline ">
-<label for="exampleForm2">ครั้งที่ &nbsp;
-<input type="text" style = "width:20%" id="exampleForm2" class="form-control">
-</label>
-<label for="exampleForm2">เริ่ม &nbsp;
-<input type="text" style = "width:20%" id="exampleForm2" class="form-control" value = "<?echo date('h:i', $start_t);?>">&nbsp; - &nbsp;
-<input type="text" style = "width:20%" id="exampleForm2" class="form-control" value = "<?echo date('h:i', $fin_t);?>"> 
-</label>
-</div>
+
+  
+
     
+    
+<form class="form-horizontal">
+  <div class = "form-group">
+  
+  <div class="col-sm-2">
+  <input type="text" style = "width:20%" id="exampleForm2" class="form-control">
+    </div> 
+  
+  <div class="col-sm-2">
+    <input type="text" id="exampleForm2" class="form-control" value = "<?echo date('h:i', $start_t);?>">&nbsp; - &nbsp;
+  
+  </div> 
+  
+  <div class="col-sm-2">
+       <input type="text"  id="exampleForm2" class="form-control" value = "<?echo date('h:i', $fin_t);?>"> 
+  </div> 
+
+  </div>
+</form>
     <?php
       }
     ?>
@@ -114,10 +128,20 @@ ob_start();
 ?>
 
 <form name="form1" method="post" action="" id="menu">
-<div class="md-form mr-auto mb-4 float-right">
-  <input name="textfield" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-  <button class="btn btn-elegant btn-rounded btn-sm my-0" type="submit">Search</button>
+<div class="">
+  <div class="row">
+  
+    <div class="col-6">
+    <input name="textfield" class="form-control" type="text" placeholder="Search" aria-label="Search">
+    </div>
+    <div class="col">
+    <button class="btn btn-elegant btn-rounded btn-sm my-0" type="submit">Search</button>
+    </div>
   </div>
+  </div>
+  
+  <br>
+ 
 <div class="table-responsive" width="955" height="200" >
         <table class="table" width="955" height="200" border="0">     
     <thead>

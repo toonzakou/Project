@@ -30,9 +30,9 @@ ob_start();
   <li class="nav-item">
     <a class="nav-link " href="../../homepage2.php">หน้าหลัก</a>
   </li>
-  <li class="nav-item">
+  <!--li class="nav-item">
     <a class="nav-link" href="../user/user.php">รายชื่อ</a>
-  </li>
+  </li-->
   <li class="nav-item">
     <a class="nav-link" href="subjects.php">วิชา</a>
   </li>
@@ -42,11 +42,12 @@ ob_start();
   </ul>
 <?
     $id = $_GET["id"];
-	$strSQL = "SELECT subjects.id , subjects.subject_id , sub_manage.subject_name 
+    $section = $_GET['section'];
+	$strSQL = "SELECT subjects.id , subjects.sub_id , sub_manage.subject_name , subjects.section
   FROM subjects 
-  INNER JOIN sub_manage ON subjects.subject_id = sub_manage.subject_ID
-  WHERE subjects.id =".$_GET["id"];
-	$objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
+  INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID
+  WHERE subjects.id ='$id' AND subjects.section = '$section'";
+  $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
     <br>
     <br>
@@ -58,14 +59,29 @@ ob_start();
 		  while($objResult = mysql_fetch_array($objQuery)){
 		 ?>
       <tr>
-        <td >รหัสนักศึกษา</td>
+        <td >รหัสวิชา</td>
         <td>&nbsp;</td>
-        <td><input name="txtid" type="text" id="txtid"  class="form-control" value="<?=$objResult["subject_id"];?>"  /></td>
+        <td><input name="txtid" type="text" id="txtid"  class="form-control" value="<?=$objResult["sub_id"];?>"  /></td>
       </tr>
       <tr>
-        <td >ชื่อ-นามสกุล</td>
+        <td >ชื่อวิชา</td>
         <td>&nbsp;</td>
         <td><input name="txtname" type="text" id="txtname" class="form-control" value="<?=$objResult["subject_name"];?>" /></td>
+      </tr>
+      <tr>
+        <td >กลุ่ม</td>
+        <td>&nbsp;</td>
+        <td><input name="txtsec" type="text" id="txtsec" class="form-control" value="<?=$objResult["section"];?>" /></td>
+      </tr>
+      <tr>
+        <td >เพิ่มนักศึกษา</td>
+        <td>&nbsp;</td>
+        <td>    
+  <div class="custom-file">
+    <input type="file" name="file" class="custom-file-input" id="file" accept=".xls,.xlsx">  
+    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+  </div>
+</td>
       </tr>
       <!--tr>
         <td>สาขา</td>
@@ -84,11 +100,19 @@ ob_start();
 			?>
 		  </select></td>
       </tr-->
-      <tr>
+      
+  <tr>
+        <td></td>
+        <td>&nbsp;</td>
+        <td><div class="input-group-prepend">
+    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">Import</button></span>
+  </div></td>
+      </tr>
+      <!--tr>
         <td></td>
         <td>&nbsp;</td>
         <td><button onclick="Bsubmit(this.form)" class="btn btn-light-blue" value="<?=$id?>">Save</button></td>
-      </tr>
+      </tr-->
       <tr>
         <td></td>
         <td>&nbsp;</td>
@@ -102,20 +126,7 @@ ob_start();
     </table>
     </div>
   
-    <div class="container"> 
-<div class="row">
-<div class="input-group col-md-8">
-  <div class="input-group-prepend">
-    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">Import</button></span>
-  </div>
-  <div class="custom-file">
-    <input type="file" name="file" class="custom-file-input" id="file" accept=".xls,.xlsx">  
-    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-  </div>
 
-</div>
-</div>
-</div>
     </form>
     </div>
 </div>   
