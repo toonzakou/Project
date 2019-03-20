@@ -3,6 +3,7 @@ $conn = mysqli_connect("localhost","root","0841446192","test_project");
 require_once('vendor/php-excel-reader/excel_reader2.php');
 require_once('vendor/SpreadsheetReader.php');
 $sub_id = $_POST['txtid'];  
+$sec = $_POST['txtsec'];  
 if (isset($_POST["import"]))
 {
     
@@ -29,16 +30,19 @@ if (isset($_POST["import"]))
                     $stu_id = mysqli_real_escape_string($conn,$Row[0]);
                 }
 
-            
+                $name = "";
+                if(isset($Row[1])) {
+                    $name = mysqli_real_escape_string($conn,$Row[1]);
+                }
                 
                 if (!empty($stu_id) ) {
-                    $query = "insert into new_sub(stu_id,sub_id) values('".$stu_id."','".$sub_id."')";
+                    $query = "insert into new_sub(stu_id,sub_id,stu_name,section) values('".$stu_id."','".$sub_id."','".$name."','".$sec."')";
                     $result = mysqli_query($conn, $query);
                 
                     if (! empty($result)) {
                         $type = "success";
-                        echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-                        echo "<script language='javascript'>alert('Excel Data Imported into the Database');</script>";
+                        /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
+                        echo "<script language='javascript'>alert('Excel Data Imported into the Database');</script>";*/
                         echo "<meta http-equiv='refresh' content='0;URL=webpage/user/user.php'>";
                     } else {
                         $type = "error";

@@ -46,9 +46,9 @@ ob_start();
   <li class="nav-item">
     <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
   </li>
-  <li class="nav-item">
+  <!--li class="nav-item">
     <a class="nav-link" href="webpage/user/user.php">รายชื่อ</a>
-  </li>
+  </li-->
   <li class="nav-item">
     <a class="nav-link " href="webpage/subject/subjects.php">วิชา</a>
   </li>
@@ -58,13 +58,14 @@ ob_start();
 </ul>
   
 <?
-    $id = $_GET['subject_id'];
+    $id = $_GET['sub_id'];
+    $sec = $_GET['section'];
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
     $strSQL = "SELECT sub_manage.subject_ID , sub_manage.subject_name , subjects.star_time , subjects.fin_time , subjects.section , subjects.date 
     FROM sub_manage 
-    INNER JOIN subjects ON sub_manage.subject_ID = subjects.subject_id
-    WHERE sub_manage.subject_ID LIKE '$id'";
+    INNER JOIN subjects ON sub_manage.subject_ID = subjects.sub_id
+    WHERE sub_manage.subject_ID LIKE '$id' AND subjects.section = '$sec'";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
 <br>
@@ -76,12 +77,14 @@ ob_start();
       ;
      
 		  while($objResult = mysql_fetch_array($objQuery)){
-        $sub_id = $objResult["subject_ID"];
+        $_SESSION["subject_ID"] = $objResult["subject_ID"];
+        $_SESSION["section"] = $objResult["section"];
         $sub_name = $objResult["subject_name"];
         $start = $objResult["star_time"];
         $fin = $objResult["fin_time"];
         $start_t = strtotime($start);
         $fin_t = strtotime($fin);
+        $late = strtotime($start) + 900;
 		?>
     
 <nav class=" navbar-expand-lg ">
@@ -91,33 +94,89 @@ ob_start();
     <span class="navbar-toggler-icon"></span>
   </button>
 </nav>
-</div>
-<div class ="form-inline ">
-<label for="exampleForm2">ครั้งที่ &nbsp;
-<input type="text" style = "width:20%" id="exampleForm2" class="form-control">
-</label>
-<label for="exampleForm2">เริ่ม &nbsp;
-<input type="text" style = "width:20%" id="exampleForm2" class="form-control" value = "<?echo date('h:i', $start_t);?>">&nbsp; - &nbsp;
-<input type="text" style = "width:20%" id="exampleForm2" class="form-control" value = "<?echo date('h:i', $fin_t);?>"> 
-</label>
-</div>
-    
+      </div>
     <?php
       }
     ?>
-<br>
-
 <?
-    $late = strtotime($start) + 900;
+  
     $strSQL1 = "SELECT * FROM barcode_tb WHERE (stu_id LIKE '%".$_POST["textfield"]."%' OR stu_name LIKE '%".$_POST["textfield"]."%')";
     $objQuery1 = mysql_query($strSQL1) or die ("Error Query[".$strSQL1."]");
 ?>
 
-<form name="form1" method="post" action="" id="menu">
-<div class="md-form mr-auto mb-4 float-right">
-  <input name="textfield" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-  <button class="btn btn-elegant btn-rounded btn-sm my-0" type="submit">Search</button>
+<script language="javascript">
+function fncSubmit()
+{
+	if(document.form1.txtno.value == "")
+	{
+		alert('กรุณากรอกครั้งที่สอน');
+		document.form1.txtno.focus();
+		return false;
+	}	
+	if(document.form1.inputcode.value == "")
+	{
+		alert('กรอกรหัสนักศึกษา');
+		document.form1.inputcode.focus();		
+		return false;
+	}	
+	document.form1.submit();
+}
+</script>
+
+<form name="form1" class="form-horizontal" method="post" action="code_add_record.php" id="menu" onSubmit="JavaScript:return fncSubmit();">
+
+  <!--Grid row-->
+<div class="row">
+
+<!--Grid column-->
+<div class="col-sm-2">
+    <label for="exampleForm2">ครั้งที่สอน</label>
+    <input type="text" name = "txtno" id="txtno" class="form-control">
+</div>
+<!--Grid column-->
+
+</div>
+<!--Grid row--> 
+
+<br>
+
+ <!--Grid row-->
+ <div class="row">
+
+<!--Grid column-->
+<div class="col-sm-2">
+        <label for="exampleForm2">เวลาสอน</label>
+        <input type="text" id="txt_time" name="txt_time" class="form-control" value="<?echo date('h:i:s', $start_t)?> - <?echo date('h:i:s', $fin_t)?>">
+    
+</div>
+<!--Grid column-->
+
+</div>
+<!--Grid row--> 
+
+<br>
+
+<!--Grid row-->
+<div class="row">
+  <div class="col-md-8">
+    
+      <label for="subject" class="">กรอกรหัสนักศึกษา</label>
+      <input type="text" id="inputcode" name="inputcode" class="form-control">
+ 
   </div>
+
+  <!--Grid column-->
+<div class="col-sm-2">
+    <div class="md-form mb-0">
+    <button type="submit" value="Submit" class="btn btn-elegant">เช็คชื่อ</button>
+    </div>
+</div>
+<!--Grid column-->
+</div>
+<!--Grid row-->
+
+  <br>
+
 <div class="table-responsive" width="955" height="200" >
         <table class="table" width="955" height="200" border="0">     
     <thead>

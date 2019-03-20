@@ -1,5 +1,5 @@
 <?
-include "../../db_config.php";
+include "db_config.php";
 
 ob_start();
 	session_start();
@@ -7,16 +7,16 @@ ob_start();
 <html>
 <div class="container-fluid">
 <head>
-<link href="../../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../css/bootstrap-reboot.css" rel="stylesheet">
-    <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
-    <link href="../../css/mdb.min.css" rel="stylesheet">
+    <link href="css/bootstrap-reboot.css" rel="stylesheet">
+    <link href="css/bootstrap-reboot.min.css" rel="stylesheet">
+    <link href="css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>STUDENT IDENTITY SYSTEM</title>
-    <link rel="stylesheet" type="text/css" href="../../style.css"/>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
     </head>
 </head>
 <body>
@@ -28,7 +28,7 @@ ob_start();
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link " href="../../homepage2.php">หน้าหลัก</a>
+    <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
   </li>
   <!--li class="nav-item">
     <a class="nav-link" href="../user/user.php">รายชื่อ</a>
@@ -41,6 +41,8 @@ ob_start();
   </li>
   </ul>
 <?
+    $_SESSION["stu_id"] = $_POST['textfield'];
+    $stu =  $_SESSION["stu_id"];
     $id = $_GET["id"];
     $section = $_GET['section'];
 	$strSQL = "SELECT subjects.id , subjects.sub_id , sub_manage.subject_name , subjects.section
@@ -55,13 +57,13 @@ ob_start();
     <form method="post" action="" name="frmExcelImport" id="frmExcelImport" enctype="multipart/form-data">
     <table width="955" height="200" border="0">
     <?php
-		  
+		  echo $_SESSION["stu_id"];
 		  while($objResult = mysql_fetch_array($objQuery)){
 		 ?>
       <tr>
         <td >รหัสวิชา</td>
         <td>&nbsp;</td>
-        <td><input name="txtid" type="text" id="txtid"  class="form-control" value="<?=$objResult["sub_id"];?>"  /></td>
+        <td><input name="txtid" type="text" id="txtid"  class="form-control" value="<?echo $stu?>"  /></td>
       </tr>
       <tr>
         <td >ชื่อวิชา</td>

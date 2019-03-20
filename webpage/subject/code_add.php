@@ -7,7 +7,7 @@ $stu_id = $_POST['selected'];
 $stu_name = $_POST['stu_name'];
 
 // เพิ่มลงฐานข้อมูล
-$strSQL = "INSERT INTO new_sub set  new_sub_id = '' , sub_id = '$sub_id' , stu_id = '$stu_id'";
+$strSQL = "INSERT INTO new_sub set  new_sub_id = '' , sub_id = '$sub_id' , stu_id = '$stu_id' , stu_name = '$stu_name'";
 
 $objQuery = mysql_query($strSQL);
 
