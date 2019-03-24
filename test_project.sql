@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 19, 2019 at 09:44 AM
+-- Generation Time: Mar 24, 2019 at 06:00 AM
 -- Server version: 5.7.17-log
 -- PHP Version: 5.6.30
 
@@ -23,13 +23,90 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `attend`
+--
+
+CREATE TABLE `attend` (
+  `num` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `stu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `sub_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `section` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `quiz` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `late` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `miss` varchar(2) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `attend`
+--
+
+INSERT INTO `attend` (`num`, `stu_id`, `sub_id`, `section`, `quiz`, `late`, `miss`) VALUES
+('1', '601208217', 'ITS221', '1', '0', '1', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attend_late`
+--
+
+CREATE TABLE `attend_late` (
+  `id` int(11) NOT NULL,
+  `num` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `sub_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `stu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `late` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `section` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `time` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attend_miss`
+--
+
+CREATE TABLE `attend_miss` (
+  `id` int(11) NOT NULL,
+  `num` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `sub_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `stu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `miss` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `section` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `time` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attend_quiz`
+--
+
+CREATE TABLE `attend_quiz` (
+  `id` int(11) NOT NULL,
+  `num` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `sub_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `stu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `quiz` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `section` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `time` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `attend_tb`
 --
 
 CREATE TABLE `attend_tb` (
-  `no` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sub_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+  `id` int(11) NOT NULL,
+  `num` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stu_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sub_id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `section` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `quiz` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `late` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `miss` int(2) NOT NULL,
+  `time` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -195,6 +272,30 @@ INSERT INTO `user` (`id`, `user_id`, `username`, `password`) VALUES
 --
 
 --
+-- Indexes for table `attend_late`
+--
+ALTER TABLE `attend_late`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `attend_miss`
+--
+ALTER TABLE `attend_miss`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `attend_quiz`
+--
+ALTER TABLE `attend_quiz`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `attend_tb`
+--
+ALTER TABLE `attend_tb`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `barcode_tb`
 --
 ALTER TABLE `barcode_tb`
@@ -236,6 +337,26 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `attend_late`
+--
+ALTER TABLE `attend_late`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT for table `attend_miss`
+--
+ALTER TABLE `attend_miss`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `attend_quiz`
+--
+ALTER TABLE `attend_quiz`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `attend_tb`
+--
+ALTER TABLE `attend_tb`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `barcode_tb`
 --
