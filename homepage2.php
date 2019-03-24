@@ -86,6 +86,7 @@ include "db_config.php";
 
 ob_start();
  session_start();
+ $_SESSION['no'] = "";
 	?>
 <html>
 <div class="container-fluid">
@@ -215,6 +216,10 @@ ob_start();
     
     <tbody>
       <tr>
+      <?
+      $_SESSION['sub'] = $objResult["sub_id"];
+      $_SESSION['sec'] = $objResult["section"];
+      ?>
             <td bgcolor="#FFCC66"><?echo $a?></td>
             <td bgcolor="#FFCC66"><?=$objResult["sub_id"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
@@ -222,7 +227,7 @@ ob_start();
             <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["date"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="attend.php?sub_id=<?=$objResult["sub_id"];?>&section=<?=$objResult["section"];?>"><img src="images/button/monitor.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="attend.php?sub_id=<?echo $_SESSION['sub']?>&section=<?echo $_SESSION["sec"];?>"><img src="images/button/monitor.png" width="33" height="33"></a></td>
       </tr>
     </tbody>
     

@@ -58,6 +58,7 @@ ob_start();
 </ul>
   
 <?
+  $num = $_SESSION['no'];
     $id = $_GET['sub_id'];
     $sec = $_GET['section'];
 	$name = $_SESSION["name"];
@@ -78,13 +79,16 @@ ob_start();
      
 		  while($objResult = mysql_fetch_array($objQuery)){
         $_SESSION["subject_ID"] = $objResult["subject_ID"];
+        $s_id = $_SESSION["subject_ID"];
         $_SESSION["section"] = $objResult["section"];
+        $section = $_SESSION["section"];
         $sub_name = $objResult["subject_name"];
         $start = $objResult["star_time"];
         $fin = $objResult["fin_time"];
         $start_t = strtotime($start);
-        $fin_t = strtotime($fin);
-        $late = strtotime($start) + 900;
+        $_SESSION['fin_t'] = strtotime($fin);
+        $_SESSION['late_time'] = strtotime($start) + 900;
+        
 		?>
     
 <nav class=" navbar-expand-lg ">
@@ -100,8 +104,63 @@ ob_start();
     ?>
 <?
   
-    $strSQL1 = "SELECT * FROM barcode_tb WHERE (stu_id LIKE '%".$_POST["textfield"]."%' OR stu_name LIKE '%".$_POST["textfield"]."%')";
+    $strSQL1 = "SELECT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num , attend_tb.section , attend_tb.time , new_sub.stu_name  
+    FROM attend_tb 
+    INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
+ 
+    WHERE attend_tb.sub_id LIKE '$id' AND attend_tb.section = '$sec' AND attend_tb.num = '$num'";
+
+/*$strSQL1 = "SELECT *
+FROM attend_tb 
+WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
     $objQuery1 = mysql_query($strSQL1) or die ("Error Query[".$strSQL1."]");
+    $Num_Rows = mysql_num_rows($objQuery1);
+
+  
+    $strSQL2 = "SELECT *
+    FROM new_sub
+    WHERE sub_id LIKE '$id' AND section = '$sec'";
+  
+/*$strSQL1 = "SELECT *
+FROM attend_tb 
+WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
+    $objQuery2 = mysql_query($strSQL2) or die ("Error Query[".$strSQL2."]");
+    $total = mysql_num_rows($objQuery2);
+
+    $strSQL3 = "SELECT *
+    FROM attend_quiz
+    WHERE sub_id LIKE '$id' AND section = '$sec'";
+    
+/*$strSQL1 = "SELECT *
+FROM attend_tb 
+WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
+    $objQuery3 = mysql_query($strSQL3) or die ("Error Query[".$strSQL3."]");
+    $quiz = mysql_num_rows($objQuery3);
+
+    
+    $strSQL4 = "SELECT *
+    FROM attend_late
+    WHERE sub_id LIKE '$id' AND section = '$sec'";
+    
+/*$strSQL1 = "SELECT *
+FROM attend_tb 
+WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
+    $objQuery4 = mysql_query($strSQL4) or die ("Error Query[".$strSQL4."]");
+    $late = mysql_num_rows($objQuery4);
+
+    $strSQL5 = "SELECT *
+    FROM attend_miss
+    WHERE sub_id LIKE '$id' AND section = '$sec'";
+    
+/*$strSQL1 = "SELECT *
+FROM attend_tb 
+WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
+    $objQuery5 = mysql_query($strSQL5) or die ("Error Query[".$strSQL5."]");
+    $miss = mysql_num_rows($objQuery5);
+
+    
+
+    $stu_miss = $total - $Num_Rows ;
 ?>
 
 <script language="javascript">
@@ -131,7 +190,7 @@ function fncSubmit()
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ครั้งที่สอน</label>
-    <input type="text" name = "txtno" id="txtno" class="form-control">
+    <input type="text" name = "txtno" id="txtno" class="form-control" value = "<?echo $_SESSION['no']?>">
 </div>
 <!--Grid column-->
 
@@ -146,7 +205,7 @@ function fncSubmit()
 <!--Grid column-->
 <div class="col-sm-2">
         <label for="exampleForm2">เวลาสอน</label>
-        <input type="text" id="txt_time" name="txt_time" class="form-control" value="<?echo date('h:i:s', $start_t)?> - <?echo date('h:i:s', $fin_t)?>">
+        <input type="text" id="txt_time" name="txt_time" class="form-control" value="<?echo date('h:i:s', $start_t)?> - <?echo date('h:i:s', $_SESSION['fin_t'])?>">
     
 </div>
 <!--Grid column-->
@@ -161,7 +220,7 @@ function fncSubmit()
   <div class="col-md-8">
     
       <label for="subject" class="">กรอกรหัสนักศึกษา</label>
-      <input type="text" id="inputcode" name="inputcode" class="form-control">
+      <input type="text" id="inputcode" name="inputcode" class="form-control" value ="<??>">
  
   </div>
 
@@ -175,6 +234,8 @@ function fncSubmit()
 </div>
 <!--Grid row-->
 
+
+
   <br>
 
 <div class="table-responsive" width="955" height="200" >
@@ -183,53 +244,64 @@ function fncSubmit()
       <tr>
         <th bgcolor="#CCCCCC" scope="col">#</th>
         <th bgcolor="#CCCCCC" scope="col">รหัสวิชา</th>
-        <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
-        <th bgcolor="#CCCCCC" scope="col">กลุ่ม</th>
-        <th bgcolor="#CCCCCC" scope="col">หน่วยกิต</th>
-        <th bgcolor="#CCCCCC" scope="col">วัน</th>
-        <th bgcolor="#CCCCCC" scope="col">เวลา</th>
-        <th bgcolor="#CCCCCC" scope="col">เช็คชื่อ</th>
+        <th bgcolor="#CCCCCC" scope="col">รหัสนักศึกษา</th>
+        <th bgcolor="#CCCCCC" scope="col">ชื่อนักศึกษา</th>
+        <th bgcolor="#CCCCCC" scope="col">เวลามาเรียน</th>
+      
       </tr>
     </thead>
     
-    <?php
-      $a=1;
-     
-		  while($objResult1 = mysql_fetch_array($objQuery1)){
-		?>
-    
-    <tbody>
+<? 
+    if($Num_Rows==0){
+?>
+ 
+ <td  colspan="8" bgcolor="#FFCC66">ยังไม่มีการเช็คชื่อ</td>
+
+
+<?
+}else{
+$a=1;
+while($objResult1 = mysql_fetch_array($objQuery1))
+{
+	?>
+         <tbody>
       <tr>
             <td bgcolor="#FFCC66"><?echo $a;?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult1["sub_id"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["stu_id"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["stu_name"];?></td>
-            <td bgcolor="#FFCC66"> <?=$objResult1["stu_dep"];?></td>
-    <?
-    if (date('H') > date('H',$late)) {
-      $pre2pm = 5;
-    } else {
-      $pre2pm = 10;
-    }
-    
-    ?>        
-            <td bgcolor="#FFCC66"><?echo $pre2pm?></td>
-            <td bgcolor="#FFCC66"></td>
-            <td bgcolor="#FFCC66"></td>
-            <td bgcolor="#FFCC66"></td>
-      </tr>
+            <td bgcolor="#FFCC66"> <?=$objResult1["time"];?></td>
+           </tr>
     </tbody>
+          <?
+$a++;}
+
+}
+?>
     
-    <?
-     $a++; }
-    ?>
+    
+        
+    
+    
+  
     
     <thead>
       <tr>
-      <td colspan="11" bgcolor="#CCCCCC">&nbsp;</td>
+      <td colspan="8" bgcolor="#CCCCCC">&nbsp;</td>
       </tr>
     </thead>
   </table>
 </div>
+
+จำนวนทั้งหมด <?php echo $total;?> คน
+<br>
+มาเรียนทั้งหมด <?php echo $Num_Rows;?> คน
+<br>
+มาทัน <?php echo $quiz;?> คน
+<br>
+สาย <?php echo $late;?> คน
+<br>
+ขาดเรียนทั้งหมด <?php echo $stu_miss;?> คน
 </form>
 </div>
 </div>   
