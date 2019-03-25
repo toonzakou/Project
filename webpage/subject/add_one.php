@@ -37,7 +37,7 @@ ob_start();
     <a class="nav-link" href="subjects.php">วิชา</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" >เพิ่มนักศึกษา</a>
+    <a class="nav-link active" >แก้ไข</a>
   </li>
   </ul>
 <?

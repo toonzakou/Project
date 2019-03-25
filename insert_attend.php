@@ -1,5 +1,5 @@
 <?
-include "../../db_config.php";
+include "db_config.php";
 
 ob_start();
 	session_start();
@@ -7,13 +7,13 @@ ob_start();
 <html>
 <div class="container-fluid">
 <head>
-<link href="../../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../css/bootstrap-reboot.css" rel="stylesheet">
-    <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
-    <link href="../../css/mdb.min.css" rel="stylesheet">
+    <link href="css/bootstrap-reboot.css" rel="stylesheet">
+    <link href="css/bootstrap-reboot.min.css" rel="stylesheet">
+    <link href="css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>STUDENT IDENTITY SYSTEM</title>
     <link rel="stylesheet" type="text/css" href="../../style.css"/>
@@ -28,25 +28,27 @@ ob_start();
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link " href="../../homepage2.php">หน้าหลัก</a>
+    <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
   </li>
   <!--li class="nav-item">
     <a class="nav-link" href="../user/user.php">รายชื่อ</a>
   </li-->
   <li class="nav-item">
-    <a class="nav-link" href="subjects.php">วิชา</a>
+    <a class="nav-link" href="webpage/subject/subjects.php">วิชา</a>
   </li>
   <li class="nav-item">
     <a class="nav-link active" >เพิ่มนักศึกษา</a>
   </li>
   </ul>
 <?
-    $id = $_GET["id"];
-    $section = $_GET['section'];
+  $id = $_SESSION["subject_ID"]; 
+  /*เก็บ SESSION ของกลุ่ม*/ 
+  /*$_SESSION["section"] = $objResult["section"];*/
+  $sec = $_SESSION["section"];
 	$strSQL = "SELECT subjects.id , subjects.sub_id , sub_manage.subject_name , subjects.section
   FROM subjects 
   INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID
-  WHERE subjects.id ='$id' AND subjects.section = '$section'";
+  WHERE subjects.sub_id ='$id' AND subjects.section = '$sec'";
   $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
     <br>
@@ -74,45 +76,22 @@ ob_start();
         <td><input name="txtsec" type="text" id="txtsec" class="form-control" value="<?=$objResult["section"];?>" /></td>
       </tr>
       <tr>
-        <td >เพิ่มนักศึกษา</td>
+        <td >รหัสนักศึกษา</td>
         <td>&nbsp;</td>
-        <td>    
-  <div class="custom-file">
-    <input type="file" name="file" class="custom-file-input" id="file" accept=".xls,.xlsx">  
-    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-  </div>
-</td>
+        <td><input name="stuid" type="text" id="stuid" class="form-control" value="" /></td>
       </tr>
-      <!--tr>
-        <td>สาขา</td>
+      <tr>
+        <td >ชื่อนักศึกษา</td>
         <td>&nbsp;</td>
-        <td><select name="selected" id="selected" class="form-control">
-			<option value="">Please Select Item </option>
-			<?
-			$strSQL1 = "SELECT * FROM barcode_tb ORDER BY id ASC";
-			$objQuery = mysql_query($strSQL1);
-			while($objResuut = mysql_fetch_array($objQuery))
-			{
-			?>
-			<option value="<?=$objResuut["stu_id"];?>"><?=$objResuut["stu_id"]?> - <?=$objResuut["stu_name"]?></option>
-			<?
-			}
-			?>
-		  </select></td>
-      </tr-->
-      
-  <tr>
+        <td><input name="stuname" type="text" id="stuname" class="form-control" value="" /></td>
+      </tr>
+      <tr>
         <td></td>
         <td>&nbsp;</td>
         <td><div class="input-group-prepend">
-    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">Import</button></span>
+    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">Add</button></span>
   </div></td>
       </tr>
-      <!--tr>
-        <td></td>
-        <td>&nbsp;</td>
-        <td><button onclick="Bsubmit(this.form)" class="btn btn-light-blue" value="<?=$id?>">Save</button></td>
-      </tr-->
       <tr>
         <td></td>
         <td>&nbsp;</td>
@@ -137,7 +116,7 @@ ob_start();
 
 function Asubmit(frm)
 {
-frm.action="../../import.php";
+frm.action="code_insert_attend.php";
 frm.submit();
 }
 

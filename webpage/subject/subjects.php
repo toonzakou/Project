@@ -211,6 +211,7 @@ ob_start();
         <th bgcolor="#CCCCCC" scope="col">วัน</th>
         <th bgcolor="#CCCCCC" scope="col">เวลา</th>
         <th bgcolor="#CCCCCC" scope="col">เพิ่มนักศึกษา</th>
+        <th bgcolor="#CCCCCC" scope="col">เพิ่มนักศึกษา(Excel)</th>
         <th bgcolor="#CCCCCC" scope="col">ดูนักศึกษา</th>
         <th bgcolor="#CCCCCC" scope="col">แก้ไข</th>
         <th bgcolor="#CCCCCC" scope="col">ลบ</th>
@@ -231,7 +232,8 @@ ob_start();
             <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["date"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="insert_stu.php?id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/excel.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="subject_detail.php?sub_id=<?=$objResult["sub_id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/padnote.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>
@@ -244,7 +246,7 @@ ob_start();
     
     <thead>
       <tr>
-      <td colspan="11" bgcolor="#CCCCCC">&nbsp;</td>
+      <td colspan="12" bgcolor="#CCCCCC">&nbsp;</td>
       </tr>
     </thead>
   </table>

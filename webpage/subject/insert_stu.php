@@ -74,45 +74,22 @@ ob_start();
         <td><input name="txtsec" type="text" id="txtsec" class="form-control" value="<?=$objResult["section"];?>" /></td>
       </tr>
       <tr>
-        <td >เพิ่มนักศึกษา</td>
+        <td >รหัสนักศึกษา</td>
         <td>&nbsp;</td>
-        <td>    
-  <div class="custom-file">
-    <input type="file" name="file" class="custom-file-input" id="file" accept=".xls,.xlsx">  
-    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-  </div>
-</td>
+        <td><input name="stuid" type="text" id="stuid" class="form-control" value="" /></td>
       </tr>
-      <!--tr>
-        <td>สาขา</td>
+      <tr>
+        <td >ชื่อนักศึกษา</td>
         <td>&nbsp;</td>
-        <td><select name="selected" id="selected" class="form-control">
-			<option value="">Please Select Item </option>
-			<?
-			$strSQL1 = "SELECT * FROM barcode_tb ORDER BY id ASC";
-			$objQuery = mysql_query($strSQL1);
-			while($objResuut = mysql_fetch_array($objQuery))
-			{
-			?>
-			<option value="<?=$objResuut["stu_id"];?>"><?=$objResuut["stu_id"]?> - <?=$objResuut["stu_name"]?></option>
-			<?
-			}
-			?>
-		  </select></td>
-      </tr-->
-      
-  <tr>
+        <td><input name="stuname" type="text" id="stuname" class="form-control" value="" /></td>
+      </tr>
+      <tr>
         <td></td>
         <td>&nbsp;</td>
         <td><div class="input-group-prepend">
-    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">Import</button></span>
+    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">Add</button></span>
   </div></td>
       </tr>
-      <!--tr>
-        <td></td>
-        <td>&nbsp;</td>
-        <td><button onclick="Bsubmit(this.form)" class="btn btn-light-blue" value="<?=$id?>">Save</button></td>
-      </tr-->
       <tr>
         <td></td>
         <td>&nbsp;</td>
@@ -137,7 +114,7 @@ ob_start();
 
 function Asubmit(frm)
 {
-frm.action="../../import.php";
+frm.action="code_insert_stu.php";
 frm.submit();
 }
 

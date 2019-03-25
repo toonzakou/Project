@@ -75,8 +75,8 @@ ob_start();
 
 <div >
 <?php
-      ;
-     
+    
+
 		  while($objResult = mysql_fetch_array($objQuery)){
         $_SESSION["subject_ID"] = $objResult["subject_ID"];
         $s_id = $_SESSION["subject_ID"];
@@ -190,7 +190,7 @@ function fncSubmit()
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ครั้งที่สอน</label>
-    <input type="text" name = "txtno" id="txtno" class="form-control" value = "<?echo $_SESSION['no']?>">
+    <input type="text" name = "txtno" id="txtno" class="form-control" value = "<?echo $no_now?>">
 </div>
 <!--Grid column-->
 

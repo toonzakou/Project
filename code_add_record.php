@@ -35,6 +35,7 @@ $Num_Rows = mysql_num_rows($objQuery);
 if($Num_Rows==0){
   echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
   echo "<script language='javascript'>alert('ไม่มีข้อมูลกรุณาเพิ่มข้อมูล');</script>";
+  echo"<script> window.location ='insert_attend.php'</script>";
   /*echo "<meta http-equiv='refresh' content='0;URL=webpage/user/user.php'>";*/
 }else if ($num==1){
         

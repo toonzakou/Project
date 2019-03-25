@@ -43,7 +43,7 @@ if (isset($_POST["import"]))
                         $type = "success";
                         /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
                         echo "<script language='javascript'>alert('Excel Data Imported into the Database');</script>";*/
-                        echo "<meta http-equiv='refresh' content='0;URL=webpage/user/user.php'>";
+                        echo "<meta http-equiv='refresh' content='0;URL=webpage/subject/subjects.php'>";
                     } else {
                         $type = "error";
                         echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
