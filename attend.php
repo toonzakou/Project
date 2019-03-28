@@ -151,7 +151,7 @@ WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
 
     $strSQL3 = "SELECT *
     FROM attend_quiz
-    WHERE sub_id LIKE '$id' AND section = '$sec'";
+    WHERE full_id = '$full' AND num ='$num'";
     
 /*$strSQL1 = "SELECT *
 FROM attend_tb 
@@ -162,7 +162,7 @@ WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
     
     $strSQL4 = "SELECT *
     FROM attend_late
-    WHERE sub_id LIKE '$id' AND section = '$sec'";
+    WHERE full_id = '$full' AND num ='$num'";
     
 /*$strSQL1 = "SELECT *
 FROM attend_tb 
@@ -172,7 +172,7 @@ WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
 
     $strSQL5 = "SELECT *
     FROM attend_miss
-    WHERE sub_id LIKE '$id' AND section = '$sec'";
+    WHERE full_id = '$full' AND num ='$num'";
     
 /*$strSQL1 = "SELECT *
 FROM attend_tb 

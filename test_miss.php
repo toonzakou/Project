@@ -137,23 +137,12 @@ $a=1;
 
 $new_num = $num - 1 ;  
 
-$strSQL1 = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num , attend_tb.quiz , attend_tb.late , attend_tb.miss , attend_tb.section , attend_tb.time , new_sub.stu_name  
-FROM attend_tb 
-INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
-
-WHERE attend_tb.full_id = '$full' AND attend_tb.num ='$num' AND attend_tb.late = '$num'";
-
-
-
-    $stu = $objResult1["stu_id"];
-
-
-
 
 $strSQL =" SELECT  DISTINCT   new_sub.stu_id , new_sub.stu_name , new_sub.full_id , new_sub.section ,  new_sub.sub_id ,attend_tb.num , attend_tb.miss , attend_tb.late , attend_tb.quiz
 FROM            new_sub
 LEFT OUTER JOIN attend_tb ON new_sub.stu_id = attend_tb.stu_id
-WHERE           attend_tb.num = '$new_num'";
+LEFT OUTER JOIN attend_temp ON new_sub.stu_id = attend_temp.stu_id
+WHERE           attend_temp.stu_id IS NULL AND attend_tb.num = '$new_num'   ";
 
 $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 $Num_Rows = mysql_num_rows($objQuery);
@@ -165,7 +154,7 @@ while($objResult = mysql_fetch_array($objQuery)){
 $full_id =  $_SESSION["full_id"];
 $sec = $objResult["section"];
 $stu_id = $objResult["stu_id"];
-$count = $objResult["num"];
+$count = $objResult["num"] + 1;
 $sub_id = $objResult["sub_id"];
 $quiz = $objResult["quiz"];
 $late = $objResult["late"];
@@ -179,16 +168,18 @@ echo $full_id." ".$sec." ".$count." ".$stu_id." ".$sub_id." ".$late." ".$sum_mis
 
    
  $time = date('H:i:s');
-  /* $strSQL1 = "INSERT INTO attend_miss set  num = '$num', full_id = '$full_id' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , miss ='$sum_miss' , time = '$time'  ";
+  $strSQL1 = "INSERT INTO attend_miss set  num = '$num', full_id = '$full_id' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , miss ='$sum_miss' , time = '$time'  ";
 
     $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full_id' , new_full_id = '$newfull' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$sum_miss' , time = '$time' , date = '$date' ";
 
     $objQuery1 = mysql_query($strSQL1);
-    $objQuery4 = mysql_query($strSQL4);*/
+    $objQuery4 = mysql_query($strSQL4);
   $a++;}
-  /*$i=$a; 
+  $i=$a; 
   if($i = $a) 
     {
+      $strSQL5 = "DELETE FROM attend_temp";
+      $objQuery5 = mysql_query($strSQL5);
      echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
             echo "<script language='javascript'>alert('เปลี่ยนแปลงข้อมูลเรียบร้อยแล้ว');</script>";
             echo"<script> window.location ='attend.php?sub_id=$sub_id&section=$sec&full_id=$full_id'</script>";
@@ -198,7 +189,7 @@ echo $full_id." ".$sec." ".$count." ".$stu_id." ".$sub_id." ".$late." ".$sum_mis
       echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
             echo "<script language='javascript'>alert('โง่');</script>";
       
-    }*/
+    }
 
 }
 

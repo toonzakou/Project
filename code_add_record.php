@@ -153,14 +153,18 @@ if($Num_Rows==0){
         
         $strSQL2 = "INSERT INTO attend_quiz set  num = '$num', stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz ='$quiz_t' , time = '$time'  ";
     
-        $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz_t' , late = '$late' , miss ='$miss' , time = '$time' , date = '$date' ";
+        $strSQL6 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz_t' , late = '$late' , miss ='$miss' , time = '$time' , date = '$date' ";
+
+        $strSQL5 = "INSERT INTO attend_temp set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz_t' , late = '$late' , miss ='$miss' , time = '$time' , date = '$date' ";
 
        
         $objQuery2 = mysql_query($strSQL2);
        
-        $objQuery4 = mysql_query($strSQL4);
+        $objQuery6 = mysql_query($strSQL6);
+
+        $objQuery5 = mysql_query($strSQL5);
         
-        if($objQuery2 ||  $objQuery4){
+        if($objQuery2 ||  $objQuery6 ||  $objQuery5){
     
           /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
           echo "<script language='javascript'>alert('เปลี่ยนแปลงข้อมูลเรียบร้อยแล้ว');</script>";*/
@@ -188,15 +192,19 @@ if($Num_Rows==0){
         $time = date('H:i:s');
         
         $strSQL2 = "INSERT INTO attend_late set  num = '$num', full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , late ='$late_t' , time = '$time'  ";
-    
-        $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss' , time = '$time' , date = '$date' ";
+        
+        $strSQL5 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss' , time = '$time' , date = '$date' ";
+
+        $strSQL6 = "INSERT INTO attend_temp set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss' ";
 
        
         $objQuery2 = mysql_query($strSQL2);
        
-        $objQuery4 = mysql_query($strSQL4);
+        $objQuery6 = mysql_query($strSQL6);
+
+        $objQuery5 = mysql_query($strSQL5);
         
-        if($objQuery2 ||  $objQuery4){
+        if($objQuery2 ||  $objQuery6 ||  $objQuery5){
     
           /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
           echo "<script language='javascript'>alert('เปลี่ยนแปลงข้อมูลเรียบร้อยแล้ว');</script>";*/
