@@ -43,7 +43,7 @@ ob_start();
 <?
     $id = $_GET["id"];
     $section = $_GET['section'];
-	$strSQL = "SELECT subjects.id , subjects.sub_id , sub_manage.subject_name , subjects.section
+	$strSQL = "SELECT subjects.id , subjects.full_id , subjects.sub_id , sub_manage.subject_name , subjects.section
   FROM subjects 
   INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID
   WHERE subjects.id ='$id' AND subjects.section = '$section'";
@@ -95,6 +95,11 @@ ob_start();
         <td>&nbsp;</td>
         <td>
         </td>
+      </tr>
+      <tr>
+        <td ></td>
+        <td>&nbsp;</td>
+        <td><input name="txtfull" type="text" id="txtfull" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" /></td>
       </tr>
       <?php
           }

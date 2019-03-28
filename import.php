@@ -4,6 +4,7 @@ require_once('vendor/php-excel-reader/excel_reader2.php');
 require_once('vendor/SpreadsheetReader.php');
 $sub_id = $_POST['txtid'];  
 $sec = $_POST['txtsec'];  
+$full = $_POST['txtfull'];
 if (isset($_POST["import"]))
 {
     
@@ -36,7 +37,7 @@ if (isset($_POST["import"]))
                 }
                 
                 if (!empty($stu_id) ) {
-                    $query = "insert into new_sub(stu_id,sub_id,stu_name,section) values('".$stu_id."','".$sub_id."','".$name."','".$sec."')";
+                    $query = "insert into new_sub(stu_id,sub_id,stu_name,section,full_id) values('".$stu_id."','".$sub_id."','".$name."','".$sec."','".$full."')";
                     $result = mysqli_query($conn, $query);
                 
                     if (! empty($result)) {

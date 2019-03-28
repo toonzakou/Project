@@ -139,7 +139,7 @@ ob_start();
 <?
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id 
+    $strSQL = "SELECT subjects.id , subjects.full_id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id 
     FROM subjects 
     INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
     INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID 
@@ -232,8 +232,8 @@ ob_start();
             <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["date"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="insert_stu.php?id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/excel.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="insert_stu.php?full_id=<?=$objResult["full_id"];?>id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?full_id=<?=$objResult["full_id"];?>&id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/excel.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="subject_detail.php?sub_id=<?=$objResult["sub_id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/padnote.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>

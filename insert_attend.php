@@ -45,7 +45,7 @@ ob_start();
   /*เก็บ SESSION ของกลุ่ม*/ 
   /*$_SESSION["section"] = $objResult["section"];*/
   $sec = $_SESSION["section"];
-	$strSQL = "SELECT subjects.id , subjects.sub_id , sub_manage.subject_name , subjects.section
+	$strSQL = "SELECT subjects.id ,subjects.full_id , subjects.sub_id , sub_manage.subject_name , subjects.section
   FROM subjects 
   INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID
   WHERE subjects.sub_id ='$id' AND subjects.section = '$sec'";
@@ -94,7 +94,7 @@ ob_start();
       </tr>
       <tr>
         <td></td>
-        <td>&nbsp;</td>
+        <td><input name="txtfull" type="text" id="txtfull" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" /></td>
         <td>
         </td>
       </tr>

@@ -5,7 +5,24 @@ include "db_config.php";
 date_default_timezone_set('Asia/Bangkok');
 ob_start();
  session_start();
-	?>
+ 
+	function DateThai($strDate)
+	{
+		$strYear = date("Y",strtotime($strDate))+543;
+		$strMonth= date("n",strtotime($strDate));
+		$strDay= date("j",strtotime($strDate));
+		$strHour= date("H",strtotime($strDate));
+		$strMinute= date("i",strtotime($strDate));
+		$strSeconds= date("s",strtotime($strDate));
+		$strMonthCut = Array("","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค.");
+		$strMonthThai=$strMonthCut[$strMonth];
+		return "$strDay $strMonthThai $strYear";
+	}
+
+	$strDate = $strDay." ".$strMonthThai." ".$strYear ;
+	
+?>
+
 <html>
 <div class="container-fluid">
 <head>
@@ -58,15 +75,17 @@ ob_start();
 </ul>
   
 <?
-  $num = $_SESSION['no'];
+    $num = $_SESSION['no'];
     $id = $_GET['sub_id'];
     $sec = $_GET['section'];
-	$name = $_SESSION["name"];
+	  $name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT sub_manage.subject_ID , sub_manage.subject_name , subjects.star_time , subjects.fin_time , subjects.section , subjects.date 
+    $full = $_GET['full_id'];
+    $newfull = $_SESSION['new_full'];
+    $strSQL = "SELECT sub_manage.subject_ID , subjects.full_id , sub_manage.subject_name , subjects.star_time , subjects.fin_time , subjects.section , subjects.date 
     FROM sub_manage 
     INNER JOIN subjects ON sub_manage.subject_ID = subjects.sub_id
-    WHERE sub_manage.subject_ID LIKE '$id' AND subjects.section = '$sec'";
+    WHERE subjects.full_id = '$full'";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
 <br>
@@ -78,7 +97,9 @@ ob_start();
     
 
 		  while($objResult = mysql_fetch_array($objQuery)){
+
         $_SESSION["subject_ID"] = $objResult["subject_ID"];
+        $_SESSION["full_id"] = $objResult["full_id"];
         $s_id = $_SESSION["subject_ID"];
         $_SESSION["section"] = $objResult["section"];
         $section = $_SESSION["section"];
@@ -90,9 +111,11 @@ ob_start();
         $_SESSION['late_time'] = strtotime($start) + 900;
         
 		?>
+
+
     
 <nav class=" navbar-expand-lg ">
-  <a class="navbar-brand"><h1>เช็คชื่อชื่อวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?></h1></a>
+  <a class="navbar-brand"><h1>เช็คชื่อชื่อวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?> วันที่ <?echo DateThai($strDate)?></h1></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -104,16 +127,15 @@ ob_start();
     ?>
 <?
   
-    $strSQL1 = "SELECT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num , attend_tb.section , attend_tb.time , new_sub.stu_name  
+    $strSQL1 = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num , attend_tb.quiz , attend_tb.late , attend_tb.miss , attend_tb.section , attend_tb.time , new_sub.stu_name  
     FROM attend_tb 
     INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
  
-    WHERE attend_tb.sub_id LIKE '$id' AND attend_tb.section = '$sec' AND attend_tb.num = '$num'";
+    WHERE attend_tb.full_id = '$full' AND attend_tb.num ='$num'";
 
-/*$strSQL1 = "SELECT *
-FROM attend_tb 
-WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
-    $objQuery1 = mysql_query($strSQL1) or die ("Error Query[".$strSQL1."]");
+      $objQuery1 = mysql_query($strSQL1) or die ("Error Query[".$strSQL1."]");
+    
+   
     $Num_Rows = mysql_num_rows($objQuery1);
 
   
@@ -180,9 +202,10 @@ function fncSubmit()
 	}	
 	document.form1.submit();
 }
+
 </script>
 
-<form name="form1" class="form-horizontal" method="post" action="code_add_record.php" id="menu" onSubmit="JavaScript:return fncSubmit();">
+<form name="form1" class="form-horizontal" method="post" action="" id="menu" >
 
   <!--Grid row-->
 <div class="row">
@@ -190,8 +213,9 @@ function fncSubmit()
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ครั้งที่สอน</label>
-    <input type="text" name = "txtno" id="txtno" class="form-control" value = "<?echo $no_now?>">
+    <input type="text" name = "txtno" id="txtno" class="form-control" value = "<?echo $num?>">
 </div>
+
 <!--Grid column-->
 
 </div>
@@ -227,14 +251,12 @@ function fncSubmit()
   <!--Grid column-->
 <div class="col-sm-2">
     <div class="md-form mb-0">
-    <button type="submit" value="Submit" class="btn btn-elegant">เช็คชื่อ</button>
+    <button type="submit" value="Submit" onclick="Asubmit(this.form)"  class="btn btn-elegant">เช็คชื่อ</button>
     </div>
 </div>
 <!--Grid column-->
 </div>
 <!--Grid row-->
-
-
 
   <br>
 
@@ -243,10 +265,12 @@ function fncSubmit()
     <thead>
       <tr>
         <th bgcolor="#CCCCCC" scope="col">#</th>
-        <th bgcolor="#CCCCCC" scope="col">รหัสวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">รหัสนักศึกษา</th>
         <th bgcolor="#CCCCCC" scope="col">ชื่อนักศึกษา</th>
         <th bgcolor="#CCCCCC" scope="col">เวลามาเรียน</th>
+        <th bgcolor="#CCCCCC" scope="col">Quiz 15 min</th>
+        <th bgcolor="#CCCCCC" scope="col">รวมมาสายสะสม</th>
+        <th bgcolor="#CCCCCC" scope="col">รวมขาดสะสม</th>
       
       </tr>
     </thead>
@@ -267,10 +291,12 @@ while($objResult1 = mysql_fetch_array($objQuery1))
          <tbody>
       <tr>
             <td bgcolor="#FFCC66"><?echo $a;?></td>
-            <td bgcolor="#FFCC66"> <?=$objResult1["sub_id"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["stu_id"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["stu_name"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["time"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult1["quiz"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult1["late"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult1["miss"];?></td>
            </tr>
     </tbody>
           <?
@@ -278,31 +304,44 @@ $a++;}
 
 }
 ?>
-    
-    
-        
-    
-    
-  
-    
     <thead>
       <tr>
-      <td colspan="8" bgcolor="#CCCCCC">&nbsp;</td>
+      <td colspan="8" bgcolor="#CCCCCC"><label class ="bluetext">นักศึกษาทั้งหมด <?php echo $total;?> คน</label>  มาเรียน <?php echo $Num_Rows;?> คน Quiz <?php echo $quiz;?> คน <label class ="redtext">สาย <?php echo $late;?> คน</label> ขาด <?php echo $miss;?> คน
+</td>
       </tr>
     </thead>
   </table>
+  <div class="md-form mb-0 float-right">
+    <button name = "miss" type="submit" value="Submit" onclick="Bsubmit(this.form)" class="btn btn-elegant">คนขาด</button>
+    </div>
 </div>
 
-จำนวนทั้งหมด <?php echo $total;?> คน
-<br>
-มาเรียนทั้งหมด <?php echo $Num_Rows;?> คน
-<br>
-มาทัน <?php echo $quiz;?> คน
-<br>
-สาย <?php echo $late;?> คน
-<br>
-ขาดเรียนทั้งหมด <?php echo $stu_miss;?> คน
 </form>
+
+<script type="text/javascript">
+
+function Asubmit(frm)
+{
+frm.action="code_add_record.php";
+frm.submit();
+}
+
+function Bsubmit(frm)
+{
+frm.action="test_miss.php";
+frm.submit();
+}
+
+
+</script>
+<style>
+  .redtext{
+    color : red;
+  }
+  .bluetext{
+    color : blue;
+  }
+</style>  
 </div>
 </div>   
         <script src="js/bootstrap.js"></script>

@@ -80,14 +80,14 @@ if($Num_Rows==0){
         $late = 0;
         $miss = 0;
         $time = date('H:i:s');
-        $strSQL1 = "INSERT INTO attend_quiz set  num = '$num', full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz ='$quiz' , time = '$time'  ";
+        
 
-        $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = '$date' ";
+        $strSQL4 = "INSERT INTO test_tb set  full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz$num = '$quiz' , late$num = '$late' , miss$num ='$miss'  ";
 
-        $objQuery1 = mysql_query($strSQL1);
+     
         $objQuery4 = mysql_query($strSQL4);
         
-        if($objQuery1 ||  $objQuery4) 
+        if($objQuery4) 
         {
          /* echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
                 echo "<script language='javascript'>alert('เปลี่ยนแปลงข้อมูลเรียบร้อยแล้ว');</script>";*/
@@ -106,16 +106,14 @@ if($Num_Rows==0){
         $miss = 0;
         $time = date('H:i:s');
         
-        $strSQL2 = "INSERT INTO attend_late set  num = '$num', full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , late ='$late' , time = '$time'  ";
-
-        $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = '$date' ";
+        
+        $strSQL4 = "INSERT INTO test_tb set  full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz$num = '$quiz' , late$num = '$late' , miss$num ='$miss' , time = '$time' , date = '$date' ";
 
        
-        $objQuery2 = mysql_query($strSQL2);
        
         $objQuery4 = mysql_query($strSQL4);
         
-        if($objQuery2 ||  $objQuery4) 
+        if($objQuery4) 
         {
           /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
                 echo "<script language='javascript'>alert('เปลี่ยนแปลงข้อมูลเรียบร้อยแล้ว');</script>";*/
@@ -138,29 +136,28 @@ if($Num_Rows==0){
         $no = $num - 1;
     
         $strSQL4 = "SELECT *
-        FROM attend_tb
-        WHERE sub_id LIKE '$id' AND section = '$sec' AND num = '$no' AND stu_id LIKE '$stu'";
+        FROM test_tb
+        WHERE sub_id LIKE '$id' AND section = '$sec'  AND stu_id LIKE '$stu'";
         
     
         $objQuery4 = mysql_query($strSQL4) or die ("Error Query[".$strSQL4."]");
         $objResult = mysql_fetch_array($objQuery4);
-        $quiz = $objResult["quiz"];
-        $late = $objResult["late"];
-        $miss = $objResult["miss"];
+        $quiz = $objResult["quiz$no"];
+        $late = $objResult["late$no"];
+        $miss = $objResult["miss$no"];
         $quiz_t = $quiz + 1;
     
         $time = date('H:i:s');
         
-        $strSQL2 = "INSERT INTO attend_quiz set  num = '$num', stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz ='$quiz_t' , time = '$time'  ";
-    
-        $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz_t' , late = '$late' , miss ='$miss' , time = '$time' , date = '$date' ";
+        $strSQL4 = "INSERT INTO test_tb set  full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz$num = '$quiz_t' , late$num = '$late' , miss$num ='$miss' , time = '$time' , date = '$date' ";
 
        
-        $objQuery2 = mysql_query($strSQL2);
+       
+       
        
         $objQuery4 = mysql_query($strSQL4);
         
-        if($objQuery2 ||  $objQuery4){
+        if($objQuery4){
     
           /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
           echo "<script language='javascript'>alert('เปลี่ยนแปลงข้อมูลเรียบร้อยแล้ว');</script>";*/
@@ -174,29 +171,28 @@ if($Num_Rows==0){
         $no = $num - 1;
     
         $strSQL4 = "SELECT *
-        FROM attend_tb
-        WHERE sub_id LIKE '$id' AND section = '$sec' AND num = '$no' AND stu_id LIKE '$stu'";
+        FROM test_tb
+        WHERE sub_id LIKE '$id' AND section = '$sec'  AND stu_id LIKE '$stu'";
         
     
         $objQuery4 = mysql_query($strSQL4) or die ("Error Query[".$strSQL4."]");
         $objResult = mysql_fetch_array($objQuery4);
-        $quiz = $objResult["quiz"];
-        $late = $objResult["late"];
-        $miss = $objResult["miss"];
-        $late_t = $late + 1;
+        $quiz = $objResult["quiz$no"];
+        $late = $objResult["late$no"];
+        $miss = $objResult["miss$no"];
+        $late_t = $quiz + 1;
     
         $time = date('H:i:s');
         
-        $strSQL2 = "INSERT INTO attend_late set  num = '$num', full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , late ='$late_t' , time = '$time'  ";
-    
-        $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss' , time = '$time' , date = '$date' ";
+        $strSQL4 = "INSERT INTO test_tb set  full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz$num = '$quiz' , late$num = '$late_t' , miss$num ='$miss' , time = '$time' , date = '$date' ";
 
        
-        $objQuery2 = mysql_query($strSQL2);
+       
+       
        
         $objQuery4 = mysql_query($strSQL4);
         
-        if($objQuery2 ||  $objQuery4){
+        if($objQuery4){
     
           /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
           echo "<script language='javascript'>alert('เปลี่ยนแปลงข้อมูลเรียบร้อยแล้ว');</script>";*/
