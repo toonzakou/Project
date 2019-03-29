@@ -87,6 +87,9 @@ include "db_config.php";
 ob_start();
  session_start();
  $_SESSION['no'] = "";
+ $_SESSION['start'] = "";
+  $_SESSION['fin'] = "";
+  $_SESSION['time_cout'] = 0;
 	?>
 <html>
 <div class="container-fluid">

@@ -96,7 +96,7 @@ ob_start();
 <?php
     
 
-		  while($objResult = mysql_fetch_array($objQuery)){
+		  $objResult = mysql_fetch_array($objQuery);
 
         $_SESSION["subject_ID"] = $objResult["subject_ID"];
         $_SESSION["full_id"] = $objResult["full_id"];
@@ -104,27 +104,60 @@ ob_start();
         $_SESSION["section"] = $objResult["section"];
         $section = $_SESSION["section"];
         $sub_name = $objResult["subject_name"];
+      
+
+    
+
         $start = $objResult["star_time"];
         $fin = $objResult["fin_time"];
         $start_t = strtotime($start);
-        $_SESSION['fin_t'] = strtotime($fin);
-        $_SESSION['late_time'] = strtotime($start) + 900;
+        $fin_t = strtotime($fin);
+        
+        if($_SESSION['time_cout']==0) {
+
+          $start_t = strtotime($start);
+          $fin_t = strtotime($fin);
+         
+          }else { 
+            $start_t = $_SESSION['start'];
+             
+            $fin_t = $_SESSION['fin'];
+
+        
+          }
+       
+
+
+
+
+       
         
 		?>
 
 
     
 <nav class=" navbar-expand-lg ">
+<?
+if($_SESSION['time_cout']==0) {
+?>  
   <a class="navbar-brand"><h1>เช็คชื่อชื่อวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?> วันที่ <?echo DateThai($strDate)?></h1></a>
+ <?
+  }else {
+?>
+    <a class="navbar-brand"><h1>เช็คชื่อชื่อวิชา  <?echo $sub_name?> (เมคอัพคลาส) กลุ่มที่ <?=$objResult["section"];?> วันที่ <?echo DateThai($strDate)?></h1></a>
+<?
+
+  }
+
+?>
+
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 </nav>
       </div>
-    <?php
-      }
-    ?>
+    
 <?
   
     $strSQL1 = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num , attend_tb.quiz , attend_tb.late , attend_tb.miss , attend_tb.section , attend_tb.time , new_sub.stu_name  
@@ -141,7 +174,7 @@ ob_start();
   
     $strSQL2 = "SELECT *
     FROM new_sub
-    WHERE sub_id LIKE '$id' AND section = '$sec'";
+    WHERE sub_id LIKE '$id' AND full_id = '$full'";
   
 /*$strSQL1 = "SELECT *
 FROM attend_tb 
@@ -205,7 +238,7 @@ function fncSubmit()
 
 </script>
 
-<form name="form1" class="form-horizontal" method="post" action="" id="menu" >
+<form name="form1" class="form-horizontal" method="post" action="test.php" id="menu" >
 
   <!--Grid row-->
 <div class="row">
@@ -228,16 +261,107 @@ function fncSubmit()
 
 <!--Grid column-->
 <div class="col-sm-2">
-        <label for="exampleForm2">เวลาสอน</label>
-        <input type="text" id="txt_time" name="txt_time" class="form-control" value="<?echo date('h:i:s', $start_t)?> - <?echo date('h:i:s', $_SESSION['fin_t'])?>">
+        <label for="exampleForm2">เวลาเริ่ม</label>
+        <input type="time" id="txt_start" name="txt_start" class="form-control" placeholder="00:00" value="<?echo date('h:i', $start_t)?>" readonly >
     
+</div>
+<div class="col-sm-2">
+        <label for="exampleForm2">เวลาสิ้นสุด</label>
+        <input type="time" id="txt_fin" name="txt_fin" class="form-control" placeholder="00:00" value="<?echo date('h:i',$fin_t)?>" readonly>
+
+        <div class="md-form mb-0">
+    <button type="submit" value="Submit"   class="btn btn-elegant">เช็คชื่อ</button>
+    </div>
+ 
 </div>
 <!--Grid column-->
 
+<div class="custom-control custom-checkbox">
+
+<?
+if($_SESSION['time_cout']==0) {
+?>  
+   <input type="checkbox" class="custom-control-input " name ="makeup_check" id="makeup_check" onchange="CheckCheckboxes1(this)"  >
+  <label class="custom-control-label" for="makeup_check">เปลี่ยนเวลาการสอน (สำหรับเมคอัพคลาส)</label>
+  <input name="txt_check" type="text" id="txt_check" class="form-control" style="display: none"value = "0" />
+ <?
+  }else {
+?>
+ <input type="checkbox" class="custom-control-input " name ="makeup_check" id="makeup_check"  onchange="CheckCheckboxes1(this)"  checked>
+  <label class="custom-control-label" for="makeup_check">เปลี่ยนเวลาการสอน (สำหรับเมคอัพคลาส)</label>
+  <input name="txt_check" type="text" id="txt_check" class="form-control" style="display: none" value="1" />
+<?
+
+  }
+
+?>
+
+ 
+</div>
 </div>
 <!--Grid row--> 
 
 <br>
+
+<script type="text/javascript">
+
+function CheckCheckboxes1(chk){
+    
+
+    if(chk.checked == true)
+    {
+      txt_start.readOnly = false;
+      txt_fin.readOnly = false;
+      txt_start.value  ="";
+      txt_fin.value  = "";
+      txtfull.valu = "1"
+    }
+    else
+    {
+      txt_start.readOnly = true;
+      txt_fin.readOnly = true;
+    }
+}
+
+function check_attend()
+            {
+                if (document.getElementById('txtno').value==""
+                 || document.getElementById('txtno').value==undefined)
+                {
+                    alert ("กรุณากรอกครั้งที่สอน");
+                    document.form1.txtno.focus();	
+                    return false;
+                } else if (document.getElementById('inputcode').value==""
+                 || document.getElementById('inputcode').value==undefined){
+                  alert ("กรุณากรอกรหัสนักศึกษา");
+                  document.form1.inputcode.focus();	
+                    return false;
+                } else {
+                  document.form1.action = "code_add_record.php"
+                  document.form1.submit();
+                }
+                return true;
+            }
+
+function check_miss()
+            {
+                if (document.getElementById('txtno').value==""
+                 || document.getElementById('txtno').value==undefined)
+                {
+                    alert ("กรุณากรอกครั้งที่สอน");
+                    document.form1.txtno.focus();	
+                    return false;
+                } else {
+                  document.form1.action = "code_add_miss.php"
+                  document.form1.submit();
+                }
+                return true;
+            }           
+
+
+</script>
+
+
 
 <!--Grid row-->
 <div class="row">
@@ -251,7 +375,7 @@ function fncSubmit()
   <!--Grid column-->
 <div class="col-sm-2">
     <div class="md-form mb-0">
-    <button type="submit" value="Submit" onclick="Asubmit(this.form)"  class="btn btn-elegant">เช็คชื่อ</button>
+    <button type="submit" value="Submit" onclick="return check_attend();"  class="btn btn-elegant">เช็คชื่อ</button>
     </div>
 </div>
 <!--Grid column-->
@@ -312,28 +436,12 @@ $a++;}
     </thead>
   </table>
   <div class="md-form mb-0 float-right">
-    <button name = "miss" type="submit" value="Submit" onclick="Bsubmit(this.form)" class="btn btn-elegant">คนขาด</button>
+    <button name = "miss" type="submit" value="Submit" onclick="return check_miss();" class="btn btn-elegant">คนขาด</button>
     </div>
 </div>
 
 </form>
 
-<script type="text/javascript">
-
-function Asubmit(frm)
-{
-frm.action="code_add_record.php";
-frm.submit();
-}
-
-function Bsubmit(frm)
-{
-frm.action="test_miss.php";
-frm.submit();
-}
-
-
-</script>
 <style>
   .redtext{
     color : red;

@@ -1,80 +1,97 @@
 <?
 include "db_config.php";
+date_default_timezone_set('Asia/Bangkok');
 ob_start();
-   session_start();
-   date_default_timezone_set('Asia/Bangkok');
+ session_start();
+ $full =  $_SESSION["full_id"];
 
-   function DateThai($strDate)
-   {
-     $strYear = date("Y",strtotime($strDate))+543;
-     $strMonth= date("n",strtotime($strDate));
-     $strDay= date("j",strtotime($strDate));
-     $strHour= date("H",strtotime($strDate));
-     $strMinute= date("i",strtotime($strDate));
-     $strSeconds= date("s",strtotime($strDate));
-     $strMonthCut = Array("","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค.");
-     $strMonthThai=$strMonthCut[$strMonth];
-     return "$strDay $strMonthThai $strYear";
-   }
  
-   $strDate = $strDay." ".$strMonthThai." ".$strYear ;
+ 
 
-   $_SESSION["stu_id"] = $_POST['inputcode'];
-   $stu =  $_SESSION["stu_id"];
-     /*เก็บ SESSION ของรหัสวิชา*/ 
-   /*$_SESSION["sub_id"] = $objResult["subject_ID"];*/
-   $id = $_SESSION["subject_ID"]; 
-   /*เก็บ SESSION ของกลุ่ม*/ 
-   /*$_SESSION["section"] = $objResult["section"];*/
-   $sec = $_SESSION["section"];
 
-   $_SESSION["no"] = $_POST['txtno'];
-   $num = $_SESSION["no"];
+if ($_SESSION['time_cout'] ==0){
 
-   $full =  $_SESSION["full_id"];
+  $start = $_POST['txt_start'];
+  $fin = $_POST['txt_fin'];
 
-   $newfull = $full.$num;
-   $_SESSION['new_full'] = $newfull;
+  $strSQL = "INSERT INTO time_temp set full_id='$full' , start_time ='$start' , fin_time='$fin' ";
 
-   $name = $_SESSION["name"];
-   $teacher = $_SESSION["id"];
+  $objQuery = mysql_query($strSQL);
 
-   $late_time = $_SESSION['late_time'];
-  $fin_time = $_SESSION['fin_t'];
-  $cur_t = date('H');
-  $date = DateThai('$strDate');
+  if(empty($_POST["makeup_check"]) ) {
 
-  $strSQL1 = "SELECT * FROM attend_tb
-WHERE stu_id = '$stu' AND new_full_id = '$newfull'";
-/*echo $strSQL;*/
- $objQuery1 = mysql_query($strSQL1);
-$Num_Rows1 = mysql_num_rows($objQuery1);
+    echo 'ไม่ได้ติ๊กถูก'.'<br>';
+    $strSQL = "SELECT * 
+    FROM subjects 
+    WHERE full_id = '$full'";
+    $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
+    $objResult = mysql_fetch_array($objQuery);
+    $start = $objResult["star_time"];
+    $fin = $objResult["fin_time"];
+  
+    $start_t = strtotime($start);
+    $fin_t = strtotime($fin);
+    $late_time = strtotime($start) + 900;
+    $_SESSION['start'] = $start_t;
+    $_SESSION['fin'] = $fin_t;
+   /* echo date('H:i',$_SESSION['start'])."-".date('H:i',$_SESSION['fin']);*/
+    
+    
+      }else { 
+    
+        echo 'ติ๊กถูก'.'<br>';
+        $strSQL = "SELECT * 
+        FROM time_temp 
+        WHERE full_id = '$full'";
+        $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
+        $objResult = mysql_fetch_array($objQuery);
+        $start = $objResult["start_time"];
+        $fin = $objResult["fin_time"];
+          $start_t = strtotime($start);
+          $fin_t = strtotime($fin);
+          $late_time = strtotime($start) + 900;
+          $_SESSION['start'] = $start_t;
+          $_SESSION['fin'] = $fin_t;
+          $_SESSION['late'] = $late_time;
+          $_SESSION['time_cout'] = 1;
+          /*echo date('H:i',$_SESSION['start'])."-".date('H:i',$_SESSION['fin']);*/
+    
+      }
+      $strSQL = "DELETE FROM time_temp ";
 
-while($objResult = mysql_fetch_array($objQuery1)){
+      $objQuery = mysql_query($strSQL);
 
-$full_id =  $_SESSION["full_id"];
-$sec = $objResult["section"];
-$stu_id = $objResult["stu_id"];
-$count = $objResult["num"];
-$sub_id = $objResult["sub_id"];
-$quiz = $objResult["quiz"];
-$late = $objResult["late"];
-$miss = $objResult["miss"];
+  
+} else {
 
-echo $full_id." ".$sec." ".$count." ".$stu_id." ".$sub_id." ".$miss." ".'<br>';
+  
+  $start = $_SESSION['start'];
+  $fin =  $_SESSION['fin'];
+  $late_time = $_SESSION['late'];
+  
+
+  /*echo 'ติ๊กถูกมาก';
+
+  echo date('H:i',$start)."-".date('H:i',$fin)." ".date('H:i',$late_time);*/
+  
+  
+
 }
 
-if($Num_Rows1==0){
-  echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-  echo "<script language='javascript'>alert('ไม่มีข้อมูลกรุณาเพิ่มข้อมูล');</script>";
-  /*echo "<meta http-equiv='refresh' content='0;URL=webpage/user/user.php'>";*/
-}else{
-  echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-  echo "<script language='javascript'>alert('มีแล้ว');</script>";
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
-
-
-
-
