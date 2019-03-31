@@ -87,6 +87,7 @@ include "db_config.php";
 ob_start();
  session_start();
  $_SESSION['no'] = "";
+ $_SESSION['room'] = "";
  $_SESSION['start'] = "";
   $_SESSION['fin'] = "";
   $_SESSION['time_cout'] = 0;
@@ -143,12 +144,12 @@ ob_start();
 <?
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.full_id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date
+    $strSQL = "SELECT subjects.id , subjects.year , subjects.term , subjects.full_id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date
     , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id , subjects.section
     FROM subjects 
     INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
     INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID 
-    WHERE teachers.name LIKE '$name'";
+    WHERE teachers.name LIKE '$name' AND (subjects.full_id LIKE '%".$_POST["textfield"]."%' OR sub_manage.subject_name LIKE '%".$_POST["textfield"]."%') ";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
 
@@ -202,6 +203,7 @@ ob_start();
     <thead>
       <tr>
         <th bgcolor="#CCCCCC" scope="col">#</th>
+        <th bgcolor="#CCCCCC" scope="col">เทอม</th>
         <th bgcolor="#CCCCCC" scope="col">รหัสวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">กลุ่ม</th>
@@ -224,6 +226,7 @@ ob_start();
       $_SESSION['sec'] = $objResult["section"];
       ?>
             <td bgcolor="#FFCC66"><?echo $a?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["year"];?>/<?=$objResult["term"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["sub_id"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["section"];?></td>

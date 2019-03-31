@@ -64,7 +64,7 @@ ob_start();
     $strSQL = "SELECT  new_sub.sub_id , sub_manage.subject_name , new_sub.stu_id  , new_sub.stu_name    
     FROM new_sub 
     INNER JOIN sub_manage ON new_sub.sub_id = sub_manage.subject_ID 
-    WHERE new_sub.sub_id LIKE '$sub_id' AND new_sub.section = '$sec'";
+    WHERE new_sub.sub_id LIKE '$sub_id' AND new_sub.section = '$sec' AND (new_sub.stu_id  LIKE '%".$_POST["textfield"]."%' OR new_sub.stu_name  LIKE '%".$_POST["textfield"]."%')  ";
 
     /*$strSQL = "SELECT  *  
     FROM new_sub ";*/

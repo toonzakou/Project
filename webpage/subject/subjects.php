@@ -143,7 +143,7 @@ ob_start();
     FROM subjects 
     INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
     INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID 
-    WHERE teachers.name LIKE '$name'";
+    WHERE teachers.name LIKE '$name' AND (subjects.full_id LIKE '%".$_POST["textfield"]."%' OR sub_manage.subject_name LIKE '%".$_POST["textfield"]."%') ";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
 
@@ -192,7 +192,7 @@ ob_start();
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="test_insert.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="insert_subject.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
       </li>
     </ul>
   </div>
@@ -236,7 +236,7 @@ ob_start();
             <td bgcolor="#FFCC66">&nbsp;<a href="add.php?full_id=<?=$objResult["full_id"];?>&id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/excel.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="subject_detail.php?sub_id=<?=$objResult["sub_id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/padnote.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>&full_id=<?=$objResult["full_id"];?>"onclick="return confirm('คุณกำลังจะลบข้อมูล?')"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>
         </tr>
     </tbody>
     

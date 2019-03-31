@@ -76,6 +76,7 @@ ob_start();
   
 <?
     $num = $_SESSION['no'];
+    $room = $_SESSION['room'];
     $id = $_GET['sub_id'];
     $sec = $_GET['section'];
 	  $name = $_SESSION["name"];
@@ -250,7 +251,10 @@ function fncSubmit()
 </div>
 
 <!--Grid column-->
-
+<div class="col-sm-2">
+    <label for="exampleForm2">ห้องเรียน</label>
+    <input type="text" name = "txtroom" id="txtroom" class="form-control" value = "<?echo $room?>">
+</div>
 </div>
 <!--Grid row--> 
 
@@ -268,11 +272,6 @@ function fncSubmit()
 <div class="col-sm-2">
         <label for="exampleForm2">เวลาสิ้นสุด</label>
         <input type="time" id="txt_fin" name="txt_fin" class="form-control" placeholder="00:00" value="<?echo date('h:i',$fin_t)?>" readonly>
-
-        <div class="md-form mb-0">
-    <button type="submit" value="Submit"   class="btn btn-elegant">เช็คชื่อ</button>
-    </div>
- 
 </div>
 <!--Grid column-->
 
@@ -336,6 +335,12 @@ function check_attend()
                   alert ("กรุณากรอกรหัสนักศึกษา");
                   document.form1.inputcode.focus();	
                     return false;
+                } else if (document.getElementById('txtroom').value==""
+                 || document.getElementById('txtroom').value==undefined)
+                {
+                    alert ("กรุณากรอกห้องสอน");
+                    document.form1.txtroom.focus();	
+                    return false;
                 } else {
                   document.form1.action = "code_add_record.php"
                   document.form1.submit();
@@ -345,18 +350,32 @@ function check_attend()
 
 function check_miss()
             {
+              var r = confirm("ยืนยันการเพิ่มคนขาด\nโปรดตรวจสอบข้อมูลให้ถูกต้อง")
+              if (r == true) {
                 if (document.getElementById('txtno').value==""
                  || document.getElementById('txtno').value==undefined)
                 {
                     alert ("กรุณากรอกครั้งที่สอน");
                     document.form1.txtno.focus();	
                     return false;
-                } else {
+                } else if (document.getElementById('txtroom').value==""
+                 || document.getElementById('txtroom').value==undefined)
+                {
+                    alert ("กรุณากรอกห้องสอน");
+                    document.form1.txtroom.focus();	
+                    return false;
+                }else {
                   document.form1.action = "code_add_miss.php"
                   document.form1.submit();
                 }
                 return true;
-            }           
+            } else {
+              txt = "You pressed Cancel!";
+            }
+            }  
+
+
+
 
 
 </script>

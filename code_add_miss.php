@@ -31,6 +31,10 @@ ob_start();
    $_SESSION["no"] = $_POST['txtno'];
    $num = $_SESSION["no"];
 
+   $_SESSION["room"] = $_POST['txtroom'];
+   $room = $_SESSION["room"];
+
+
    $full =  $_SESSION["full_id"];
 
    $newfull = $full.$num;
@@ -123,7 +127,9 @@ $a=1;
     $i=$a; 
     if($i = $a) 
       {
-      
+        /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
+        echo "<script language='javascript'>alert('Success');</script>";*/
+ 
               echo"<script> window.location ='attend.php?sub_id=$sub_id&section=$sec&full_id=$full_id'</script>";
       }
       else

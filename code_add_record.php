@@ -31,6 +31,9 @@ ob_start();
    $_SESSION["no"] = $_POST['txtno'];
    $num = $_SESSION["no"];
 
+   $_SESSION["room"] = $_POST['txtroom'];
+   $room = $_SESSION["room"];
+
    $full =  $_SESSION["full_id"];
 
    $newfull = $full.$num;
@@ -38,6 +41,7 @@ ob_start();
 
    $name = $_SESSION["name"];
    $teacher = $_SESSION["id"];
+   $date = DateThai('$strDate');
 
   
 
@@ -52,7 +56,7 @@ if ($_SESSION['time_cout'] ==0){
   
     if(empty($_POST["makeup_check"]) ) {
   
-      echo 'ไม่ได้ติ๊กถูก'.'<br>';
+    
       $strSQL = "SELECT * 
       FROM subjects 
       WHERE full_id = '$full'";
@@ -71,7 +75,7 @@ if ($_SESSION['time_cout'] ==0){
       
         }else { 
       
-          echo 'ติ๊กถูก'.'<br>';
+        
           $strSQL = "SELECT * 
           FROM time_temp 
           WHERE full_id = '$full'";
@@ -262,7 +266,7 @@ if($Num_Rows==0){
         
         $strSQL5 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss' , time = '$time' , date = '$date' ";
 
-        $strSQL6 = "INSERT INTO attend_temp set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss' ";
+        $strSQL6 = "INSERT INTO attend_temp set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss'  , time = '$time' , date = '$date'  ";
 
        
         $objQuery2 = mysql_query($strSQL2);
