@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 29, 2019 at 12:05 PM
+-- Generation Time: Apr 01, 2019 at 06:34 AM
 -- Server version: 5.7.17-log
 -- PHP Version: 5.6.30
 
@@ -74,6 +74,29 @@ CREATE TABLE `attend_quiz` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `attend_subject`
+--
+
+CREATE TABLE `attend_subject` (
+  `id` int(11) NOT NULL,
+  `full_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `sub_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `section` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `num` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `room` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `total` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `quiz` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `late` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `miss` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `start_t` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `fin_t` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `late_t` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `date` varchar(15) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `attend_tb`
 --
 
@@ -108,16 +131,10 @@ CREATE TABLE `attend_temp` (
   `section` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
   `quiz` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
   `late` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
-  `miss` varchar(3) COLLATE utf8_unicode_ci NOT NULL
+  `miss` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `time` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `attend_temp`
---
-
-INSERT INTO `attend_temp` (`id`, `full_id`, `num`, `new_full_id`, `stu_id`, `sub_id`, `section`, `quiz`, `late`, `miss`) VALUES
-(22, '621ITS2211', '2', '621ITS22112', '601115600', 'ITS221', '1', '0', '1', '1'),
-(23, '621ITS2211', '2', '621ITS22112', '601115587', 'ITS221', '1', '', '1', '');
 
 -- --------------------------------------------------------
 
@@ -139,36 +156,32 @@ CREATE TABLE `new_sub` (
 --
 
 INSERT INTO `new_sub` (`new_sub_id`, `full_id`, `section`, `sub_id`, `stu_id`, `stu_name`) VALUES
-(365, '621ITS2211', '1', 'ITS221', '601115529', 'นางสาวนริศรา ตาปราบ'),
-(366, '621ITS2211', '1', 'ITS221', '601115587', 'นายฐิติพงษ์ น้อยนนท์'),
-(367, '621ITS2211', '1', 'ITS221', '601115600', 'นายธนกร โพธิ์มะณีย์'),
-(368, '621ITS2211', '1', 'ITS221', '601115634', 'นางสาวรุจิรา พันเพียรทำ'),
-(369, '621ITS2211', '1', 'ITS221', '601115838', 'นายจักรกฤษ คุมโสระ'),
-(370, '621ITS2211', '1', 'ITS221', '601116216', 'นางสาวณัฏฐ์นรี ยานะ'),
-(371, '621ITS2211', '1', 'ITS221', '601116266', 'นางสาวอารียา หนูขยัน'),
-(372, '621ITS2211', '1', 'ITS221', '601116711', 'นางสาวเมษา ศรีหริ่ง'),
-(373, '621ITS2211', '1', 'ITS221', '601116729', 'นางสาววรนุช หันตุลา'),
-(374, '621ITS2211', '1', 'ITS221', '601116957', 'นายศิรสิทธิ์ สอนดี'),
-(375, '621ITS2211', '1', 'ITS221', '601117482', 'นางสาวอนัญญา งามวงศ์'),
-(376, '621ITS2211', '1', 'ITS221', '601117555', 'นางสาวเนตรทราย คำเกิด'),
-(377, '621ITS2211', '1', 'ITS221', '601117759', 'นางสาวนภาวรรณ พลไทย'),
-(378, '621ITS2211', '1', 'ITS221', '601117872', 'นางสาวธัญญารัตน์ แสงประจักษ์'),
-(379, '621ITS2211', '1', 'ITS221', '601119028', 'นายณัฐวุฒิ นวลละออ'),
-(380, '621ITS2211', '1', 'ITS221', '601119167', 'นายนัฐวิทย์ พวงพุก'),
-(381, '621ITS22120', '20', 'ITS221', '601106261', 'นายศิรวิชญ์ ศิริสุข'),
-(382, '621ITS22120', '20', 'ITS221', '601108857', 'นายณุกุลกริช บุญนาค'),
-(383, '621ITS22120', '20', 'ITS221', '601108865', 'นายไชยวัฒน์ ปิตุโส'),
-(384, '621ITS22120', '20', 'ITS221', '601108873', 'นายวริทนันท์ สาลี'),
-(385, '621ITS22120', '20', 'ITS221', '601108881', 'นายศุภวิชญ์ พูลสวัสดิ์'),
-(386, '621ITS22120', '20', 'ITS221', '601111965', 'นางสาวสุดารัตน์ พสกชาติ'),
-(387, '621ITS22120', '20', 'ITS221', '601113056', 'นางสาวสุลักษ์ขณา คุ้มวงษ์'),
-(388, '621ITS22120', '20', 'ITS221', '601113373', 'นางสาวมณีรัตน์ บุญธรรม'),
-(389, '621ITS22120', '20', 'ITS221', '601113836', 'นางสาวศรัญญา บุญสมบัติ'),
-(390, '621ITS22120', '20', 'ITS221', '601114167', 'นางสาวนิรมล บุญอาจ'),
-(391, '621ITS22120', '20', 'ITS221', '601114696', 'นายศราวุฒิ ชื่นนอก'),
-(392, '621ITS22120', '20', 'ITS221', '601114701', 'นายมณทล ชัยสุวรรณ'),
-(393, '621ITS22120', '20', 'ITS221', '601114808', 'นายเดชาวุฒิ อยู่หน้า'),
-(394, '621ITS22120', '20', 'ITS221', '601115202', 'นางสาววลัยลักษณ์ พูลทรัพย์');
+(541, '25621ITS2211', '1', 'ITS221', '601113836', 'นางสาวศรัญญา บุญสมบัติ'),
+(542, '25621ITS2211', '1', 'ITS221', '601114167', 'นางสาวนิรมล บุญอาจ'),
+(543, '25621ITS2211', '1', 'ITS221', '601114696', 'นายศราวุฒิ ชื่นนอก'),
+(544, '25621ITS2211', '1', 'ITS221', '601114701', 'นายมณทล ชัยสุวรรณ'),
+(545, '25621ITS2211', '1', 'ITS221', '601114808', 'นายเดชาวุฒิ อยู่หน้า'),
+(546, '25621ITS2211', '1', 'ITS221', '601115202', 'นางสาววลัยลักษณ์ พูลทรัพย์'),
+(547, '25621ITS4861', '1', 'ITS486', '601113836', 'นางสาวศรัญญา บุญสมบัติ'),
+(548, '25621ITS4861', '1', 'ITS486', '601114167', 'นางสาวนิรมล บุญอาจ'),
+(549, '25621ITS4861', '1', 'ITS486', '601114696', 'นายศราวุฒิ ชื่นนอก'),
+(550, '25621ITS4861', '1', 'ITS486', '601114701', 'นายมณทล ชัยสุวรรณ'),
+(551, '25621ITS4861', '1', 'ITS486', '601114808', 'นายเดชาวุฒิ อยู่หน้า'),
+(552, '25621ITS4861', '1', 'ITS486', '601115202', 'นางสาววลัยลักษณ์ พูลทรัพย์'),
+(553, '25621ITS4861', '1', 'ITS486', '601106261', 'นายศิรวิชญ์ ศิริสุข'),
+(554, '25621ITS4861', '1', 'ITS486', '601108857', 'นายณุกุลกริช บุญนาค'),
+(555, '25621ITS4861', '1', 'ITS486', '601108865', 'นายไชยวัฒน์ ปิตุโส'),
+(556, '25621ITS4861', '1', 'ITS486', '601108873', 'นายวริทนันท์ สาลี'),
+(557, '25621ITS4861', '1', 'ITS486', '601108881', 'นายศุภวิชญ์ พูลสวัสดิ์'),
+(558, '25621ITS4861', '1', 'ITS486', '601111965', 'นางสาวสุดารัตน์ พสกชาติ'),
+(559, '25621ITS4861', '1', 'ITS486', '601113056', 'นางสาวสุลักษ์ขณา คุ้มวงษ์'),
+(560, '25621ITS4861', '1', 'ITS486', '601113373', 'นางสาวมณีรัตน์ บุญธรรม'),
+(561, '25621ITS4861', '1', 'ITS486', '601113836', 'นางสาวศรัญญา บุญสมบัติ'),
+(562, '25621ITS4861', '1', 'ITS486', '601114167', 'นางสาวนิรมล บุญอาจ'),
+(563, '25621ITS4861', '1', 'ITS486', '601114696', 'นายศราวุฒิ ชื่นนอก'),
+(564, '25621ITS4861', '1', 'ITS486', '601114701', 'นายมณทล ชัยสุวรรณ'),
+(565, '25621ITS4861', '1', 'ITS486', '601114808', 'นายเดชาวุฒิ อยู่หน้า'),
+(566, '25621ITS4861', '1', 'ITS486', '601115202', 'นางสาววลัยลักษณ์ พูลทรัพย์');
 
 -- --------------------------------------------------------
 
@@ -178,6 +191,8 @@ INSERT INTO `new_sub` (`new_sub_id`, `full_id`, `section`, `sub_id`, `stu_id`, `
 
 CREATE TABLE `subjects` (
   `id` int(10) NOT NULL,
+  `year` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `term` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sub_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `full_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `teacher_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -191,10 +206,9 @@ CREATE TABLE `subjects` (
 -- Dumping data for table `subjects`
 --
 
-INSERT INTO `subjects` (`id`, `sub_id`, `full_id`, `teacher_id`, `star_time`, `fin_time`, `date`, `section`) VALUES
-(24, 'ITS221', '621ITS2211', '1', '09:00', '12:00', 'Monday', '1'),
-(25, 'ITS221', '621ITS22120', '1', '09:00', '12:00', 'Sunday', '20'),
-(26, 'ITS486', '621ITS4861', '1', '13:00', '17:00', 'Thurday', '1');
+INSERT INTO `subjects` (`id`, `year`, `term`, `sub_id`, `full_id`, `teacher_id`, `star_time`, `fin_time`, `date`, `section`) VALUES
+(29, '2562', '1', 'ITS221', '25621ITS2211', '1', '09:00', '00:00', 'วันจันทร์', '1'),
+(30, '2562', '1', 'ITS486', '25621ITS4861', '1', '13:00', '17:00', 'วันจันทร์', '1');
 
 -- --------------------------------------------------------
 
@@ -320,6 +334,12 @@ ALTER TABLE `attend_quiz`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `attend_subject`
+--
+ALTER TABLE `attend_subject`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `attend_tb`
 --
 ALTER TABLE `attend_tb`
@@ -383,37 +403,42 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `attend_late`
 --
 ALTER TABLE `attend_late`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 --
 -- AUTO_INCREMENT for table `attend_miss`
 --
 ALTER TABLE `attend_miss`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 --
 -- AUTO_INCREMENT for table `attend_quiz`
 --
 ALTER TABLE `attend_quiz`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `attend_subject`
+--
+ALTER TABLE `attend_subject`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `attend_tb`
 --
 ALTER TABLE `attend_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=557;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=736;
 --
 -- AUTO_INCREMENT for table `attend_temp`
 --
 ALTER TABLE `attend_temp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `new_sub`
 --
 ALTER TABLE `new_sub`
-  MODIFY `new_sub_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=395;
+  MODIFY `new_sub_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=567;
 --
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `teachers`
 --
@@ -428,7 +453,7 @@ ALTER TABLE `test_tb`
 -- AUTO_INCREMENT for table `time_temp`
 --
 ALTER TABLE `time_temp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT for table `user`
 --

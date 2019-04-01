@@ -118,19 +118,20 @@ ob_start();
 
           $start_t = strtotime($start);
           $fin_t = strtotime($fin);
+          $late_t = strtotime($start) + 900;
          
           }else { 
             $start_t = $_SESSION['start'];
              
             $fin_t = $_SESSION['fin'];
-
+            $late_t = $_SESSION['late'];
         
           }
        
 
 
 
-
+      $_SESSION['date'] = DateThai($strDate);
        
         
 		?>
@@ -182,6 +183,7 @@ FROM attend_tb
 WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
     $objQuery2 = mysql_query($strSQL2) or die ("Error Query[".$strSQL2."]");
     $total = mysql_num_rows($objQuery2);
+    $_SESSION['total'] = $total;
 
     $strSQL3 = "SELECT *
     FROM attend_quiz
@@ -192,6 +194,7 @@ FROM attend_tb
 WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
     $objQuery3 = mysql_query($strSQL3) or die ("Error Query[".$strSQL3."]");
     $quiz = mysql_num_rows($objQuery3);
+    $_SESSION['quiz'] = $quiz;
 
     
     $strSQL4 = "SELECT *
@@ -203,6 +206,7 @@ FROM attend_tb
 WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
     $objQuery4 = mysql_query($strSQL4) or die ("Error Query[".$strSQL4."]");
     $late = mysql_num_rows($objQuery4);
+    $_SESSION['late'] = $late;
 
     $strSQL5 = "SELECT *
     FROM attend_miss
@@ -213,10 +217,12 @@ FROM attend_tb
 WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
     $objQuery5 = mysql_query($strSQL5) or die ("Error Query[".$strSQL5."]");
     $miss = mysql_num_rows($objQuery5);
+    
 
     
 
     $stu_miss = $total - $Num_Rows ;
+    $_SESSION['miss'] = $miss;
 ?>
 
 <script language="javascript">
@@ -239,7 +245,7 @@ function fncSubmit()
 
 </script>
 
-<form name="form1" class="form-horizontal" method="post" action="test.php" id="menu" >
+<form name="form1" class="form-horizontal" method="post"  action="" id="menu" >
 
   <!--Grid row-->
 <div class="row">
@@ -272,6 +278,7 @@ function fncSubmit()
 <div class="col-sm-2">
         <label for="exampleForm2">เวลาสิ้นสุด</label>
         <input type="time" id="txt_fin" name="txt_fin" class="form-control" placeholder="00:00" value="<?echo date('h:i',$fin_t)?>" readonly>
+        <input name="txt_late" type="text" id="txt_late" class="form-control" style="display: none" value="<?echo date('h:i',$late_t)?>" />
 </div>
 <!--Grid column-->
 
@@ -322,8 +329,24 @@ function CheckCheckboxes1(chk){
     }
 }
 
+function CheckCheckboxes2(chk){
+    
+
+    if(chk.checked == true)
+    {
+      remark.readOnly = false;
+    }
+    else
+    {
+      remark.readOnly = true;
+    }
+}
+
+
+
 function check_attend()
             {
+              
                 if (document.getElementById('txtno').value==""
                  || document.getElementById('txtno').value==undefined)
                 {
@@ -346,7 +369,10 @@ function check_attend()
                   document.form1.submit();
                 }
                 return true;
-            }
+
+              }
+                
+          
 
 function check_miss()
             {
@@ -370,11 +396,24 @@ function check_miss()
                 }
                 return true;
             } else {
-              txt = "You pressed Cancel!";
+              
             }
             }  
 
 
+      function check_save()
+            {
+              var r = confirm("ยืนยันการบันทึก\nโปรดตรวจสอบข้อมูลให้ถูกต้อง")
+              if (r == true) {
+                
+                  document.form1.action = "save_attend.php"
+                  document.form1.submit();
+                
+                return true;
+            } else {
+              
+            }
+            }  
 
 
 
@@ -386,7 +425,7 @@ function check_miss()
 <div class="row">
   <div class="col-md-8">
     
-      <label for="subject" class="">กรอกรหัสนักศึกษา</label>
+      <label for="inputcode" class="">กรอกรหัสนักศึกษา</label>
       <input type="text" id="inputcode" name="inputcode" class="form-control" value ="<??>">
  
   </div>
@@ -398,6 +437,42 @@ function check_miss()
     </div>
 </div>
 <!--Grid column-->
+
+<div class="col-sm-2">
+<?
+if($_SESSION['count_late']==0) {
+?>  
+<label for="remark" class="">หมายเหตุ</label>
+<input type="text" id="remark" name="remark" class="form-control" value ="" readonly>
+    <?
+  }else {
+?>
+ <label for="remark" class="">หมายเหตุ</label>
+      <input type="text" id="remark" name="remark" class="form-control" value ="" >
+<?
+
+  }
+
+?>
+      <div class="custom-control custom-checkbox">
+
+      <?
+if($_SESSION['count_late']==0) {
+?>  
+<input type="checkbox" class="custom-control-input " name ="remark_check" id="remark_check" onchange="CheckCheckboxes2(this)"  >
+  <label class="custom-control-label" for="remark_check">สำหรับคนมาสาย</label>
+<?
+  }else {
+?>
+ <input type="checkbox" class="custom-control-input " name ="remark_check" id="remark_check" checked  >
+  <label class="custom-control-label" for="remark_check">สำหรับคนมาสาย</label>
+<?
+
+  }
+
+?>
+   </div>
+</div>
 </div>
 <!--Grid row-->
 
@@ -449,14 +524,18 @@ $a++;}
 ?>
     <thead>
       <tr>
-      <td colspan="8" bgcolor="#CCCCCC"><label class ="bluetext">นักศึกษาทั้งหมด <?php echo $total;?> คน</label>  มาเรียน <?php echo $Num_Rows;?> คน Quiz <?php echo $quiz;?> คน <label class ="redtext">สาย <?php echo $late;?> คน</label> ขาด <?php echo $miss;?> คน
+      <td colspan="8" bgcolor="#CCCCCC"><label name="totaltxt" id = "totaltxt" class ="bluetext" value = "<?$total;?>">นักศึกษาทั้งหมด <?php echo $total;?> คน</label> <label name = 'cometxt' value = "<?$Num_Rows;?>">มาเรียน <?php echo $Num_Rows;?></label><label name ='quiztxt' value = "<?$quiz;?>"> คน Quiz <?php echo $quiz;?> คน</label> <label name ='latetxt' class ="redtext" value = "<?$late;?>" >สาย <?php echo $late;?> คน</label><label name ='misstxt' value = "<?$miss;?>"> ขาด <?php echo $miss;?> คน</label>
 </td>
       </tr>
     </thead>
   </table>
   <div class="md-form mb-0 float-right">
-    <button name = "miss" type="submit" value="Submit" onclick="return check_miss();" class="btn btn-elegant">คนขาด</button>
+    <button name = "save_button" type="submit" value="Submit" onclick="return check_save();" class="btn btn-elegant">บันทึก</button>
     </div>
+    <div class="md-form mb-0 float-right">
+    <button name = "miss_button" type="submit" value="Submit" onclick="return check_miss();" class="btn btn-elegant">เพิ่มคนขาด</button>
+    </div>
+
 </div>
 
 </form>

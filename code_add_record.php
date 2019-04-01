@@ -41,6 +41,8 @@ ob_start();
 
    $name = $_SESSION["name"];
    $teacher = $_SESSION["id"];
+
+   $remark = $_POST['remark'];
    $date = DateThai('$strDate');
 
   
@@ -68,6 +70,7 @@ if ($_SESSION['time_cout'] ==0){
       $start_t = strtotime($start);
       $fin_t = strtotime($fin);
       $late_time = strtotime($start) + 900;
+      $_SESSION['late'] = $late_time;
       $_SESSION['start'] = $start_t;
       $_SESSION['fin'] = $fin_t;
      /* echo date('H:i',$_SESSION['start'])."-".date('H:i',$_SESSION['fin']);*/
@@ -99,7 +102,7 @@ if ($_SESSION['time_cout'] ==0){
   
     
   } else {
-  
+
     
     $start = $_SESSION['start'];
     $fin =  $_SESSION['fin'];
@@ -150,10 +153,10 @@ if($Num_Rows==0){
         $quiz = 1;
         $late = 0;
         $miss = 0;
-        $time = date('H:i:s');
+        $time = date('H:i');
         $strSQL1 = "INSERT INTO attend_quiz set  num = '$num', full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz ='$quiz' , time = '$time'  ";
 
-        $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = '$date' ";
+        $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = '-' ";
 
         $objQuery1 = mysql_query($strSQL1);
         $objQuery4 = mysql_query($strSQL4);
@@ -172,14 +175,23 @@ if($Num_Rows==0){
         }   
 
       } else {
-        $quiz = 0;
+
+        if($remark==""){
+          echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
+           echo "<script language='javascript'>alert('กรุณากรอกเหตุผลที่มาสาย');</script>";
+           echo"<script> window.location ='attend.php?sub_id=$id&section=$sec&full_id=$full'</script>";
+           
+         } else {
+
+          $quiz = 0;
         $late = 1;
         $miss = 0;
-        $time = date('H:i:s');
+        $time = date('H:i');
+        $_SESSION['count_late'] = 1 ;
         
         $strSQL2 = "INSERT INTO attend_late set  num = '$num', full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , late ='$late' , time = '$time'  ";
 
-        $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = '$date' ";
+        $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = '$remark' ";
 
        
         $objQuery2 = mysql_query($strSQL2);
@@ -197,7 +209,10 @@ if($Num_Rows==0){
           echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
                 echo "<script language='javascript'>alert('โง่');</script>";
           
-        }   
+        }
+
+         }
+           
 
       }
 
@@ -220,13 +235,13 @@ if($Num_Rows==0){
         $miss = $objResult["miss"];
         $quiz_t = $quiz + 1;
     
-        $time = date('H:i:s');
+        $time = date('H:i');
         
         $strSQL2 = "INSERT INTO attend_quiz set  num = '$num', stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz ='$quiz_t' , time = '$time'  ";
     
-        $strSQL6 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz_t' , late = '$late' , miss ='$miss' , time = '$time' , date = '$date' ";
+        $strSQL6 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz_t' , late = '$late' , miss ='$miss' , time = '$time' , date = '-' ";
 
-        $strSQL5 = "INSERT INTO attend_temp set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz_t' , late = '$late' , miss ='$miss' , time = '$time' , date = '$date' ";
+        $strSQL5 = "INSERT INTO attend_temp set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz_t' , late = '$late' , miss ='$miss' , time = '$time' , date = '-' ";
 
        
         $objQuery2 = mysql_query($strSQL2);
@@ -246,7 +261,17 @@ if($Num_Rows==0){
         }
     
       } else {
-        $no = $num - 1;
+
+
+        if($remark==""){
+         echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
+          echo "<script language='javascript'>alert('กรุณากรอกเหตุผลที่มาสาย');</script>";
+          echo"<script> window.location ='attend.php?sub_id=$id&section=$sec&full_id=$full'</script>";
+          
+        } else {
+
+          $no = $num - 1;
+          $_SESSION['count_late'] = 1 ;
     
         $strSQL4 = "SELECT *
         FROM attend_tb
@@ -260,13 +285,13 @@ if($Num_Rows==0){
         $miss = $objResult["miss"];
         $late_t = $late + 1;
     
-        $time = date('H:i:s');
+        $time = date('H:i');
         
         $strSQL2 = "INSERT INTO attend_late set  num = '$num', full_id = '$full' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , late ='$late_t' , time = '$time'  ";
         
-        $strSQL5 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss' , time = '$time' , date = '$date' ";
+        $strSQL5 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss' , time = '$time' , date = '$remark' ";
 
-        $strSQL6 = "INSERT INTO attend_temp set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss'  , time = '$time' , date = '$date'  ";
+        $strSQL6 = "INSERT INTO attend_temp set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late_t' , miss ='$miss'  , time = '$time' , date = '$remark'  ";
 
        
         $objQuery2 = mysql_query($strSQL2);
@@ -284,6 +309,9 @@ if($Num_Rows==0){
           echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
           echo "<script language='javascript'>alert('โง่');</script>";
         }
+
+        }
+        
     
     
       }

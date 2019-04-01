@@ -91,6 +91,7 @@ ob_start();
  $_SESSION['start'] = "";
   $_SESSION['fin'] = "";
   $_SESSION['time_cout'] = 0;
+  $_SESSION['count_late'] =0;
 	?>
 <html>
 <div class="container-fluid">
