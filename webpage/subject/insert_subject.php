@@ -16,13 +16,13 @@ ob_start();
     <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
     <link href="../../css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>STUDENT IDENTITY SYSTEM</title>
+	<title>ระบบเช็คชื่อนักศึกษา - เพิ่มวิชา</title>
     <link rel="stylesheet" type="text/css" href="../../style.css"/>
     </head>
 </head>
 <body>
 <div id="wrapper">
-    <h1>STUDENT IDENTITY SYSTEM</h1>
+    <h1>ระบบเช็คชื่อนักศึกษา</h1>
     <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 <div class="container-fluid">
@@ -36,6 +36,9 @@ ob_start();
   </li-->
   <li class="nav-item">
     <a class="nav-link" href="subjects.php">วิชา</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../history/history.php">ประวัติการสอน</a>
   </li>
   <li class="nav-item">
     <a class="nav-link active" >เพิ่มรายวิชา</a>
@@ -99,12 +102,12 @@ function fncSubmit()
     <tr>
         <td>ปีการศึกษา</td>
         <td>&nbsp;</td>
-        <td><input name="txtyear" type="text" id="txtyear" placeholder = "กรอกปีการศึกษา เช่น 2562" class="form-control"/></td>
+        <td><input name="txtyear" type="text" id="txtyear" autocomplete=off  placeholder = "กรอกปีการศึกษา เช่น 2562" class="form-control"/></td>
       </tr>
       <tr>
         <td>เทอม</td>
         <td>&nbsp;</td>
-        <td><input name="txtterm" type="text" id="txtterm" placeholder = "กรอกเทอมที่สอน" class="form-control"/></td>
+        <td><input name="txtterm" type="text" id="txtterm" autocomplete=off  placeholder = "กรอกเทอมที่สอน" class="form-control"/></td>
       </tr>
       
       <tr>
@@ -126,7 +129,7 @@ function fncSubmit()
       <tr>
         <td>กลุ่ม</td>
         <td>&nbsp;</td>
-        <td><input name="txtsec" type="text" id="txtsec" placeholder = "กรอกเป็นตัวเลข"  class="form-control"/></td>
+        <td><input name="txtsec" type="text" id="txtsec" autocomplete=off  placeholder = "กรอกเป็นตัวเลข"  class="form-control"/></td>
       </tr>
       <tr>
         <td>วันที่</td>

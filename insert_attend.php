@@ -15,13 +15,13 @@ ob_start();
     <link href="css/bootstrap-reboot.min.css" rel="stylesheet">
     <link href="css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>STUDENT IDENTITY SYSTEM</title>
+	<title>ระบบเช็คชื่อนักศึกษา - เพิ่มนักศึกษา</title>
     <link rel="stylesheet" type="text/css" href="../../style.css"/>
     </head>
 </head>
 <body>
 <div id="wrapper">
-    <h1>STUDENT IDENTITY SYSTEM</h1>
+    <h1>ระบบเช็คชื่อนักศึกษา</h1>
     <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 <div class="container-fluid">
@@ -35,6 +35,9 @@ ob_start();
   </li-->
   <li class="nav-item">
     <a class="nav-link" href="webpage/subject/subjects.php">วิชา</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link " href="webpage/history/history.php">ประวัติการสอน</a>
   </li>
   <li class="nav-item">
     <a class="nav-link active" >เพิ่มนักศึกษา</a>

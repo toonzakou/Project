@@ -1,7 +1,7 @@
 
 <?
 
-include "db_config.php";
+include "../../db_config.php";
 date_default_timezone_set('Asia/Bangkok');
 ob_start();
  session_start();
@@ -27,13 +27,13 @@ ob_start();
 <div class="container-fluid">
 <head>
       
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap-reboot.css" rel="stylesheet">
-    <link href="css/bootstrap-reboot.min.css" rel="stylesheet">
-    <link href="css/mdb.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap-reboot.css" rel="stylesheet">
+    <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
+    <link href="../../css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>ระบบเช็คชื่อนักศึกษา - เช็คชื่อ</title>
     <link rel="stylesheet" type="text/css" href="style.css"/>
@@ -61,7 +61,7 @@ ob_start();
   
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
+    <a class="nav-link " href="../../homepage2.php">หน้าหลัก</a>
   </li>
   <!--li class="nav-item">
     <a class="nav-link" href="webpage/user/user.php">รายชื่อ</a>
@@ -70,26 +70,28 @@ ob_start();
     <a class="nav-link " href="webpage/subject/subjects.php">วิชา</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link  " href="webpage/history/history.php">ประวัติการสอน</a>
+    <a class="nav-link  " href="history.php">ประวัติการสอน</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active  " href="">เช็คชื่อ</a>
+    <a class="nav-link active  " href="">ประวัติการสอน</a>
   </li>
 </ul>
   
 <?
-    $num = $_SESSION['no'];
-    $room = $_SESSION['room'];
+  
     $id = $_GET['sub_id'];
     $sec = $_GET['section'];
-	  $name = $_SESSION["name"];
+	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
     $full = $_GET['full_id'];
-    $newfull = $_SESSION['new_full'];
-    $strSQL = "SELECT sub_manage.subject_ID , subjects.full_id , sub_manage.subject_name , subjects.star_time , subjects.fin_time , subjects.section , subjects.date 
+    $num = $_POST['selected'];
+    
+    $strSQL = "SELECT sub_manage.subject_ID , attend_subject.full_id , sub_manage.subject_name , attend_subject.start_t , attend_subject.fin_t 
+    , attend_subject.section  , attend_subject.num , attend_subject.date , attend_subject.late_t , attend_subject.room , attend_subject.total , attend_subject.quiz , attend_subject.come , attend_subject.late
+    , attend_subject.miss
     FROM sub_manage 
-    INNER JOIN subjects ON sub_manage.subject_ID = subjects.sub_id
-    WHERE subjects.full_id = '$full'";
+    INNER JOIN attend_subject ON sub_manage.subject_ID = attend_subject.sub_id
+    WHERE attend_subject.full_id = '$full' AND attend_subject.num = '$num'";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
 <br>
@@ -100,7 +102,7 @@ ob_start();
 <?php
     
 
-		  $objResult = mysql_fetch_array($objQuery);
+		$objResult = mysql_fetch_array($objQuery);
 
         $_SESSION["subject_ID"] = $objResult["subject_ID"];
         $_SESSION["full_id"] = $objResult["full_id"];
@@ -112,29 +114,19 @@ ob_start();
 
     
 
-        $start = $objResult["star_time"];
-        $fin = $objResult["fin_time"];
+        $start = $objResult["start_t"];
+        $fin = $objResult["fin_t"];
+        $late_t = $objResult['late_t'];
         $start_t = strtotime($start);
         $fin_t = strtotime($fin);
+
+        $total = $objResult['total'];
+        $quiz = $objResult['quiz'];
+        $come = $objResult['come'];
+        $late = $objResult['late'];
+        $miss = $objResult['miss'];
+
         
-        if($_SESSION['time_cout']==0) {
-
-          $start_t = strtotime($start);
-          $fin_t = strtotime($fin);
-          $late_t = strtotime($start) + 900;
-         
-          }else { 
-            $start_t = $_SESSION['start'];
-             
-            $fin_t = $_SESSION['fin'];
-            $late_t = $_SESSION['late'];
-        
-          }
-       
-
-
-
-      $_SESSION['date'] = DateThai($strDate);
        
         
 		?>
@@ -142,19 +134,8 @@ ob_start();
 
     
 <nav class=" navbar-expand-lg ">
-<?
-if($_SESSION['time_cout']==0) {
-?>  
-  <a class="navbar-brand"><h1>เช็คชื่อชื่อวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?> วันที่ <?echo DateThai($strDate)?></h1></a>
- <?
-  }else {
-?>
-    <a class="navbar-brand"><h1>เช็คชื่อชื่อวิชา  <?echo $sub_name?> (เมคอัพคลาส) กลุ่มที่ <?=$objResult["section"];?> วันที่ <?echo DateThai($strDate)?></h1></a>
-<?
-
-  }
-
-?>
+  <a class="navbar-brand"><h1>การสอนรายวิชา  <?echo $num?> กลุ่มที่ <?=$objResult["section"];?> วันที่ <?=$objResult["date"];?></h1></a>
+  
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
     aria-expanded="false" aria-label="Toggle navigation">
@@ -165,68 +146,7 @@ if($_SESSION['time_cout']==0) {
     
 <?
   
-    $strSQL1 = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num , attend_tb.quiz , attend_tb.late , attend_tb.miss , attend_tb.section , attend_tb.time , new_sub.stu_name  
-    FROM attend_tb 
-    INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
- 
-    WHERE attend_tb.full_id = '$full' AND attend_tb.num ='$num'";
-
-      $objQuery1 = mysql_query($strSQL1) or die ("Error Query[".$strSQL1."]");
-    
-   
-    $Num_Rows = mysql_num_rows($objQuery1);
-
-  
-    $strSQL2 = "SELECT *
-    FROM new_sub
-    WHERE sub_id LIKE '$id' AND full_id = '$full'";
-  
-/*$strSQL1 = "SELECT *
-FROM attend_tb 
-WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
-    $objQuery2 = mysql_query($strSQL2) or die ("Error Query[".$strSQL2."]");
-    $total = mysql_num_rows($objQuery2);
-    $_SESSION['total'] = $total;
-
-    $strSQL3 = "SELECT *
-    FROM attend_quiz
-    WHERE full_id = '$full' AND num ='$num'";
-    
-/*$strSQL1 = "SELECT *
-FROM attend_tb 
-WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
-    $objQuery3 = mysql_query($strSQL3) or die ("Error Query[".$strSQL3."]");
-    $quiz = mysql_num_rows($objQuery3);
-    $_SESSION['quiz'] = $quiz;
-
-    
-    $strSQL4 = "SELECT *
-    FROM attend_late
-    WHERE full_id = '$full' AND num ='$num'";
-    
-/*$strSQL1 = "SELECT *
-FROM attend_tb 
-WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
-    $objQuery4 = mysql_query($strSQL4) or die ("Error Query[".$strSQL4."]");
-    $late = mysql_num_rows($objQuery4);
-    $_SESSION['late'] = $late;
-
-    $strSQL5 = "SELECT *
-    FROM attend_miss
-    WHERE full_id = '$full' AND num ='$num'";
-    
-/*$strSQL1 = "SELECT *
-FROM attend_tb 
-WHERE sub_id LIKE '$s_id' AND section = '$section' AND num = '$num'";*/
-    $objQuery5 = mysql_query($strSQL5) or die ("Error Query[".$strSQL5."]");
-    $miss = mysql_num_rows($objQuery5);
-    
-
-    
-
-    $stu_miss = $total - $Num_Rows ;
-    $_SESSION['miss'] = $miss;
-?>
+?>   
 
 <script language="javascript">
 function fncSubmit()
@@ -246,6 +166,14 @@ function fncSubmit()
 	document.form1.submit();
 }
 
+
+      function Redirect()
+      { 
+      window.location = 'history_select.php?full_id='+document.form1.txt_full.value+'&num='+document.form1.selected.value;
+
+      }
+     
+
 </script>
 
 <form name="form1" class="form-horizontal" method="post"  action="" id="menu" >
@@ -256,13 +184,32 @@ function fncSubmit()
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ครั้งที่สอน</label>
-    <input type="text" name = "txtno" id="txtno" autocomplete=off  class="form-control" value = "<?echo $num?>">
+    <select name="selected" class="form-control" id="sel1" onchange = 'Redirect()'>
+                          <option value = "">ครั้งที่</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+          </select>
+     
 </div>
 
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ห้องเรียน</label>
-    <input type="text" name = "txtroom" id="txtroom" autocomplete=off  class="form-control" value = "<?echo $room?>">
+    <input type="text" name = "txtroom" id="txtroom" autocomplete=off  class="form-control" value = "<?=$objResult["room"];?>">
+    <input name="txt_full" type="text" id="txt_full" class="form-control" style="display: none" value="<?$full?>" />
 </div>
 </div>
 <!--Grid row--> 
@@ -285,66 +232,12 @@ function fncSubmit()
 </div>
 <!--Grid column-->
 
-<div class="custom-control custom-checkbox">
-
-<?
-if($_SESSION['time_cout']==0) {
-?>  
-   <input type="checkbox" class="custom-control-input " name ="makeup_check" id="makeup_check" onchange="CheckCheckboxes1(this)"  >
-  <label class="custom-control-label" for="makeup_check">เปลี่ยนเวลาการสอน (สำหรับเมคอัพคลาส)</label>
-  <input name="txt_check" type="text" id="txt_check" class="form-control" style="display: none"value = "0" />
- <?
-  }else {
-?>
- <input type="checkbox" class="custom-control-input " name ="makeup_check" id="makeup_check"  onchange="CheckCheckboxes1(this)"  checked>
-  <label class="custom-control-label" for="makeup_check">เปลี่ยนเวลาการสอน (สำหรับเมคอัพคลาส)</label>
-  <input name="txt_check" type="text" id="txt_check" class="form-control" style="display: none" value="1" />
-<?
-
-  }
-
-?>
-
- 
-</div>
 </div>
 <!--Grid row--> 
 
 <br>
 
 <script type="text/javascript">
-
-function CheckCheckboxes1(chk){
-    
-
-    if(chk.checked == true)
-    {
-      txt_start.readOnly = false;
-      txt_fin.readOnly = false;
-      txt_start.value  ="";
-      txt_fin.value  = "";
-      txtfull.valu = "1"
-    }
-    else
-    {
-      txt_start.readOnly = true;
-      txt_fin.readOnly = true;
-    }
-}
-
-function CheckCheckboxes2(chk){
-    
-
-    if(chk.checked == true)
-    {
-      remark.readOnly = false;
-    }
-    else
-    {
-      remark.readOnly = true;
-    }
-}
-
 
 
 function check_attend()
@@ -422,63 +315,6 @@ function check_miss()
 
 </script>
 
-
-
-<!--Grid row-->
-<div class="row">
-  <div class="col-md-8">
-    
-      <label for="inputcode" class="">กรอกรหัสนักศึกษา</label>
-      <input type="text" id="inputcode" name="inputcode" autocomplete=off  class="form-control" value ="<??>">
- 
-  </div>
-
-  <!--Grid column-->
-<div class="col-sm-2">
-    <div class="md-form mb-0">
-    <button type="submit" value="Submit" onclick="return check_attend();"  class="btn btn-elegant">เช็คชื่อ</button>
-    </div>
-</div>
-<!--Grid column-->
-
-<div class="col-sm-2">
-<?
-if($_SESSION['count_late']==0) {
-?>  
-<label for="remark" class="">หมายเหตุ</label>
-<input type="text" id="remark" name="remark" class="form-control" value ="" readonly>
-    <?
-  }else {
-?>
- <label for="remark" class="">หมายเหตุ</label>
-      <input type="text" id="remark" name="remark" class="form-control" value ="" >
-<?
-
-  }
-
-?>
-      <div class="custom-control custom-checkbox">
-
-      <?
-if($_SESSION['count_late']==0) {
-?>  
-<input type="checkbox" class="custom-control-input " autocomplete=off  name ="remark_check" id="remark_check" onchange="CheckCheckboxes2(this)"  >
-  <label class="custom-control-label" for="remark_check">สำหรับคนมาสาย</label>
-<?
-  }else {
-?>
- <input type="checkbox" class="custom-control-input " autocomplete=off  name ="remark_check" id="remark_check" checked  >
-  <label class="custom-control-label" for="remark_check">สำหรับคนมาสาย</label>
-<?
-
-  }
-
-?>
-   </div>
-</div>
-</div>
-<!--Grid row-->
-
   <br>
 
 <div class="table-responsive" width="955" height="200" >
@@ -527,7 +363,7 @@ $a++;}
 ?>
     <thead>
       <tr>
-      <td colspan="8" bgcolor="#CCCCCC"><label name="totaltxt" id = "totaltxt" class ="bluetext" value = "<?$total;?>">นักศึกษาทั้งหมด <?php echo $total;?> คน</label> <label name = 'cometxt' value = "<?$Num_Rows;?>">มาเรียน <?php echo $Num_Rows;?></label><label name ='quiztxt' value = "<?$quiz;?>"> คน Quiz <?php echo $quiz;?> คน</label> <label name ='latetxt' class ="redtext" value = "<?$late;?>" >สาย <?php echo $late;?> คน</label><label name ='misstxt' value = "<?$miss;?>"> ขาด <?php echo $miss;?> คน</label>
+      <td colspan="8" bgcolor="#CCCCCC"><label name="totaltxt" id = "totaltxt" class ="bluetext" value = "">นักศึกษาทั้งหมด <?echo $total?> คน</label> <label name = 'cometxt' value = "">มาเรียน <?echo $come;?></label><label name ='quiztxt' value = ""> คน Quiz <?echo $quiz;?> คน</label> <label name ='latetxt' class ="redtext" value = "" >สาย <?echo $late?> คน </label> <label name ='misstxt' value = ""> ขาด <?echo $miss;?> คน</label>
 </td>
       </tr>
     </thead>
@@ -553,9 +389,9 @@ $a++;}
 </style>  
 </div>
 </div>   
-        <script src="js/bootstrap.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery-3.3.1.min"></script>
+        <script src="../../js/bootstrap.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/jquery-3.3.1.min"></script>
 </body>
     </div>
 </html>

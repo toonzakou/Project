@@ -86,6 +86,12 @@ include "../../db_config.php";
 
 ob_start();
  session_start();
+ $_SESSION['no'] = "";
+ $_SESSION['room'] = "";
+ $_SESSION['start'] = "";
+  $_SESSION['fin'] = "";
+  $_SESSION['time_cout'] = 0;
+  $_SESSION['count_late'] =0;
 	?>
 <html>
 <div class="container-fluid">
@@ -99,12 +105,12 @@ ob_start();
     <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
     <link href="../../css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>ระบบเช็คชื่อนักศึกษา - วิชา</title>
-    <link rel="stylesheet" type="text/css" href="../../style.css"/>
+	<title>ระบบเช็คชื่อนักศึกษา - ประวัคิการสอน</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
   
     </head>
 <body>
-<div id="wrapper" >
+<div id="wrapper">
     <h1>ระบบเช็คชื่อนักศึกษา</h1>
     <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
@@ -126,23 +132,24 @@ ob_start();
   
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link " href="../../homepage2.php">หน้าหลัก</a>
+    <a class="nav-link   " href="../../homepage2.php">หน้าหลัก</a>
   </li>
   <!--li class="nav-item">
-    <a class="nav-link" href="../user/user.php">รายชื่อ</a>
+    <a class="nav-link" href="webpage/user/user.php">รายชื่อ</a>
   </li-->
   <li class="nav-item">
-    <a class="nav-link active" href="subjects.php">วิชา</a>
+    <a class="nav-link " href="../subject/subjects.php">วิชา</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="../history/history.php">ประวัติการสอน</a>
+    <a class="nav-link active " href="history.php">ประวัติการสอน</a>
   </li>
 </ul>
   
 <?
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.full_id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id 
+    $strSQL = "SELECT subjects.id , subjects.year , subjects.term , subjects.full_id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date
+    , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id , subjects.section
     FROM subjects 
     INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
     INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID 
@@ -179,6 +186,7 @@ ob_start();
     $strSQL .=" order  by subjects.id ASC LIMIT $Page_Start , $Per_Page";
     $objQuery  = mysql_query($strSQL);
 ?>
+
 <br>
 <form name="form1" method="post" action="" id="menu">
 <div class="form-inline md-form mr-auto mb-4 float-right">
@@ -187,19 +195,13 @@ ob_start();
   </div>
 <div >
 <nav class=" navbar-expand-lg ">
-  <a class="navbar-brand"><h1>รายวิชา</h1></a>
+  <a class="navbar-brand"><h1>ประวัติการสอน</h1></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="insert_subject.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-  </div>
 </nav>
+
 </div>
 
     <div class="table-responsive" width="955" height="200" >
@@ -207,17 +209,14 @@ ob_start();
     <thead>
       <tr>
         <th bgcolor="#CCCCCC" scope="col">#</th>
+        <th bgcolor="#CCCCCC" scope="col">เทอม</th>
         <th bgcolor="#CCCCCC" scope="col">รหัสวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">กลุ่ม</th>
         <th bgcolor="#CCCCCC" scope="col">หน่วยกิต</th>
         <th bgcolor="#CCCCCC" scope="col">วัน</th>
         <th bgcolor="#CCCCCC" scope="col">เวลา</th>
-        <th bgcolor="#CCCCCC" scope="col">เพิ่มนักศึกษา</th>
-        <th bgcolor="#CCCCCC" scope="col">เพิ่มนักศึกษา(Excel)</th>
-        <th bgcolor="#CCCCCC" scope="col">ดูนักศึกษา</th>
-        <th bgcolor="#CCCCCC" scope="col">แก้ไข</th>
-        <th bgcolor="#CCCCCC" scope="col">ลบ</th>
+        <th bgcolor="#CCCCCC" scope="col">เช็ค</th>
       </tr>
     </thead>
     
@@ -227,20 +226,26 @@ ob_start();
 		?>
     
     <tbody>
+    <input name="txt_full" type="text" id="txt_full" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" />
       <tr>
+      <?
+      $full_id = $objResult["full_id"];
+      $num = $_POST['selected'];
+      $_SESSION['sub'] = $objResult["sub_id"];
+      $_SESSION['sec'] = $objResult["section"];
+      ?>
+      
             <td bgcolor="#FFCC66"><?echo $a?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["year"];?>/<?=$objResult["term"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["sub_id"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["section"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["date"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="insert_stu.php?full_id=<?=$objResult["full_id"];?>&id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?full_id=<?=$objResult["full_id"];?>&id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/excel.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="subject_detail.php?sub_id=<?=$objResult["sub_id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/padnote.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>&full_id=<?=$objResult["full_id"];?>"onclick="return confirm('คุณกำลังจะลบข้อมูล?')"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>
-        </tr>
+          <td bgcolor="#FFCC66">&nbsp;<a href="history_select.php?full_id=<?=$objResult["full_id"];?>"><img src="../../images/button/speech-bubble.png" width="33" height="33"></a></td>
+  
+      </tr>
     </tbody>
     
     <?php
@@ -249,7 +254,7 @@ ob_start();
     
     <thead>
       <tr>
-      <td colspan="12" bgcolor="#CCCCCC">&nbsp;</td>
+      <td colspan="11" bgcolor="#CCCCCC">&nbsp;</td>
       </tr>
     </thead>
   </table>
