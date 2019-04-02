@@ -7,11 +7,12 @@ ob_start();
    $stu_name = $_POST['stuname'];
    $sub_id = $_POST['txtid'];
    $sec = $_POST['txtsec'];
+   $full = $_POST['txtfull'];
    
 
 
 // เพิ่มลงฐานข้อมูล
-$strSQL = "INSERT INTO new_sub set   section = '$sec', sub_id = '$sub_id', stu_id = '$stu_id' , stu_name = '$stu_name'";
+$strSQL = "INSERT INTO new_sub set   section = '$sec', sub_id = '$sub_id', stu_id = '$stu_id' , stu_name = '$stu_name' , full_id = '$full'";
 
 $objQuery = mysql_query($strSQL);
 

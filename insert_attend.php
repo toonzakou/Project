@@ -15,13 +15,13 @@ ob_start();
     <link href="css/bootstrap-reboot.min.css" rel="stylesheet">
     <link href="css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>STUDENT IDENTITY SYSTEM</title>
+	<title>ระบบเช็คชื่อนักศึกษา - เพิ่มนักศึกษา</title>
     <link rel="stylesheet" type="text/css" href="../../style.css"/>
     </head>
 </head>
 <body>
 <div id="wrapper">
-    <h1>STUDENT IDENTITY SYSTEM</h1>
+    <h1>ระบบเช็คชื่อนักศึกษา</h1>
     <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 <div class="container-fluid">
@@ -37,6 +37,9 @@ ob_start();
     <a class="nav-link" href="webpage/subject/subjects.php">วิชา</a>
   </li>
   <li class="nav-item">
+    <a class="nav-link " href="webpage/history/history.php">ประวัติการสอน</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link active" >เพิ่มนักศึกษา</a>
   </li>
   </ul>
@@ -45,7 +48,7 @@ ob_start();
   /*เก็บ SESSION ของกลุ่ม*/ 
   /*$_SESSION["section"] = $objResult["section"];*/
   $sec = $_SESSION["section"];
-	$strSQL = "SELECT subjects.id , subjects.sub_id , sub_manage.subject_name , subjects.section
+	$strSQL = "SELECT subjects.id ,subjects.full_id , subjects.sub_id , sub_manage.subject_name , subjects.section
   FROM subjects 
   INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID
   WHERE subjects.sub_id ='$id' AND subjects.section = '$sec'";
@@ -94,7 +97,7 @@ ob_start();
       </tr>
       <tr>
         <td></td>
-        <td>&nbsp;</td>
+        <td><input name="txtfull" type="text" id="txtfull" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" /></td>
         <td>
         </td>
       </tr>

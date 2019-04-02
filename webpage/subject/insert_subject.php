@@ -16,13 +16,13 @@ ob_start();
     <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
     <link href="../../css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>STUDENT IDENTITY SYSTEM</title>
+	<title>ระบบเช็คชื่อนักศึกษา - เพิ่มวิชา</title>
     <link rel="stylesheet" type="text/css" href="../../style.css"/>
     </head>
 </head>
 <body>
 <div id="wrapper">
-    <h1>STUDENT IDENTITY SYSTEM</h1>
+    <h1>ระบบเช็คชื่อนักศึกษา</h1>
     <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 <div class="container-fluid">
@@ -38,6 +38,9 @@ ob_start();
     <a class="nav-link" href="subjects.php">วิชา</a>
   </li>
   <li class="nav-item">
+    <a class="nav-link" href="../history/history.php">ประวัติการสอน</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link active" >เพิ่มรายวิชา</a>
   </li>
   </ul>
@@ -49,20 +52,62 @@ ob_start();
     FROM sub_manage ";
 	$objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
+
+<script language="javascript">
+function fncSubmit()
+{
+	if(document.form1.txtyear.value == "")
+	{
+		alert('กรุณากรอกปีการศึกษา');
+		document.form1.txtyear.focus();
+		return false;
+	}	
+	if(document.form1.txtterm.value == "")
+  {
+		alert('กรุณากรอกเทอม');
+		document.form1.txtterm.focus();		
+		return false;
+	}	
+  if(document.form1.txtsec.value == "")
+  {
+		alert('กรุณากรอกกลุ่มเรียน');
+		document.form1.txtsec.focus();		
+		return false;
+	}	
+  if(document.form1.selected.value == "")
+  {
+		alert('กรุณาเลือกวันที่สอน');
+		return false;
+	}
+  if(document.form1.start_time.value == "")
+  {
+		alert('กรุณากรอกเวลาเริ่มสอน');
+    document.form1.start_time.focus();
+		return false;
+	}	
+  if(document.form1.fin_time.value == "")
+  {
+		alert('กรุณากรอกเวลาสิ้นสุด');
+    document.form1.fin_time.focus();
+		return false;
+	}	
+	document.form1.submit();
+}
+</script>
     <br>
     <br>
     <div class="col-md-auto">
-    <form name="form1" method="post" action="code_insert.php" >
+    <form name="form1" method="post" action="code_insert.php" onSubmit="JavaScript:return fncSubmit();" >
     <table width="955" height="200" border="0">
     <tr>
         <td>ปีการศึกษา</td>
         <td>&nbsp;</td>
-        <td><input name="txtyear" type="text" id="txtyear" class="form-control"/></td>
+        <td><input name="txtyear" type="text" id="txtyear" autocomplete=off  placeholder = "กรอกปีการศึกษา เช่น 2562" class="form-control"/></td>
       </tr>
       <tr>
         <td>เทอม</td>
         <td>&nbsp;</td>
-        <td><input name="txtterm" type="text" id="txtterm" class="form-control"/></td>
+        <td><input name="txtterm" type="text" id="txtterm" autocomplete=off  placeholder = "กรอกเทอมที่สอน" class="form-control"/></td>
       </tr>
       
       <tr>
@@ -84,32 +129,32 @@ ob_start();
       <tr>
         <td>กลุ่ม</td>
         <td>&nbsp;</td>
-        <td><input name="txtsec" type="number" id="txtsec"  class="form-control"/></td>
+        <td><input name="txtsec" type="text" id="txtsec" autocomplete=off  placeholder = "กรอกเป็นตัวเลข"  class="form-control"/></td>
       </tr>
       <tr>
         <td>วันที่</td>
         <td>&nbsp;</td>
         <td>
     <select name="selected" class="form-control" id="sel1">
-    <option>เลือกวันสอน</option>
-    <option value="Monday">Monday</option>
-    <option value="Tuesday">Tuesday</option>
-    <option value="Wednesday">Wednesday</option>
-    <option value="Thurday">Thurday</option>
-    <option value="Friday">Friday</option>
-    <option value="Saturdat">Saturdat</option>
-    <option value="Sunday">Sunday</option>
+    <option value = "">เลือกวันสอน</option>
+    <option value="วันจันทร์">วันจันทร์</option>
+    <option value="วันอังคาร">วันอังคาร</option>
+    <option value="วันพุธ">วันพุธ</option>
+    <option value="วันพฤหัสบดี">วันพฤหัสบดี</option>
+    <option value="วันศุกร์">วันศุกร์</option>
+    <option value="วันเสาร์">วันเสาร์</option>
+    <option value="วันอาทิตย์">วันอาทิตย์</option>
     </select>
         </td>
       </tr>
       <tr>
         <td>เริ่มสอน</td>
         <td>&nbsp;</td>
-        <td><input name="start_time" type="time" id="start_time" class="form-control" value="<?=$objResult["star_time"];?>" /></td>
+        <td><input name="start_time" type="time" id="start_time" class="form-control" value="" /></td>
         <tr>
         <td>หมดเวลา</td>
         <td>&nbsp;</td>
-        <td><input name="fin_time" type="time" id="fin_time" class="form-control" value="<?=$objResult["fin_time"];?>" /></td>
+        <td><input name="fin_time" type="time" id="fin_time" class="form-control" value="" /></td>
       </tr>
       <tr>
         <td></td>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 24, 2019 at 06:00 AM
+-- Generation Time: Apr 02, 2019 at 03:23 AM
 -- Server version: 5.7.17-log
 -- PHP Version: 5.6.30
 
@@ -23,34 +23,12 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attend`
---
-
-CREATE TABLE `attend` (
-  `num` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `stu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `sub_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `section` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
-  `quiz` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `late` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `miss` varchar(2) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `attend`
---
-
-INSERT INTO `attend` (`num`, `stu_id`, `sub_id`, `section`, `quiz`, `late`, `miss`) VALUES
-('1', '601208217', 'ITS221', '1', '0', '1', '0');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `attend_late`
 --
 
 CREATE TABLE `attend_late` (
   `id` int(11) NOT NULL,
+  `full_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `num` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
   `sub_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `stu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -58,6 +36,14 @@ CREATE TABLE `attend_late` (
   `section` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `attend_late`
+--
+
+INSERT INTO `attend_late` (`id`, `full_id`, `num`, `sub_id`, `stu_id`, `late`, `section`, `time`) VALUES
+(133, '25621ITS2211', '1', 'ITS221', '601113836', '1', '1', '22:45:00'),
+(134, '25621ITS2211', '1', 'ITS221', '601114167', '1', '1', '22:45:00');
 
 -- --------------------------------------------------------
 
@@ -67,6 +53,7 @@ CREATE TABLE `attend_late` (
 
 CREATE TABLE `attend_miss` (
   `id` int(11) NOT NULL,
+  `full_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `num` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
   `sub_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `stu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -74,6 +61,16 @@ CREATE TABLE `attend_miss` (
   `section` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `attend_miss`
+--
+
+INSERT INTO `attend_miss` (`id`, `full_id`, `num`, `sub_id`, `stu_id`, `miss`, `section`, `time`) VALUES
+(50, '25621ITS2211', '1', 'ITS221', '601114696', '1', '1', '22:45:34'),
+(51, '25621ITS2211', '1', 'ITS221', '601114701', '1', '1', '22:45:34'),
+(52, '25621ITS2211', '1', 'ITS221', '601114808', '1', '1', '22:45:35'),
+(53, '25621ITS2211', '1', 'ITS221', '601115202', '1', '1', '22:45:35');
 
 -- --------------------------------------------------------
 
@@ -83,6 +80,7 @@ CREATE TABLE `attend_miss` (
 
 CREATE TABLE `attend_quiz` (
   `id` int(11) NOT NULL,
+  `full_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `num` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
   `sub_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `stu_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -94,60 +92,87 @@ CREATE TABLE `attend_quiz` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `attend_subject`
+--
+
+CREATE TABLE `attend_subject` (
+  `id` int(11) NOT NULL,
+  `full_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `sub_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `section` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `num` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `room` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `total` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `come` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `quiz` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `late` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `miss` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `start_t` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `fin_t` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `late_t` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `date` varchar(15) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `attend_subject`
+--
+
+INSERT INTO `attend_subject` (`id`, `full_id`, `sub_id`, `section`, `num`, `room`, `total`, `come`, `quiz`, `late`, `miss`, `start_t`, `fin_t`, `late_t`, `date`) VALUES
+(12, '25621ITS2211', 'ITS221', '1', '1', '2309', '6', '2', '0', '2', '4', '09:00', '12:00', '09:15', '1 เม.ย. 2562');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `attend_tb`
 --
 
 CREATE TABLE `attend_tb` (
   `id` int(11) NOT NULL,
+  `full_id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `num` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `new_full_id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `stu_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sub_id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `section` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `quiz` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
   `late` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
   `miss` int(2) NOT NULL,
-  `time` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+  `time` time NOT NULL,
+  `date` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `attend_tb`
+--
+
+INSERT INTO `attend_tb` (`id`, `full_id`, `num`, `new_full_id`, `stu_id`, `sub_id`, `section`, `quiz`, `late`, `miss`, `time`, `date`) VALUES
+(736, '25621ITS2211', '1', '25621ITS22111', '601113836', 'ITS221', '1', '0', '1', 0, '22:45:00', 'รถติด'),
+(737, '25621ITS2211', '1', '25621ITS22111', '601114167', 'ITS221', '1', '0', '1', 0, '22:45:00', 'ตื่นสาย'),
+(738, '25621ITS2211', '1', '25621ITS22111', '601114696', 'ITS221', '1', '0', '0', 1, '22:45:34', 'ขาดเรียน'),
+(739, '25621ITS2211', '1', '25621ITS22111', '601114701', 'ITS221', '1', '0', '0', 1, '22:45:34', 'ขาดเรียน'),
+(740, '25621ITS2211', '1', '25621ITS22111', '601114808', 'ITS221', '1', '0', '0', 1, '22:45:35', 'ขาดเรียน'),
+(741, '25621ITS2211', '1', '25621ITS22111', '601115202', 'ITS221', '1', '0', '0', 1, '22:45:35', 'ขาดเรียน');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `barcode_tb`
+-- Table structure for table `attend_temp`
 --
 
-CREATE TABLE `barcode_tb` (
-  `id` int(5) NOT NULL,
-  `stu_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stu_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stu_dep` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `barcode_tb`
---
-
-INSERT INTO `barcode_tb` (`id`, `stu_id`, `stu_name`, `stu_dep`) VALUES
-(4, '601206516', 'ศักดารินท์  ดาวร้าย', 'ITS-C'),
-(5, '601207253', 'พูนศักดิ์  เสาเวียง', 'ITS-C'),
-(58, '601206516', 'ทรงสิทธิ์  รบศรี', 'ITS-C'),
-(59, '12345678', 'นายก', ''),
-(60, '13456898', 'นายข', ''),
-(61, '601208217', 'นางสาววรรณวิภา เนียมหอม', 'BSC-C-W '),
-(62, '601208330', 'นางสาวมนฑ์ปลิดา ธนาภัทร์ศิริสกุล', 'BSC-C-W '),
-(63, '601208429', 'นายอนุรักษ์ กฤษดากุล', 'BSC-C-W '),
-(64, '601208916', 'นายรัตนชัย สีสุขโข', 'BSC-C-W '),
-(65, '601209158', 'นางสาวสุพรรณี แสงสุข', 'BSC-C-W '),
-(66, '601209213', 'นายปัณณวัฒน์ ขันติกุล', 'BSC-C-W '),
-(67, '601209556', 'นางสาวทิพามณี เจิมนำ', 'BSC-C-W '),
-(68, '601209695', 'นางสาวธิดา ศรีคำ', 'BSC-C-W '),
-(69, '601208217', 'นางสาววรรณวิภา เนียมหอม', 'BSC-C-W '),
-(70, '601208330', 'นางสาวมนฑ์ปลิดา ธนาภัทร์ศิริสกุล', 'BSC-C-W '),
-(71, '601208217', 'นางสาววรรณวิภา เนียมหอม', 'BSC-C-W '),
-(72, '601208330', 'นางสาวมนฑ์ปลิดา ธนาภัทร์ศิริสกุล', 'BSC-C-W '),
-(73, '601208217', 'นางสาววรรณวิภา เนียมหอม', 'BSC-C-W '),
-(74, '601208330', 'นางสาวมนฑ์ปลิดา ธนาภัทร์ศิริสกุล', 'BSC-C-W '),
-(75, '601208217', 'นางสาววรรณวิภา เนียมหอม', 'BSC-C-W '),
-(76, '601208330', 'นางสาวมนฑ์ปลิดา ธนาภัทร์ศิริสกุล', 'BSC-C-W ');
+CREATE TABLE `attend_temp` (
+  `id` int(11) NOT NULL,
+  `full_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `num` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `new_full_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `stu_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `sub_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `section` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `quiz` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `late` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `miss` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `time` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -157,6 +182,7 @@ INSERT INTO `barcode_tb` (`id`, `stu_id`, `stu_name`, `stu_dep`) VALUES
 
 CREATE TABLE `new_sub` (
   `new_sub_id` int(10) NOT NULL,
+  `full_id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `section` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sub_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `stu_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -167,15 +193,33 @@ CREATE TABLE `new_sub` (
 -- Dumping data for table `new_sub`
 --
 
-INSERT INTO `new_sub` (`new_sub_id`, `section`, `sub_id`, `stu_id`, `stu_name`) VALUES
-(76, '1', 'ITS221', '601208217', 'นางสาววรรณวิภา เนียมหอม'),
-(77, '1', 'ITS221', '601208330', 'นางสาวมนฑ์ปลิดา ธนาภัทร์ศิริสกุล'),
-(78, '1', 'ITS221', '601208429', 'นายอนุรักษ์ กฤษดากุล'),
-(79, '1', 'ITS221', '601208916', 'นายรัตนชัย สีสุขโข'),
-(80, '1', 'ITS221', '601209158', 'นางสาวสุพรรณี แสงสุข'),
-(81, '1', 'ITS221', '601209213', 'นายปัณณวัฒน์ ขันติกุล'),
-(82, '1', 'ITS221', '601209556', 'นางสาวทิพามณี เจิมนำ'),
-(83, '1', 'ITS221', '601209695', 'นางสาวธิดา ศรีคำ');
+INSERT INTO `new_sub` (`new_sub_id`, `full_id`, `section`, `sub_id`, `stu_id`, `stu_name`) VALUES
+(541, '25621ITS2211', '1', 'ITS221', '601113836', 'นางสาวศรัญญา บุญสมบัติ'),
+(542, '25621ITS2211', '1', 'ITS221', '601114167', 'นางสาวนิรมล บุญอาจ'),
+(543, '25621ITS2211', '1', 'ITS221', '601114696', 'นายศราวุฒิ ชื่นนอก'),
+(544, '25621ITS2211', '1', 'ITS221', '601114701', 'นายมณทล ชัยสุวรรณ'),
+(545, '25621ITS2211', '1', 'ITS221', '601114808', 'นายเดชาวุฒิ อยู่หน้า'),
+(546, '25621ITS2211', '1', 'ITS221', '601115202', 'นางสาววลัยลักษณ์ พูลทรัพย์'),
+(547, '25621ITS4861', '1', 'ITS486', '601113836', 'นางสาวศรัญญา บุญสมบัติ'),
+(548, '25621ITS4861', '1', 'ITS486', '601114167', 'นางสาวนิรมล บุญอาจ'),
+(549, '25621ITS4861', '1', 'ITS486', '601114696', 'นายศราวุฒิ ชื่นนอก'),
+(550, '25621ITS4861', '1', 'ITS486', '601114701', 'นายมณทล ชัยสุวรรณ'),
+(551, '25621ITS4861', '1', 'ITS486', '601114808', 'นายเดชาวุฒิ อยู่หน้า'),
+(552, '25621ITS4861', '1', 'ITS486', '601115202', 'นางสาววลัยลักษณ์ พูลทรัพย์'),
+(553, '25621ITS4861', '1', 'ITS486', '601106261', 'นายศิรวิชญ์ ศิริสุข'),
+(554, '25621ITS4861', '1', 'ITS486', '601108857', 'นายณุกุลกริช บุญนาค'),
+(555, '25621ITS4861', '1', 'ITS486', '601108865', 'นายไชยวัฒน์ ปิตุโส'),
+(556, '25621ITS4861', '1', 'ITS486', '601108873', 'นายวริทนันท์ สาลี'),
+(557, '25621ITS4861', '1', 'ITS486', '601108881', 'นายศุภวิชญ์ พูลสวัสดิ์'),
+(558, '25621ITS4861', '1', 'ITS486', '601111965', 'นางสาวสุดารัตน์ พสกชาติ'),
+(559, '25621ITS4861', '1', 'ITS486', '601113056', 'นางสาวสุลักษ์ขณา คุ้มวงษ์'),
+(560, '25621ITS4861', '1', 'ITS486', '601113373', 'นางสาวมณีรัตน์ บุญธรรม'),
+(561, '25621ITS4861', '1', 'ITS486', '601113836', 'นางสาวศรัญญา บุญสมบัติ'),
+(562, '25621ITS4861', '1', 'ITS486', '601114167', 'นางสาวนิรมล บุญอาจ'),
+(563, '25621ITS4861', '1', 'ITS486', '601114696', 'นายศราวุฒิ ชื่นนอก'),
+(564, '25621ITS4861', '1', 'ITS486', '601114701', 'นายมณทล ชัยสุวรรณ'),
+(565, '25621ITS4861', '1', 'ITS486', '601114808', 'นายเดชาวุฒิ อยู่หน้า'),
+(566, '25621ITS4861', '1', 'ITS486', '601115202', 'นางสาววลัยลักษณ์ พูลทรัพย์');
 
 -- --------------------------------------------------------
 
@@ -185,6 +229,8 @@ INSERT INTO `new_sub` (`new_sub_id`, `section`, `sub_id`, `stu_id`, `stu_name`) 
 
 CREATE TABLE `subjects` (
   `id` int(10) NOT NULL,
+  `year` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `term` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sub_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `full_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `teacher_id` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -198,9 +244,9 @@ CREATE TABLE `subjects` (
 -- Dumping data for table `subjects`
 --
 
-INSERT INTO `subjects` (`id`, `sub_id`, `full_id`, `teacher_id`, `star_time`, `fin_time`, `date`, `section`) VALUES
-(24, 'ITS221', '621ITS2211', '1', '09:00', '12:00', 'Monday', '1'),
-(25, 'ITS221', '621ITS22120', '1', '09:00', '12:00', 'Sunday', '20');
+INSERT INTO `subjects` (`id`, `year`, `term`, `sub_id`, `full_id`, `teacher_id`, `star_time`, `fin_time`, `date`, `section`) VALUES
+(29, '2562', '1', 'ITS221', '25621ITS2211', '1', '09:00', '00:00', 'วันจันทร์', '1'),
+(30, '2562', '1', 'ITS486', '25621ITS4861', '1', '13:00', '17:00', 'วันจันทร์', '1');
 
 -- --------------------------------------------------------
 
@@ -250,6 +296,42 @@ INSERT INTO `teachers` (`id`, `teac_id`, `name`, `teac_dep`, `user`, `password`)
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `test_tb`
+--
+
+CREATE TABLE `test_tb` (
+  `id` int(11) NOT NULL,
+  `full_id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `stu_id` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `sub_id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `section` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `quiz1` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `late1` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `miss1` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `quiz2` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `late2` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `miss2` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `quiz3` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `late3` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `miss3` varchar(3) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `time_temp`
+--
+
+CREATE TABLE `time_temp` (
+  `id` int(11) NOT NULL,
+  `start_time` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `fin_time` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `full_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -290,15 +372,21 @@ ALTER TABLE `attend_quiz`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `attend_subject`
+--
+ALTER TABLE `attend_subject`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `attend_tb`
 --
 ALTER TABLE `attend_tb`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `barcode_tb`
+-- Indexes for table `attend_temp`
 --
-ALTER TABLE `barcode_tb`
+ALTER TABLE `attend_temp`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -328,6 +416,18 @@ ALTER TABLE `teachers`
   ADD KEY `id` (`id`);
 
 --
+-- Indexes for table `test_tb`
+--
+ALTER TABLE `test_tb`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `time_temp`
+--
+ALTER TABLE `time_temp`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -341,42 +441,57 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `attend_late`
 --
 ALTER TABLE `attend_late`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 --
 -- AUTO_INCREMENT for table `attend_miss`
 --
 ALTER TABLE `attend_miss`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT for table `attend_quiz`
 --
 ALTER TABLE `attend_quiz`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
+-- AUTO_INCREMENT for table `attend_subject`
+--
+ALTER TABLE `attend_subject`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
 -- AUTO_INCREMENT for table `attend_tb`
 --
 ALTER TABLE `attend_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=742;
 --
--- AUTO_INCREMENT for table `barcode_tb`
+-- AUTO_INCREMENT for table `attend_temp`
 --
-ALTER TABLE `barcode_tb`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+ALTER TABLE `attend_temp`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `new_sub`
 --
 ALTER TABLE `new_sub`
-  MODIFY `new_sub_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `new_sub_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=567;
 --
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `test_tb`
+--
+ALTER TABLE `test_tb`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `time_temp`
+--
+ALTER TABLE `time_temp`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `user`
 --

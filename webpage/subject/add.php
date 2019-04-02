@@ -15,13 +15,13 @@ ob_start();
     <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
     <link href="../../css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>STUDENT IDENTITY SYSTEM</title>
+	<title>ระบบเช็คชื่อนักศึกษา - เพิ่มนักศึกษา (EXCEL)</title>
     <link rel="stylesheet" type="text/css" href="../../style.css"/>
     </head>
 </head>
 <body>
 <div id="wrapper">
-    <h1>STUDENT IDENTITY SYSTEM</h1>
+    <h1>ระบบเช็คชื่อนักศึกษา</h1>
     <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 <div class="container-fluid">
@@ -37,13 +37,16 @@ ob_start();
     <a class="nav-link" href="subjects.php">วิชา</a>
   </li>
   <li class="nav-item">
+    <a class="nav-link" href="../history/history.php">ประวัติการสอน</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link active" >เพิ่มนักศึกษา</a>
   </li>
   </ul>
 <?
     $id = $_GET["id"];
     $section = $_GET['section'];
-	$strSQL = "SELECT subjects.id , subjects.sub_id , sub_manage.subject_name , subjects.section
+	$strSQL = "SELECT subjects.id , subjects.full_id , subjects.sub_id , sub_manage.subject_name , subjects.section
   FROM subjects 
   INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID
   WHERE subjects.id ='$id' AND subjects.section = '$section'";
@@ -76,30 +79,14 @@ ob_start();
       <tr>
         <td >เพิ่มนักศึกษา</td>
         <td>&nbsp;</td>
-        <td>    
+        <td> 
   <div class="custom-file">
     <input type="file" name="file" class="custom-file-input" id="file" accept=".xls,.xlsx">  
     <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
   </div>
 </td>
       </tr>
-      <!--tr>
-        <td>สาขา</td>
-        <td>&nbsp;</td>
-        <td><select name="selected" id="selected" class="form-control">
-			<option value="">Please Select Item </option>
-			<?
-			$strSQL1 = "SELECT * FROM barcode_tb ORDER BY id ASC";
-			$objQuery = mysql_query($strSQL1);
-			while($objResuut = mysql_fetch_array($objQuery))
-			{
-			?>
-			<option value="<?=$objResuut["stu_id"];?>"><?=$objResuut["stu_id"]?> - <?=$objResuut["stu_name"]?></option>
-			<?
-			}
-			?>
-		  </select></td>
-      </tr-->
+  
       
   <tr>
         <td></td>
@@ -113,6 +100,11 @@ ob_start();
         <td>&nbsp;</td>
         <td><button onclick="Bsubmit(this.form)" class="btn btn-light-blue" value="<?=$id?>">Save</button></td>
       </tr-->
+      <tr>
+        <td ></td>
+        <td>&nbsp;</td>
+        <td><input name="txtfull" type="text" id="txtfull" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" /></td>
+      </tr>
       <tr>
         <td></td>
         <td>&nbsp;</td>

@@ -18,13 +18,13 @@ ob_start();
     <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
     <link href="../../css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>STUDENT IDENTITY SYSTEM</title>
+	<title>ระบบเช็คชื่อนักศึกษา - นักศึกษา</title>
     <link rel="stylesheet" type="text/css" href="../../style.css"/>
   
     </head>
 <body>
 <div id="wrapper">
-    <h1>STUDENT IDENTITY SYSTEM</h1>
+    <h1>ระบบเช็คชื่อนักศึกษา</h1>
     <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 
@@ -54,6 +54,9 @@ ob_start();
     <a class="nav-link " href="subjects.php">วิชา</a>
   </li>
   <li class="nav-item">
+    <a class="nav-link " href="../history/history.php">ประวัติการสอน</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link active" >รายชื่อนักศึกษาในรายวิชา</a>
   </li>
 </ul>
@@ -64,7 +67,7 @@ ob_start();
     $strSQL = "SELECT  new_sub.sub_id , sub_manage.subject_name , new_sub.stu_id  , new_sub.stu_name    
     FROM new_sub 
     INNER JOIN sub_manage ON new_sub.sub_id = sub_manage.subject_ID 
-    WHERE new_sub.sub_id LIKE '$sub_id' AND new_sub.section = '$sec'";
+    WHERE new_sub.sub_id LIKE '$sub_id' AND new_sub.section = '$sec' AND (new_sub.stu_id  LIKE '%".$_POST["textfield"]."%' OR new_sub.stu_name  LIKE '%".$_POST["textfield"]."%')  ";
 
     /*$strSQL = "SELECT  *  
     FROM new_sub ";*/

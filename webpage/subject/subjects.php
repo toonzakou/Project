@@ -99,13 +99,13 @@ ob_start();
     <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
     <link href="../../css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>STUDENT IDENTITY SYSTEM</title>
+	<title>ระบบเช็คชื่อนักศึกษา - วิชา</title>
     <link rel="stylesheet" type="text/css" href="../../style.css"/>
   
     </head>
 <body>
-<div id="wrapper">
-    <h1>STUDENT IDENTITY SYSTEM</h1>
+<div id="wrapper" >
+    <h1>ระบบเช็คชื่อนักศึกษา</h1>
     <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 
@@ -134,16 +134,19 @@ ob_start();
   <li class="nav-item">
     <a class="nav-link active" href="subjects.php">วิชา</a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link " href="../history/history.php">ประวัติการสอน</a>
+  </li>
 </ul>
   
 <?
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id 
+    $strSQL = "SELECT subjects.id , subjects.full_id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id 
     FROM subjects 
     INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
     INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID 
-    WHERE teachers.name LIKE '$name'";
+    WHERE teachers.name LIKE '$name' AND (subjects.full_id LIKE '%".$_POST["textfield"]."%' OR sub_manage.subject_name LIKE '%".$_POST["textfield"]."%') ";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
 
@@ -179,8 +182,8 @@ ob_start();
 <br>
 <form name="form1" method="post" action="" id="menu">
 <div class="form-inline md-form mr-auto mb-4 float-right">
-  <input name="textfield" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-  <button class="btn btn-elegant btn-rounded btn-sm my-0" type="submit">Search</button>
+  <input name="textfield" class="form-control mr-sm-2" type="text" autocomplete=off  placeholder="ค้นหา" aria-label="Search">
+  <button class="btn btn-elegant btn-rounded btn-sm my-0" type="submit">ค้นหา</button>
   </div>
 <div >
 <nav class=" navbar-expand-lg ">
@@ -192,7 +195,7 @@ ob_start();
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="test_insert.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="insert_subject.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
       </li>
     </ul>
   </div>
@@ -232,11 +235,11 @@ ob_start();
             <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["date"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="insert_stu.php?id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/excel.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="insert_stu.php?full_id=<?=$objResult["full_id"];?>&id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?full_id=<?=$objResult["full_id"];?>&id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/excel.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="subject_detail.php?sub_id=<?=$objResult["sub_id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/padnote.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>&full_id=<?=$objResult["full_id"];?>"onclick="return confirm('คุณกำลังจะลบข้อมูล?')"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>
         </tr>
     </tbody>
     
@@ -252,7 +255,7 @@ ob_start();
   </table>
 </div>
 <br>
-Total <?php echo $Num_Rows;?> Record 
+วิชาทั้งหมด <?php echo $Num_Rows;?> วิชา 
 
 <?php
 

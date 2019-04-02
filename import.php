@@ -4,6 +4,7 @@ require_once('vendor/php-excel-reader/excel_reader2.php');
 require_once('vendor/SpreadsheetReader.php');
 $sub_id = $_POST['txtid'];  
 $sec = $_POST['txtsec'];  
+$full = $_POST['txtfull'];
 if (isset($_POST["import"]))
 {
     
@@ -36,13 +37,14 @@ if (isset($_POST["import"]))
                 }
                 
                 if (!empty($stu_id) ) {
-                    $query = "insert into new_sub(stu_id,sub_id,stu_name,section) values('".$stu_id."','".$sub_id."','".$name."','".$sec."')";
+                    $query = "insert into new_sub(stu_id,sub_id,stu_name,section,full_id) values('".$stu_id."','".$sub_id."','".$name."','".$sec."','".$full."')";
                     $result = mysqli_query($conn, $query);
                 
                     if (! empty($result)) {
                         $type = "success";
                         /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
                         echo "<script language='javascript'>alert('Excel Data Imported into the Database');</script>";*/
+                        
                         echo "<meta http-equiv='refresh' content='0;URL=webpage/subject/subjects.php'>";
                     } else {
                         $type = "error";
@@ -63,6 +65,7 @@ if (isset($_POST["import"]))
         echo "<meta http-equiv='refresh' content='0;URL=webpage/user/user.php'>";
   }
 }
+unlink($targetPath);
 ?>
 
 <!DOCTYPE html>
