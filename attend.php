@@ -323,7 +323,7 @@ function CheckCheckboxes1(chk){
       txt_fin.readOnly = false;
       txt_start.value  ="";
       txt_fin.value  = "";
-      txtfull.valu = "1"
+      txtfull.valu = "1";
     }
     else
     {

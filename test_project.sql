@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 01, 2019 at 06:34 AM
+-- Generation Time: Apr 02, 2019 at 03:23 AM
 -- Server version: 5.7.17-log
 -- PHP Version: 5.6.30
 
@@ -37,6 +37,14 @@ CREATE TABLE `attend_late` (
   `time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `attend_late`
+--
+
+INSERT INTO `attend_late` (`id`, `full_id`, `num`, `sub_id`, `stu_id`, `late`, `section`, `time`) VALUES
+(133, '25621ITS2211', '1', 'ITS221', '601113836', '1', '1', '22:45:00'),
+(134, '25621ITS2211', '1', 'ITS221', '601114167', '1', '1', '22:45:00');
+
 -- --------------------------------------------------------
 
 --
@@ -53,6 +61,16 @@ CREATE TABLE `attend_miss` (
   `section` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `attend_miss`
+--
+
+INSERT INTO `attend_miss` (`id`, `full_id`, `num`, `sub_id`, `stu_id`, `miss`, `section`, `time`) VALUES
+(50, '25621ITS2211', '1', 'ITS221', '601114696', '1', '1', '22:45:34'),
+(51, '25621ITS2211', '1', 'ITS221', '601114701', '1', '1', '22:45:34'),
+(52, '25621ITS2211', '1', 'ITS221', '601114808', '1', '1', '22:45:35'),
+(53, '25621ITS2211', '1', 'ITS221', '601115202', '1', '1', '22:45:35');
 
 -- --------------------------------------------------------
 
@@ -85,6 +103,7 @@ CREATE TABLE `attend_subject` (
   `num` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
   `room` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `total` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `come` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
   `quiz` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `late` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
   `miss` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
@@ -93,6 +112,13 @@ CREATE TABLE `attend_subject` (
   `late_t` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` varchar(15) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `attend_subject`
+--
+
+INSERT INTO `attend_subject` (`id`, `full_id`, `sub_id`, `section`, `num`, `room`, `total`, `come`, `quiz`, `late`, `miss`, `start_t`, `fin_t`, `late_t`, `date`) VALUES
+(12, '25621ITS2211', 'ITS221', '1', '1', '2309', '6', '2', '0', '2', '4', '09:00', '12:00', '09:15', '1 เม.ย. 2562');
 
 -- --------------------------------------------------------
 
@@ -114,6 +140,18 @@ CREATE TABLE `attend_tb` (
   `time` time NOT NULL,
   `date` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `attend_tb`
+--
+
+INSERT INTO `attend_tb` (`id`, `full_id`, `num`, `new_full_id`, `stu_id`, `sub_id`, `section`, `quiz`, `late`, `miss`, `time`, `date`) VALUES
+(736, '25621ITS2211', '1', '25621ITS22111', '601113836', 'ITS221', '1', '0', '1', 0, '22:45:00', 'รถติด'),
+(737, '25621ITS2211', '1', '25621ITS22111', '601114167', 'ITS221', '1', '0', '1', 0, '22:45:00', 'ตื่นสาย'),
+(738, '25621ITS2211', '1', '25621ITS22111', '601114696', 'ITS221', '1', '0', '0', 1, '22:45:34', 'ขาดเรียน'),
+(739, '25621ITS2211', '1', '25621ITS22111', '601114701', 'ITS221', '1', '0', '0', 1, '22:45:34', 'ขาดเรียน'),
+(740, '25621ITS2211', '1', '25621ITS22111', '601114808', 'ITS221', '1', '0', '0', 1, '22:45:35', 'ขาดเรียน'),
+(741, '25621ITS2211', '1', '25621ITS22111', '601115202', 'ITS221', '1', '0', '0', 1, '22:45:35', 'ขาดเรียน');
 
 -- --------------------------------------------------------
 
@@ -403,12 +441,12 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `attend_late`
 --
 ALTER TABLE `attend_late`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 --
 -- AUTO_INCREMENT for table `attend_miss`
 --
 ALTER TABLE `attend_miss`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT for table `attend_quiz`
 --
@@ -418,12 +456,12 @@ ALTER TABLE `attend_quiz`
 -- AUTO_INCREMENT for table `attend_subject`
 --
 ALTER TABLE `attend_subject`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `attend_tb`
 --
 ALTER TABLE `attend_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=736;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=742;
 --
 -- AUTO_INCREMENT for table `attend_temp`
 --
@@ -453,7 +491,7 @@ ALTER TABLE `test_tb`
 -- AUTO_INCREMENT for table `time_temp`
 --
 ALTER TABLE `time_temp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `user`
 --

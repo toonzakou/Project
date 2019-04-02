@@ -91,8 +91,10 @@ ob_start();
     , attend_subject.miss
     FROM sub_manage 
     INNER JOIN attend_subject ON sub_manage.subject_ID = attend_subject.sub_id
-    WHERE attend_subject.full_id = '$full' AND attend_subject.num = '$num'";
+    WHERE attend_subject.full_id = '$full'";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
+
+    
 ?>
 <br>
 
@@ -114,18 +116,7 @@ ob_start();
 
     
 
-        $start = $objResult["start_t"];
-        $fin = $objResult["fin_t"];
-        $late_t = $objResult['late_t'];
-        $start_t = strtotime($start);
-        $fin_t = strtotime($fin);
-
-        $total = $objResult['total'];
-        $quiz = $objResult['quiz'];
-        $come = $objResult['come'];
-        $late = $objResult['late'];
-        $miss = $objResult['miss'];
-
+       
         
        
         
@@ -134,8 +125,18 @@ ob_start();
 
     
 <nav class=" navbar-expand-lg ">
-  <a class="navbar-brand"><h1>การสอนรายวิชา  <?echo $num?> กลุ่มที่ <?=$objResult["section"];?> วันที่ <?=$objResult["date"];?></h1></a>
-  
+<?
+$num = $_GET['num'];
+if($num == 0){
+?>
+  <a class="navbar-brand"><h1>การสอนรายวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?> </h1></a>
+<?
+} else {
+?>
+  <a class="navbar-brand"><h1>การสอนรายวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?> ครั้งที่  <?echo $num?> วันที่  <?=$objResult["date"];?>    </h1></a>
+<?
+}
+?>  
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
     aria-expanded="false" aria-label="Toggle navigation">
@@ -145,6 +146,33 @@ ob_start();
       </div>
     
 <?
+
+$full_id = $_GET['full_id'];
+
+$strSQL1 = "SELECT sub_manage.subject_ID , attend_subject.full_id , sub_manage.subject_name , attend_subject.start_t , attend_subject.fin_t 
+, attend_subject.section  , attend_subject.num , attend_subject.date , attend_subject.late_t , attend_subject.room , attend_subject.total , attend_subject.quiz , attend_subject.come , attend_subject.late
+, attend_subject.miss
+FROM sub_manage 
+INNER JOIN attend_subject ON sub_manage.subject_ID = attend_subject.sub_id
+WHERE attend_subject.full_id = '$full_id' AND attend_subject.num = '$num'";
+$objQuery1 = mysql_query($strSQL1) or die ("Error Query[".$strSQL1."]");
+
+$objResult1 = mysql_fetch_array($objQuery1);
+
+
+ $start = $objResult1["start_t"];
+        $fin = $objResult1["fin_t"];
+        $late_t = $objResult1['late_t'];
+        $start_t = strtotime($start);
+        $fin_t = strtotime($fin);
+
+        $total = $objResult1['total'];
+        $quiz = $objResult1['quiz'];
+        $come = $objResult1['come'];
+        $late = $objResult1['late'];
+        $miss = $objResult1['miss'];
+
+
   
 ?>   
 
@@ -167,10 +195,9 @@ function fncSubmit()
 }
 
 
-      function Redirect()
+      function Redirect(select)
       { 
       window.location = 'history_select.php?full_id='+document.form1.txt_full.value+'&num='+document.form1.selected.value;
-
       }
      
 
@@ -184,7 +211,7 @@ function fncSubmit()
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ครั้งที่สอน</label>
-    <select name="selected" class="form-control" id="sel1" onchange = 'Redirect()'>
+    <select name="selected" class="form-control" id="sel1" onchange = 'Redirect(this)'>
                           <option value = "">ครั้งที่</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
@@ -208,8 +235,8 @@ function fncSubmit()
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ห้องเรียน</label>
-    <input type="text" name = "txtroom" id="txtroom" autocomplete=off  class="form-control" value = "<?=$objResult["room"];?>">
-    <input name="txt_full" type="text" id="txt_full" class="form-control" style="display: none" value="<?$full?>" />
+    <input type="text" name = "txtroom" id="txtroom" autocomplete=off  class="form-control" value = "<?=$objResult1["room"];?>">
+    <input name="txt_full" type="text" id="txt_full" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" />
 </div>
 </div>
 <!--Grid row--> 
@@ -316,7 +343,17 @@ function check_miss()
 </script>
 
   <br>
+<?
 
+$strSQL2 = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num , attend_tb.quiz , attend_tb.late , attend_tb.miss , attend_tb.section , attend_tb.time , new_sub.stu_name , attend_tb.date 
+FROM attend_tb 
+INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
+
+WHERE attend_tb.full_id = '$full_id' AND attend_tb.num ='$num'";
+$objQuery2 = mysql_query($strSQL2) or die ("Error Query[".$strSQL2."]");
+$Num_Rows = mysql_num_rows($objQuery2);
+
+?>
 <div class="table-responsive" width="955" height="200" >
         <table class="table" width="955" height="200" border="0">     
     <thead>
@@ -328,6 +365,8 @@ function check_miss()
         <th bgcolor="#CCCCCC" scope="col">Quiz 15 min</th>
         <th bgcolor="#CCCCCC" scope="col">รวมมาสายสะสม</th>
         <th bgcolor="#CCCCCC" scope="col">รวมขาดสะสม</th>
+        <th bgcolor="#CCCCCC" scope="col">หมายเหตุ</th>
+        
       
       </tr>
     </thead>
@@ -342,18 +381,19 @@ function check_miss()
 <?
 }else{
 $a=1;
-while($objResult1 = mysql_fetch_array($objQuery1))
+while($objResult2 = mysql_fetch_array($objQuery2))
 {
 	?>
          <tbody>
       <tr>
             <td bgcolor="#FFCC66"><?echo $a;?></td>
-            <td bgcolor="#FFCC66"> <?=$objResult1["stu_id"];?></td>
-            <td bgcolor="#FFCC66"> <?=$objResult1["stu_name"];?></td>
-            <td bgcolor="#FFCC66"> <?=$objResult1["time"];?></td>
-            <td bgcolor="#FFCC66"> <?=$objResult1["quiz"];?></td>
-            <td bgcolor="#FFCC66"> <?=$objResult1["late"];?></td>
-            <td bgcolor="#FFCC66"> <?=$objResult1["miss"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult2["stu_id"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult2["stu_name"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult2["time"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult2["quiz"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult2["late"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult2["miss"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult2["date"];?></td>
            </tr>
     </tbody>
           <?
@@ -368,11 +408,8 @@ $a++;}
       </tr>
     </thead>
   </table>
-  <div class="md-form mb-0 float-right">
-    <button name = "save_button" type="submit" value="Submit" onclick="return check_save();" class="btn btn-elegant">บันทึก</button>
-    </div>
     <div class="md-form mb-0 float-right">
-    <button name = "miss_button" type="submit" value="Submit" onclick="return check_miss();" class="btn btn-elegant">เพิ่มคนขาด</button>
+    <button name = "miss_button" type="submit" value="Submit" onclick="return check_miss();" class="btn btn-elegant">ปริ้นรายงาน</button>
     </div>
 
 </div>
