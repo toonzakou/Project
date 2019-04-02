@@ -47,14 +47,9 @@ ob_start();
 
   
 
-if ($_SESSION['time_cout'] ==0){
+   if ($_SESSION['time_cout'] ==0){
 
-    $start = $_POST['txt_start'];
-    $fin = $_POST['txt_fin'];
-  
-    $strSQL = "INSERT INTO time_temp set full_id='$full' , start_time ='$start' , fin_time='$fin' ";
-  
-    $objQuery = mysql_query($strSQL);
+   
   
     if(empty($_POST["makeup_check"]) ) {
   
@@ -73,10 +68,19 @@ if ($_SESSION['time_cout'] ==0){
       $_SESSION['late'] = $late_time;
       $_SESSION['start'] = $start_t;
       $_SESSION['fin'] = $fin_t;
-     /* echo date('H:i',$_SESSION['start'])."-".date('H:i',$_SESSION['fin']);*/
+
+      echo 'ไม่ติ๊กถูก';
+      echo date('H:i',$_SESSION['start'])."-".date('H:i',$_SESSION['fin'])."-".date('H:i',$_SESSION['late']);
       
       
         }else { 
+
+          $start = $_POST['txt_start'];
+          $fin = $_POST['txt_fin'];
+        
+          $strSQL = "INSERT INTO time_temp set full_id='$full' , start_time ='$start' , fin_time='$fin' ";
+        
+          $objQuery = mysql_query($strSQL);
       
         
           $strSQL = "SELECT * 
@@ -93,25 +97,34 @@ if ($_SESSION['time_cout'] ==0){
             $_SESSION['fin'] = $fin_t;
             $_SESSION['late'] = $late_time;
             $_SESSION['time_cout'] = 1;
-            /*echo date('H:i',$_SESSION['start'])."-".date('H:i',$_SESSION['fin']);*/
+
+            echo 'ติ๊กถูก';
+            echo date('H:i',$_SESSION['start'])."-".date('H:i',$_SESSION['fin'])."-".date('H:i',$_SESSION['late']);
       
         }
-        $strSQL = "DELETE FROM time_temp ";
-  
-        $objQuery = mysql_query($strSQL);
+        /**/
   
     
   } else {
-
-    
-    $start = $_SESSION['start'];
-    $fin =  $_SESSION['fin'];
-    $late_time = $_SESSION['late'];
-    
+   
+    $strSQL = "SELECT * 
+    FROM time_temp 
+    WHERE full_id = '$full'";
+    $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
+    $objResult = mysql_fetch_array($objQuery);
+    $start = $objResult["start_time"];
+    $fin = $objResult["fin_time"];
+      $start_t = strtotime($start);
+      $fin_t = strtotime($fin);
+      $late_time = strtotime($start) + 900;
+      $_SESSION['start'] = $start_t;
+      $_SESSION['fin'] = $fin_t;
+      $_SESSION['late'] = $late_time;
   
-    /*echo 'ติ๊กถูกมาก';
   
-    echo date('H:i',$start)."-".date('H:i',$fin)." ".date('H:i',$late_time);*/
+    echo 'ติ๊กถูกมาก';
+  
+    echo date('H:i',$start_t)."-".date('H:i',$fin_t)." ".date('H:i',$late_time);
     
     
   
@@ -158,8 +171,11 @@ if($Num_Rows==0){
 
         $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = '-' ";
 
+        $strSQL5 = "INSERT INTO attend_temp set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz_t' , late = '$late' , miss ='$miss' , time = '$time' , date = '-' ";
+
         $objQuery1 = mysql_query($strSQL1);
         $objQuery4 = mysql_query($strSQL4);
+        $objQuery5 = mysql_query($strSQL5);
         
         if($objQuery1 ||  $objQuery4) 
         {
@@ -193,10 +209,14 @@ if($Num_Rows==0){
 
         $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = '$remark' ";
 
+        $strSQL5 = "INSERT INTO attend_temp set  num = '$num' , full_id = '$full' , new_full_id = '$newfull' , stu_id = '$stu' , sub_id = '$id', section ='$sec' , quiz = '$quiz_t' , late = '$late' , miss ='$miss' , time = '$time' , date = '$remark' ";
+
        
         $objQuery2 = mysql_query($strSQL2);
        
         $objQuery4 = mysql_query($strSQL4);
+
+        $objQuery5 = mysql_query($strSQL5);
         
         if($objQuery2 ||  $objQuery4) 
         {

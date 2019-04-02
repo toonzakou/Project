@@ -9,6 +9,7 @@ ob_start();
    $num = $_SESSION['no'];
    $room = $_SESSION['room'];
    $total = $_SESSION['total'];
+   $come = $_SESSION['come'];
    $quiz = $_SESSION['quiz'];
    $late = $_SESSION['late'];
    $miss = $_SESSION['miss'];
@@ -20,16 +21,21 @@ ob_start();
 
 
 // เพิ่มลงฐานข้อมูล
+
+
+
 $strSQL = "INSERT INTO attend_subject 
 set   
 section = '$sec', sub_id = '$sub_id', full_id = '$full_id' , room = '$room', num = '$num' 
-, total = '$total' , quiz = '$quiz' , late = '$late' , miss = '$miss' , start_t = '$start_t' 
+, total = '$total' , come = '$come' , quiz = '$quiz' , late = '$late' , miss = '$miss' , start_t = '$start_t' 
 , fin_t = '$fin_t' , late_t = '$late_t' , date = '$date'  ";
 
 $objQuery = mysql_query($strSQL);
 
 if($objQuery)
 {
+   $strSQL = "DELETE FROM time_temp ";
+   $objQuery = mysql_query($strSQL);
    echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
    echo "<script language='javascript'>alert('บันทึกเสร็จสิ้น กดปุ่มเพื่อกลับสู่หน้าหลัก');</script>";
 				echo"<script> window.location ='homepage2.php'</script>";

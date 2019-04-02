@@ -95,11 +95,11 @@ $a=1;
 
 if ($num==1){
 
-  $strSQL =" SELECT   new_sub.stu_id , new_sub.stu_name , new_sub.full_id , new_sub.section ,  new_sub.sub_id
+  $strSQL =" SELECT  DISTINCT   new_sub.stu_id , new_sub.stu_name , new_sub.full_id , new_sub.section ,  new_sub.sub_id ,attend_temp.num , attend_temp.miss , attend_temp.late , attend_temp.quiz 
   FROM            new_sub
-  LEFT OUTER JOIN attend_tb ON new_sub.stu_id = attend_tb.stu_id
-  WHERE           attend_tb.stu_id IS NULL AND new_sub.full_id ='$full'";
-
+  LEFT OUTER JOIN attend_temp ON new_sub.stu_id = attend_temp.stu_id
+  WHERE           attend_temp.stu_id IS NULL AND new_sub.full_id ='$full'   ";
+  
   $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
   $Num_Rows = mysql_num_rows($objQuery);
 
@@ -111,12 +111,12 @@ $a=1;
   $sec = $objResult["section"];
   $stu_id = $objResult["stu_id"];
   $sub_id = $objResult["sub_id"];
-  /*echo $a." รหัสเต็ม ".$full_id." กลุ่ม ".$sec." รอบ ".$num." ".$stu_id." ".$sub_id." ".'<br>';*/
+  echo $a." รหัสเต็ม ".$full_id." กลุ่ม ".$sec." รอบ ".$num." ".$stu_id." ".$sub_id." ".'<br>';
 
      $quiz = 0;
       $late = 0;
       $miss = 1;
-      $time = date('H:i:s');
+      $time = date('H:i');
       $strSQL1 = "INSERT INTO attend_miss set  num = '$num', full_id = '$full_id' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , miss ='$miss' , time = '$time'  ";
 
       $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full_id' , new_full_id = '$newfull' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = 'ขาดเรียน' ";
@@ -127,9 +127,8 @@ $a=1;
     $i=$a; 
     if($i = $a) 
       {
-        /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-        echo "<script language='javascript'>alert('Success');</script>";*/
- 
+        $strSQL5 = "DELETE FROM attend_temp";
+        $objQuery5 = mysql_query($strSQL5);
               echo"<script> window.location ='attend.php?sub_id=$sub_id&section=$sec&full_id=$full_id'</script>";
       }
       else

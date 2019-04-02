@@ -6,7 +6,8 @@ include "../db_config.php";
 //default margin : 10mm each side
 //writable horizontal : 219-(10*2)=189mm
 
-
+$full = $_GET['txt_full'];
+$num = $_GET['selected'];
 
 class PDF extends FPDF
 {
@@ -20,7 +21,8 @@ function Header()
      FROM attend_subject
      INNER JOIN sub_manage ON attend_subject.sub_id = sub_manage.subject_ID
      INNER JOIN subjects ON attend_subject.sub_id = subjects.sub_id
-     INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id ";
+     INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
+     WHERE attend_subject.full_id = '$full' AND attend_subject.num = '$num' ";
      /*$strSQL = "SELECT *
      FROM attend_tb";*/
        $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
@@ -74,7 +76,8 @@ function Footer()
 {
 
     $strSQL = "SELECT DISTINCT *
-     FROM attend_subject";
+     FROM attend_subject
+     WHERE full_id = '$full' AND num = '$num'";
      /*$strSQL = "SELECT *
      FROM attend_tb";*/
        $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
@@ -179,6 +182,7 @@ function Footer()
      FROM attend_tb
      INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
      INNER JOIN sub_manage ON attend_tb.sub_id = sub_manage.subject_ID 
+     WHERE attend_tb.full_id = '$full' AND attend_tb.num = '$num'
      ORDER BY attend_tb.time ASC";
      /*$strSQL = "SELECT *
      FROM attend_tb";*/

@@ -148,7 +148,7 @@ ob_start();
 <?
 	$name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.year , subjects.term , subjects.full_id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date
+    $strSQL = "SELECT subjects.id , subjects.year , subjects.term , subjects.full_id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date_t
     , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id , subjects.section
     FROM subjects 
     INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
@@ -235,7 +235,7 @@ ob_start();
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["section"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["date"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["date_t"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
             <td bgcolor="#FFCC66">&nbsp;<a href="attend.php?sub_id=<?echo $_SESSION['sub']?>&section=<?echo $_SESSION["sec"];?>&full_id=<?=$objResult["full_id"];?>"><img src="images/button/monitor.png" width="33" height="33"></a></td>
       </tr>
@@ -253,7 +253,7 @@ ob_start();
   </table>
 </div>
 <br>
-Total <?php echo $Num_Rows;?> Record 
+วิชาทั้งหมด <?php echo $Num_Rows;?> วิชา 
 
 <?php
 
