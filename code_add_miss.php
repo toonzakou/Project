@@ -86,7 +86,11 @@ $a=1;
       else
       {
         echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
+<<<<<<< HEAD
               echo "<script language='javascript'>alert('ผิดพลาด');</script>";
+=======
+              echo "<script language='javascript'>alert('โง่');</script>";
+>>>>>>> ab35a3d40a457f688f1728cd1881a1e1bd08e2ef
         
       }  */
 ?>
@@ -134,7 +138,11 @@ $a=1;
       else
       {
         echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
+<<<<<<< HEAD
               echo "<script language='javascript'>alert('ผิดพลาด');</script>";
+=======
+              echo "<script language='javascript'>alert('โง่');</script>";
+>>>>>>> ab35a3d40a457f688f1728cd1881a1e1bd08e2ef
         
       }  
 
@@ -191,7 +199,11 @@ if ($late <> 0){
     else
     {
       echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
+<<<<<<< HEAD
             echo "<script language='javascript'>alert('ผิดพลาด');</script>";
+=======
+            echo "<script language='javascript'>alert('โง่');</script>";
+>>>>>>> ab35a3d40a457f688f1728cd1881a1e1bd08e2ef
       
     }
 

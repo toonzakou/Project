@@ -220,6 +220,7 @@ ob_start();
       </tr>
     </thead>
     
+<<<<<<< HEAD
     <? 
     if($Num_Rows==0){
 ?>
@@ -232,6 +233,13 @@ ob_start();
       $a=1;
 		  while($objResult = mysql_fetch_array($objQuery)){
 ?>
+=======
+    <?php
+		  $a=1;
+		  while($objResult = mysql_fetch_array($objQuery)){
+		?>
+    
+>>>>>>> ab35a3d40a457f688f1728cd1881a1e1bd08e2ef
     <tbody>
     <input name="txt_full" type="text" id="txt_full" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" />
       <tr>
@@ -257,7 +265,10 @@ ob_start();
     
     <?php
       $a++;}
+<<<<<<< HEAD
       }
+=======
+>>>>>>> ab35a3d40a457f688f1728cd1881a1e1bd08e2ef
     ?>
     
     <thead>
