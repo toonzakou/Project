@@ -329,7 +329,7 @@ function check_miss()
               var r = confirm("ยืนยันการบันทึก\nโปรดตรวจสอบข้อมูลให้ถูกต้อง")
               if (r == true) {
                 
-                  document.form1.action = "save_attend.php"
+                  document.form1.action = "../../fpdf/report.php"
                   document.form1.submit();
                 
                 return true;
@@ -349,7 +349,8 @@ $strSQL2 = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num 
 FROM attend_tb 
 INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
 
-WHERE attend_tb.full_id = '$full_id' AND attend_tb.num ='$num'";
+WHERE attend_tb.full_id = '$full_id' AND attend_tb.num ='$num'
+ORDER BY attend_tb.time ASC";
 $objQuery2 = mysql_query($strSQL2) or die ("Error Query[".$strSQL2."]");
 $Num_Rows = mysql_num_rows($objQuery2);
 
@@ -409,7 +410,7 @@ $a++;}
     </thead>
   </table>
     <div class="md-form mb-0 float-right">
-    <button name = "miss_button" type="submit" value="Submit" onclick="return check_miss();" class="btn btn-elegant">ปริ้นรายงาน</button>
+    <button name = "miss_button" type="submit" value="Submit" onclick="return check_save();" class="btn btn-elegant">ปริ้นรายงาน</button>
     </div>
 
 </div>

@@ -14,7 +14,7 @@ $teac_id = $_SESSION["teac_id"];
 $primary = $year.$term.$sub_id.$sec;
 
 // เพิ่มลงฐานข้อมูล
-$strSQL = "INSERT INTO subjects set  year = '$year' , term = '$term' , section = '$sec', sub_id = '$sub_id' , full_id = '$primary', teacher_id ='$teac_id' , star_time ='$start' , fin_time='$fin' , date='$date'";
+$strSQL = "INSERT INTO subjects set  year = '$year' , term = '$term' , section = '$sec', sub_id = '$sub_id' , full_id = '$primary', teacher_id ='$teac_id' , star_time ='$start' , fin_time='$fin' , date_t='$date'";
 
 $objQuery = mysql_query($strSQL);
 
@@ -28,7 +28,8 @@ else
 {
 	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
 				echo "<script language='javascript'>alert('ผิดพลาด');</script>";
-	
+				echo"<script> window.location ='insert_subject.php'</script>";
+			
 }
 
 ?>

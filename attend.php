@@ -61,19 +61,19 @@ ob_start();
   
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link " href="homepage2.php">หน้าหลัก</a>
+    <a class="nav-link " onclick="check_back()" href="#">หน้าหลัก</a>
   </li>
   <!--li class="nav-item">
     <a class="nav-link" href="webpage/user/user.php">รายชื่อ</a>
   </li-->
   <li class="nav-item">
-    <a class="nav-link " href="webpage/subject/subjects.php">วิชา</a>
+    <a class="nav-link " onclick="check_back1()" href="#">วิชา</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link  " href="webpage/history/history.php">ประวัติการสอน</a>
+    <a class="nav-link  " onclick="check_back2()" href="#">ประวัติการสอน</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active  " href="">เช็คชื่อ</a>
+    <a class="nav-link active  "  href="">เช็คชื่อ</a>
   </li>
 </ul>
   
@@ -86,7 +86,7 @@ ob_start();
     $teacher = $_SESSION["id"];
     $full = $_GET['full_id'];
     $newfull = $_SESSION['new_full'];
-    $strSQL = "SELECT sub_manage.subject_ID , subjects.full_id , sub_manage.subject_name , subjects.star_time , subjects.fin_time , subjects.section , subjects.date 
+    $strSQL = "SELECT sub_manage.subject_ID , subjects.full_id , sub_manage.subject_name , subjects.star_time , subjects.fin_time , subjects.section , subjects.date_t 
     FROM sub_manage 
     INNER JOIN subjects ON sub_manage.subject_ID = subjects.sub_id
     WHERE subjects.full_id = '$full'";
@@ -169,7 +169,8 @@ if($_SESSION['time_cout']==0) {
     FROM attend_tb 
     INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
  
-    WHERE attend_tb.full_id = '$full' AND attend_tb.num ='$num'";
+    WHERE attend_tb.full_id = '$full' AND attend_tb.num ='$num'
+    ORDER BY attend_tb.time ASC";
 
       $objQuery1 = mysql_query($strSQL1) or die ("Error Query[".$strSQL1."]");
     
@@ -375,7 +376,41 @@ function check_attend()
                 return true;
 
               }
-                
+
+  function check_back()
+            {
+              var r = confirm("คุณกำลังออกจากหน้านี้โดยไม่บันทึก\nต้องการดำเนินการต่อหรือไม่")
+              if (r == true) {
+                window.location = 'homepage2.php';
+              } else {
+                return false;
+              }
+            }  
+
+        
+            
+  function check_back1()
+            {
+              var r = confirm("คุณกำลังออกจากหน้านี้โดยไม่บันทึก\nต้องการดำเนินการต่อหรือไม่")
+              if (r == true) {
+                window.location = 'webpage/subject/subjects.php';
+              } else {
+                return false;
+              }
+            }  
+
+            function check_back2()
+            {
+              var r = confirm("คุณกำลังออกจากหน้านี้โดยไม่บันทึก\nต้องการดำเนินการต่อหรือไม่")
+              if (r == true) {
+                window.location = 'webpage/history/history.php';
+              } else {
+                return false;
+              }
+            
+            }  
+
+
           
 
 function check_miss()

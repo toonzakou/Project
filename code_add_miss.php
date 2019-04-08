@@ -86,7 +86,7 @@ $a=1;
       else
       {
         echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-              echo "<script language='javascript'>alert('โง่');</script>";
+              echo "<script language='javascript'>alert('ผิดพลาด');</script>";
         
       }  */
 ?>
@@ -134,7 +134,7 @@ $a=1;
       else
       {
         echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-              echo "<script language='javascript'>alert('โง่');</script>";
+              echo "<script language='javascript'>alert('ผิดพลาด');</script>";
         
       }  
 
@@ -191,7 +191,7 @@ if ($late <> 0){
     else
     {
       echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-            echo "<script language='javascript'>alert('โง่');</script>";
+            echo "<script language='javascript'>alert('ผิดพลาด');</script>";
       
     }
 
