@@ -8,11 +8,12 @@ ob_start();
    $sub_id = $_POST['txtid'];
    $sec = $_POST['txtsec'];
    $full = $_POST['txtfull'];
+   $tel = $_POST['teltxt'];
    
 
 
 // เพิ่มลงฐานข้อมูล
-$strSQL = "INSERT INTO new_sub set full_id = '$full',   section = '$sec', sub_id = '$sub_id', stu_id = '$stu_id' , stu_name = '$stu_name'";
+$strSQL = "INSERT INTO new_sub set full_id = '$full',   section = '$sec', sub_id = '$sub_id', stu_id = '$stu_id' , stu_name = '$stu_name' , tel ='$tel";
 
 $objQuery = mysql_query($strSQL);
 

@@ -35,9 +35,14 @@ if (isset($_POST["import"]))
                 if(isset($Row[1])) {
                     $name = mysqli_real_escape_string($conn,$Row[1]);
                 }
+
+                $tel = "";
+                if(isset($Row[2])) {
+                    $tel = mysqli_real_escape_string($conn,$Row[2]);
+                }
                 
                 if (!empty($stu_id) ) {
-                    $query = "insert into new_sub(stu_id,sub_id,stu_name,section,full_id) values('".$stu_id."','".$sub_id."','".$name."','".$sec."','".$full."')";
+                    $query = "insert into new_sub(stu_id,sub_id,stu_name,section,full_id,tel) values('".$stu_id."','".$sub_id."','".$name."','".$sec."','".$full."','".$tel."')";
                     $result = mysqli_query($conn, $query);
                 
                     if (! empty($result)) {

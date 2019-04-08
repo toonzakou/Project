@@ -42,7 +42,7 @@ ob_start();
 <body>
 <div id="wrapper">
     <h1>ระบบเช็คชื่อนักศึกษา</h1>
-    <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
+    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;สู่ระบบ | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 
     <div class="container-fluid">
@@ -203,7 +203,7 @@ function fncSubmit()
 
 </script>
 
-<form name="form1" class="form-horizontal" method="post"  action="" id="menu" >
+<form name="form1" class="form-horizontal" method="POST"  action="../../fpdf/report.php?full_id=<?=$objResult["full_id"];?>&num=<?=$objResult["num"];?>" id="menu" >
 
   <!--Grid row-->
 <div class="row">
@@ -237,6 +237,7 @@ function fncSubmit()
     <label for="exampleForm2">ห้องเรียน</label>
     <input type="text" name = "txtroom" id="txtroom" autocomplete=off  class="form-control" value = "<?=$objResult1["room"];?>">
     <input name="txt_full" type="text" id="txt_full" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" />
+    <input name="txt_num" type="text" id="txt_num" class="form-control" style="display: none" value="<?=$objResult["num"];?>" />
 </div>
 </div>
 <!--Grid row--> 
@@ -410,7 +411,7 @@ $a++;}
     </thead>
   </table>
     <div class="md-form mb-0 float-right">
-    <button name = "miss_button" type="submit" value="Submit" onclick="return check_save();" class="btn btn-elegant">ปริ้นรายงาน</button>
+    <button name = "miss_button" type="submit" value="Submit" onclick="" class="btn btn-elegant">ปริ้นรายงาน</button>
     </div>
 
 </div>

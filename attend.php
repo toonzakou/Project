@@ -248,6 +248,24 @@ function fncSubmit()
 	document.form1.submit();
 }
 
+function setInputFilter(textbox, inputFilter) {
+  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+    textbox.addEventListener(event, function() {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      }
+    });
+  });
+}
+
+setInputFilter(document.getElementById("txtno"), function(value) {
+  return /^-?\d*$/.test(value)
+});
 </script>
 
 <form name="form1" class="form-horizontal" method="post"  action="" id="menu" >
@@ -258,7 +276,7 @@ function fncSubmit()
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ครั้งที่สอน</label>
-    <input type="text" name = "txtno" id="txtno" autocomplete=off  class="form-control" value = "<?echo $num?>">
+    <input type="number" min="1" max="20" name = "txtno" id="txtno" autocomplete=off  class="form-control" value = "<?echo $num?>">
 </div>
 
 <!--Grid column-->
