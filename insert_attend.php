@@ -89,6 +89,11 @@ ob_start();
         <td><input name="stuname" type="text" id="stuname" class="form-control" value="" /></td>
       </tr>
       <tr>
+        <td >เบอร์ติดต่อ</td>
+        <td>&nbsp;</td>
+        <td><input name="teltxt" type="text" id="teltxt" class="form-control" value="" /></td>
+      </tr>
+      <tr>
         <td></td>
         <td>&nbsp;</td>
         <td><div class="input-group-prepend">

@@ -6,23 +6,49 @@ include "../db_config.php";
 //default margin : 10mm each side
 //writable horizontal : 219-(10*2)=189mm
 
-$full = $_GET['txt_full'];
-$num = $_GET['selected'];
+
+
+
+
+
 
 class PDF extends FPDF
 {
+  private $full     =  "";
+  private $num  = "";
+  
+  //you can give class variables values in the constructor
+  //so it'll be setted right when object creation
+  function __construct(){
+      parent::__construct();
+      $this->full = isset($_POST['txt_full']) ? $_POST['txt_full'] : null;
+      $this->num = isset($_POST['txt_num']) ? $_POST['txt_num'] : null;
+       
+  }
+
+  function start() {
+    if (empty($this->full) || empty($this->num)) {
+        throw new Exception("Empty Post not allowed");
+    }
+
+    else
+    {
+        // Do some stuiff
+        echo "Registration Done";
+    }
+}
+
 // Page header
 function Header()
 {
-
-    $strSQL = "SELECT attend_subject.sub_id , attend_subject.section , attend_subject.num , attend_subject.room
+  $strSQL = "SELECT attend_subject.sub_id , attend_subject.section , attend_subject.num , attend_subject.room
     , attend_subject.total , attend_subject.start_t , attend_subject.fin_t , attend_subject.date , sub_manage.subject_name
     , subjects.date_t ,teachers.name
      FROM attend_subject
      INNER JOIN sub_manage ON attend_subject.sub_id = sub_manage.subject_ID
      INNER JOIN subjects ON attend_subject.sub_id = subjects.sub_id
      INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
-     WHERE attend_subject.full_id = '$full' AND attend_subject.num = '$num' ";
+     WHERE attend_subject.full_id = '".$this->full."' AND attend_subject.num = '".$this->num."' ";
      /*$strSQL = "SELECT *
      FROM attend_tb";*/
        $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
@@ -69,6 +95,9 @@ function Header()
     $this->Ln(10);
    
     
+
+
+    
 }
 
 // Page footer
@@ -77,7 +106,7 @@ function Footer()
 
     $strSQL = "SELECT DISTINCT *
      FROM attend_subject
-     WHERE full_id = '$full' AND num = '$num'";
+     WHERE full_id = '".$this->full."' AND num = '".$this->num."'";
      /*$strSQL = "SELECT *
      FROM attend_tb";*/
        $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
@@ -178,11 +207,11 @@ function Footer()
     $this->SetFont('THSarabunNew','',12);
 
     $strSQL = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.section , attend_tb.quiz , attend_tb.late 
-    , attend_tb.miss , attend_tb.time , attend_tb.date , new_sub.stu_name , sub_manage.subject_name
+    , attend_tb.miss , attend_tb.time , attend_tb.date , new_sub.stu_name , sub_manage.subject_name , new_sub.tel
      FROM attend_tb
      INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
      INNER JOIN sub_manage ON attend_tb.sub_id = sub_manage.subject_ID 
-     WHERE attend_tb.full_id = '$full' AND attend_tb.num = '$num'
+     WHERE attend_tb.full_id = '".$this->full."' AND attend_tb.num = '".$this->num."'
      ORDER BY attend_tb.time ASC";
      /*$strSQL = "SELECT *
      FROM attend_tb";*/
@@ -192,7 +221,7 @@ function Footer()
        $this->Cell(8,8,iconv( 'UTF-8','TIS-620',$a),1,0,"C"); //dummy cell to align next cell, should be invisible
        $this->Cell(20,8,iconv( 'UTF-8','TIS-620',$objResult['stu_id']),1,0);
        $this->Cell(42,8,iconv( 'UTF-8','TIS-620',$objResult['stu_name']),1,0);
-       $this->Cell(30,8,iconv( 'UTF-8','TIS-620',$objResult['']),1,0);
+       $this->Cell(30,8,iconv( 'UTF-8','TIS-620',$objResult['tel']),1,0);
        $this->Cell(20,8,iconv( 'UTF-8','TIS-620',$objResult['time']),1,0,'C');
        $this->Cell(20,8,iconv( 'UTF-8','TIS-620',$objResult['']),1,0);
        $this->Cell(10,8,iconv( 'UTF-8','TIS-620',$objResult['quiz']),1,0,'C');
@@ -202,7 +231,7 @@ function Footer()
        $this->Ln();
        $a++;}
        if ($a < 24) {
-        for ($x = $a; $x <= 24; $x++) {
+        for ($x = $a; $x <= 48; $x++) {
             $this->Cell(8,8,iconv( 'UTF-8','TIS-620',$x),1,0,"C"); //dummy cell to align next cell, should be invisible
             $this->Cell(20,8,iconv( 'UTF-8','TIS-620',''),1,0);
             $this->Cell(42,8,iconv( 'UTF-8','TIS-620',''),1,0);
@@ -237,19 +266,16 @@ function Footer()
 
 
 
-
 $pdf = new PDF('P','mm','A4');
-
-
+ 
 
 $pdf->AddPage();
-$pdf->AliasNbPages();
 $pdf->AddFont('THSarabunNew','','THSarabunNew.php');//ธรรมดา
 $pdf->SetFont('THSarabunNew','',12);
 
 $pdf->headerTable();
 $pdf->viewdataTable();
-
+$pdf->SetAutoPageBreak();
 $pdf->Output();
 
 

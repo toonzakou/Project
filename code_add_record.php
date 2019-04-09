@@ -277,11 +277,7 @@ if($Num_Rows==0){
           echo"<script> window.location ='attend.php?sub_id=$id&section=$sec&full_id=$full'</script>";
         }else{
           echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-<<<<<<< HEAD
           echo "<script language='javascript'>alert('ผิดพลาด');</script>";
-=======
-          echo "<script language='javascript'>alert('โง่');</script>";
->>>>>>> ab35a3d40a457f688f1728cd1881a1e1bd08e2ef
         }
     
       } else {
@@ -331,11 +327,7 @@ if($Num_Rows==0){
           echo"<script> window.location ='attend.php?sub_id=$id&section=$sec&full_id=$full'</script>";
         }else{
           echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-<<<<<<< HEAD
           echo "<script language='javascript'>alert('ผิดพลาด');</script>";
-=======
-          echo "<script language='javascript'>alert('โง่');</script>";
->>>>>>> ab35a3d40a457f688f1728cd1881a1e1bd08e2ef
         }
 
         }

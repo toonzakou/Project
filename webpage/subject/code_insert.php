@@ -28,12 +28,8 @@ else
 {
 	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
 				echo "<script language='javascript'>alert('ผิดพลาด');</script>";
-<<<<<<< HEAD
 				echo"<script> window.location ='insert_subject.php'</script>";
 			
-=======
-	
->>>>>>> ab35a3d40a457f688f1728cd1881a1e1bd08e2ef
 }
 
 ?>

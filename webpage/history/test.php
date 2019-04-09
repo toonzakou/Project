@@ -79,64 +79,25 @@ ob_start();
   
 <?
   
-    $id = $_GET['sub_id'];
-    $sec = $_GET['section'];
-	  $name = $_SESSION["name"];
-    $teacher = $_SESSION["id"];
-    $full = $_GET['full_id'];
-    $num = $_POST['selected'];
     
+    $full = $_GET['full_id'];
     $strSQL = "SELECT sub_manage.subject_ID , attend_subject.full_id , sub_manage.subject_name , attend_subject.start_t , attend_subject.fin_t 
     , attend_subject.section  , attend_subject.num , attend_subject.date , attend_subject.late_t , attend_subject.room , attend_subject.total , attend_subject.quiz , attend_subject.come , attend_subject.late
     , attend_subject.miss
     FROM sub_manage 
     INNER JOIN attend_subject ON sub_manage.subject_ID = attend_subject.sub_id
-    WHERE attend_subject.full_id = '$full'";
+    WHERE attend_subject.full_id = '$full' ";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
+    $objResult = mysql_fetch_array($objQuery);
+    $sub_name = $objResult['subject_name'];
 
     
 ?>
 <br>
-
-
-
 <div >
-<?php
-    
-
-		$objResult = mysql_fetch_array($objQuery);
-
-        $_SESSION["subject_ID"] = $objResult["subject_ID"];
-        $_SESSION["full_id"] = $objResult["full_id"];
-        $s_id = $_SESSION["subject_ID"];
-        $_SESSION["section"] = $objResult["section"];
-        $section = $_SESSION["section"];
-        $sub_name = $objResult["subject_name"];
-      
-
-    
-
-       
-        
-       
-        
-		?>
-
-
-    
 <nav class=" navbar-expand-lg ">
-<?
-$num = $_GET['num'];
-if($num == 0){
-?>
+
   <a class="navbar-brand"><h1>การสอนรายวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?> </h1></a>
-<?
-} else {
-?>
-  <a class="navbar-brand"><h1>การสอนรายวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?> ครั้งที่  <?echo $num?> วันที่  <?=$objResult["date"];?>    </h1></a>
-<?
-}
-?>  
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
     aria-expanded="false" aria-label="Toggle navigation">
@@ -144,113 +105,32 @@ if($num == 0){
   </button>
 </nav>
       </div>
-    
-<?
-
-$full_id = $_GET['full_id'];
-
-$strSQL1 = "SELECT sub_manage.subject_ID , attend_subject.full_id , sub_manage.subject_name , attend_subject.start_t , attend_subject.fin_t 
-, attend_subject.section  , attend_subject.num , attend_subject.date , attend_subject.late_t , attend_subject.room , attend_subject.total , attend_subject.quiz , attend_subject.come , attend_subject.late
-, attend_subject.miss
-FROM sub_manage 
-INNER JOIN attend_subject ON sub_manage.subject_ID = attend_subject.sub_id
-WHERE attend_subject.full_id = '$full_id' AND attend_subject.num = '$num'";
-$objQuery1 = mysql_query($strSQL1) or die ("Error Query[".$strSQL1."]");
-
-$objResult1 = mysql_fetch_array($objQuery1);
-
-
- $start = $objResult1["start_t"];
-        $fin = $objResult1["fin_t"];
-        $late_t = $objResult1['late_t'];
-        $start_t = strtotime($start);
-        $fin_t = strtotime($fin);
-
-        $total = $objResult1['total'];
-        $quiz = $objResult1['quiz'];
-        $come = $objResult1['come'];
-        $late = $objResult1['late'];
-        $miss = $objResult1['miss'];
-
-
-  
-?>   
 
 <script language="javascript">
-function fncSubmit()
-{
-	if(document.form1.txtno.value == "")
-	{
-		alert('กรุณากรอกครั้งที่สอน');
-		document.form1.txtno.focus();
-		return false;
-	}	
-	if(document.form1.inputcode.value == "")
-	{
-		alert('กรอกรหัสนักศึกษา');
-		document.form1.inputcode.focus();		
-		return false;
-	}	
-	document.form1.submit();
-}
-
-
       function Redirect(select)
       { 
       window.location = 'history_select.php?full_id='+document.form1.txt_full.value+'&num='+document.form1.selected.value;
       }
-     
-
 </script>
 
-<form name="form1" class="form-horizontal" method="POST"  action="../../fpdf/report.php" id="menu" >
-<!--Grid row-->
-<div class="row">
+<form name="form1" class="form-horizontal" method="POST"  action="" id="menu" >
 
-<!--Grid column-->
-<div class="col-sm-2">
-    <label for="exampleForm2">ครั้งที่สอน</label>
-    <select name="selected" class="form-control" id="sel1" onchange = 'Redirect(this)'>
-                          <option value = "">เลือกครั้งที่สอน</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                          <option value="9">9</option>
-                          <option value="10">10</option>
-                          <option value="11">11</option>
-                          <option value="12">12</option>
-                          <option value="13">13</option>
-                          <option value="14">14</option>
-                          <option value="15">15</option>
-          </select>
-</div>
-
-</div>
-<!--Grid row--> 
-<br>
-     
   <!--Grid row-->
 <div class="row">
 
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ครั้งที่สอน</label>
-    <input name="txt_num" type="text" id="txt_num" class="form-control" value="<?echo $num?>" />
-    
+    <input name="txt_num" type="text" id="txt_num" class="form-control"  value="" />
+  
 </div>
 
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ห้องเรียน</label>
     <input type="text" name = "txtroom" id="txtroom" autocomplete=off  class="form-control" value = "<?=$objResult1["room"];?>">
-    <input name="txt_full" type="text" id="txt_full" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" />
-   
-</div>
+    <input name="txt_full" type="text" id="txt_full" class="form-control" style="display: none"  />
+    </div>
 </div>
 <!--Grid row--> 
 
@@ -362,7 +242,7 @@ $strSQL2 = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num 
 FROM attend_tb 
 INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
 
-WHERE attend_tb.full_id = '$full_id' AND attend_tb.num ='$num'
+WHERE (attend_tb.full_id LIKE '%".$_POST["txt_num"]."%' AND attend_tb.num LIKE '%".$_POST["txt_num"]."%')
 ORDER BY attend_tb.time ASC";
 $objQuery2 = mysql_query($strSQL2) or die ("Error Query[".$strSQL2."]");
 $Num_Rows = mysql_num_rows($objQuery2);

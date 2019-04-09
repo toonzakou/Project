@@ -22,7 +22,7 @@ ob_start();
 <body>
 <div id="wrapper">
     <h1>ระบบเช็คชื่อนักศึกษา</h1>
-    <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
+    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;สู่ระบบ | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 <div class="container-fluid">
 
@@ -44,14 +44,13 @@ ob_start();
   </li>
   </ul>
 <?
-    $id = $_GET["id"];
-	$name = $_SESSION["name"];
+    $id = $_GET["full_id"];
+	  $name = $_SESSION["name"];
     $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.sub_id , subjects.section , sub_manage.subject_name , subjects.date , subjects.star_time , subjects.fin_time , teachers.teac_id 
+    $strSQL = "SELECT subjects.year , subjects.term , subjects.full_id , subjects.sub_id , subjects.section , sub_manage.subject_name , subjects.date_t , subjects.star_time , subjects.fin_time 
     FROM subjects 
-    INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
     INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID 
-    WHERE subjects.id = '$id'";
+    WHERE subjects.full_id = '$id'";
 	$objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
 ?>
     <br>
@@ -83,14 +82,14 @@ ob_start();
         <td>&nbsp;</td>
         <td>
     <select name="selected" class="form-control" id="sel1">
-    <option><?echo $objResult["date"]; ?></option>
-    <option value="Monday">Monday</option>
-    <option value="Tuesday">Tuesday</option>
-    <option value="Wednesday">Wednesday</option>
-    <option value="Thurday">Thurday</option>
-    <option value="Friday">Friday</option>
-    <option value="Saturdat">Saturdat</option>
-    <option value="Sunday">Sunday</option>
+    <option><?echo $objResult["date_t"]; ?></option>
+    <option value="วันจันทร์">วันจันทร์</option>
+    <option value="วันอังคาร">วันอังคาร</option>
+    <option value="วันพุธ">วันพุธ</option>
+    <option value="วันพฤหัสบดี">วันพฤหัสบดี</option>
+    <option value="วันศุกร์">วันศุกร์</option>
+    <option value="วันเสาร์">วันเสาร์</option>
+    <option value="วันอาทิตย์">วันอาทิตย์</option>
     </select>
         </td>
       </tr>
@@ -106,7 +105,14 @@ ob_start();
       <tr>
         <td></td>
         <td>&nbsp;</td>
-        <td><button type="submit" class="btn btn-light-blue" value="<?=$id?>">Save</button></td>
+        <td><button type="submit" class="btn btn-light-blue" value="<?=$id?>">บันทึก</button></td>
+      </tr>
+      <tr>
+        <td ></td>
+        <td>&nbsp;</td>
+        <td><input name="txtfull" type="text" id="txtfull" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" /></td>
+        <td><input name="txtyear" type="text" id="txtyear" class="form-control" style="display: none" value="<?=$objResult["year"];?>" /></td>
+        <td><input name="txtterm" type="text" id="txtterm" class="form-control" style="display: none" value="<?=$objResult["term"];?>" /></td>
       </tr>
       <?php
           }

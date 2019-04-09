@@ -22,7 +22,7 @@ ob_start();
 <body>
 <div id="wrapper">
     <h1>ระบบเช็คชื่อนักศึกษา</h1>
-    <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
+    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;สู่ระบบ | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 <div class="container-fluid">
 
@@ -82,7 +82,7 @@ ob_start();
         <td> 
   <div class="custom-file">
     <input type="file" name="file" class="custom-file-input" id="file" accept=".xls,.xlsx">  
-    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+    <label class="custom-file-label" for="inputGroupFile01"></label>
   </div>
 </td>
       </tr>
@@ -92,7 +92,7 @@ ob_start();
         <td></td>
         <td>&nbsp;</td>
         <td><div class="input-group-prepend">
-    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">Import</button></span>
+    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">เพิ่ม</button></span>
   </div></td>
       </tr>
       <!--tr>

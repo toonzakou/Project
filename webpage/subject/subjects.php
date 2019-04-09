@@ -106,7 +106,7 @@ ob_start();
 <body>
 <div id="wrapper" >
     <h1>ระบบเช็คชื่อนักศึกษา</h1>
-    <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
+    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;สู่ระบบ | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 
     <div class="container-fluid">
@@ -243,8 +243,8 @@ ob_start();
             <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
             <td bgcolor="#FFCC66">&nbsp;<a href="insert_stu.php?full_id=<?=$objResult["full_id"];?>&id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="add.php?full_id=<?=$objResult["full_id"];?>&id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/excel.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="subject_detail.php?sub_id=<?=$objResult["sub_id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/padnote.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?id=<?=$objResult["id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="subject_detail.php?full_id=<?=$objResult["full_id"];?>"><img src="../../images/button/padnote.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?full_id=<?=$objResult["full_id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
             <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>&full_id=<?=$objResult["full_id"];?>"onclick="return confirm('คุณกำลังจะลบข้อมูล?')"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>
         </tr>
     </tbody>

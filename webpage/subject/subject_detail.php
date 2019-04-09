@@ -25,7 +25,7 @@ ob_start();
 <body>
 <div id="wrapper">
     <h1>ระบบเช็คชื่อนักศึกษา</h1>
-    <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
+    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;สู่ระบบ | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 
     <div class="container-fluid">
@@ -62,12 +62,12 @@ ob_start();
 </ul>
   
 <?
-    $sub_id = $_GET['sub_id'];
+    $sub_id = $_GET['full_id'];
     $sec = $_GET['section'];
-    $strSQL = "SELECT  new_sub.sub_id , sub_manage.subject_name , new_sub.stu_id  , new_sub.stu_name    
+    $strSQL = "SELECT  new_sub.sub_id , sub_manage.subject_name , new_sub.stu_id  , new_sub.stu_name , new_sub.tel    
     FROM new_sub 
     INNER JOIN sub_manage ON new_sub.sub_id = sub_manage.subject_ID 
-    WHERE new_sub.sub_id LIKE '$sub_id' AND new_sub.section = '$sec' AND (new_sub.stu_id  LIKE '%".$_POST["textfield"]."%' OR new_sub.stu_name  LIKE '%".$_POST["textfield"]."%')  ";
+    WHERE new_sub.full_id LIKE '$sub_id' AND (new_sub.stu_id  LIKE '%".$_POST["textfield"]."%' OR new_sub.stu_name  LIKE '%".$_POST["textfield"]."%')  ";
 
     /*$strSQL = "SELECT  *  
     FROM new_sub ";*/
@@ -100,6 +100,7 @@ ob_start();
         <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">รหัสนักศึกษา</th>
         <th bgcolor="#CCCCCC" scope="col">ชื่อ - สกุล</th>
+        <th bgcolor="#CCCCCC" scope="col">เบอร์ติดต่อ</th>
       </tr>
     </thead>
   
@@ -123,6 +124,7 @@ while($objResult = mysql_fetch_array($objQuery))
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_id"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_name"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["tel"];?></td>
            </tr>
     </tbody>
           <?

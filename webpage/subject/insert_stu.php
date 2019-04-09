@@ -22,7 +22,7 @@ ob_start();
 <body>
 <div id="wrapper">
     <h1>ระบบเช็คชื่อนักศึกษา</h1>
-    <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
+    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;สู่ระบบ | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 <div class="container-fluid">
 
@@ -87,10 +87,16 @@ ob_start();
         <td><input name="stuname" type="text" id="stuname" class="form-control" value="" /></td>
       </tr>
       <tr>
+      <tr>
+        <td >เบอร์ติดต่อ</td>
+        <td>&nbsp;</td>
+        <td><input name="teltxt" type="text" id="teltxt" class="form-control" value="" /></td>
+      </tr>
+      <tr>
         <td></td>
         <td>&nbsp;</td>
         <td><div class="input-group-prepend">
-    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">Add</button></span>
+    <span class="input-group-text"><button onclick="Asubmit(this.form)" id="submit" name="import" class="button">เพิ่ม</button></span>
   </div></td>
       </tr>
       <tr>

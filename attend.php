@@ -248,6 +248,24 @@ function fncSubmit()
 	document.form1.submit();
 }
 
+function setInputFilter(textbox, inputFilter) {
+  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+    textbox.addEventListener(event, function() {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      }
+    });
+  });
+}
+
+setInputFilter(document.getElementById("txtno"), function(value) {
+  return /^-?\d*$/.test(value)
+});
 </script>
 
 <form name="form1" class="form-horizontal" method="post"  action="" id="menu" >
@@ -258,7 +276,7 @@ function fncSubmit()
 <!--Grid column-->
 <div class="col-sm-2">
     <label for="exampleForm2">ครั้งที่สอน</label>
-    <input type="text" name = "txtno" id="txtno" autocomplete=off  class="form-control" value = "<?echo $num?>">
+    <input type="number" min="1" max="20" name = "txtno" id="txtno" autocomplete=off  class="form-control" value = "<?echo $num?>">
 </div>
 
 <!--Grid column-->
@@ -528,6 +546,7 @@ if($_SESSION['count_late']==0) {
         <th bgcolor="#CCCCCC" scope="col">Quiz 15 min</th>
         <th bgcolor="#CCCCCC" scope="col">รวมมาสายสะสม</th>
         <th bgcolor="#CCCCCC" scope="col">รวมขาดสะสม</th>
+        <th bgcolor="#CCCCCC" scope="col">แก้ไข</th>
       
       </tr>
     </thead>
@@ -554,6 +573,7 @@ while($objResult1 = mysql_fetch_array($objQuery1))
             <td bgcolor="#FFCC66"> <?=$objResult1["quiz"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["late"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["miss"];?></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="history_select.php?full_id=<?=$objResult["full_id"];?>"><img src="images/button/speech-bubble.png" width="33" height="33"></a></td>
            </tr>
     </tbody>
           <?
