@@ -203,8 +203,14 @@ function fncSubmit()
 
 </script>
 
+<<<<<<< HEAD
 <form name="form1" class="form-horizontal" method="POST"  action="../../fpdf/report.php" id="menu" >
 <!--Grid row-->
+=======
+<form name="form1" class="form-horizontal" method="POST"  action="../../fpdf/report.php?full_id=<?=$objResult["full_id"];?>&num=<?=$objResult["num"];?>" id="menu" >
+
+  <!--Grid row-->
+>>>>>>> cba8002314c88bd580fd344bf618cc0b4f28beb2
 <div class="row">
 
 <!--Grid column-->
@@ -249,7 +255,11 @@ function fncSubmit()
     <label for="exampleForm2">ห้องเรียน</label>
     <input type="text" name = "txtroom" id="txtroom" autocomplete=off  class="form-control" value = "<?=$objResult1["room"];?>">
     <input name="txt_full" type="text" id="txt_full" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" />
+<<<<<<< HEAD
    
+=======
+    <input name="txt_num" type="text" id="txt_num" class="form-control" style="display: none" value="<?=$objResult["num"];?>" />
+>>>>>>> cba8002314c88bd580fd344bf618cc0b4f28beb2
 </div>
 </div>
 <!--Grid row--> 
