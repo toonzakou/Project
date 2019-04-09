@@ -80,10 +80,14 @@ function Header()
     $this->Cell(40,10,iconv( 'UTF-8','TIS-620','จำนวนนักศึกษา............คน'),0,0);
     $this->Text(164,30.5,$objResult['total']);
     $this->Ln(10);
+
+    
     $this->Cell(45,10,iconv( 'UTF-8','TIS-620','ชื่อผู้สอน.....................................'),0,0);
-    $this->Text(26,40.5,iconv('UTF-8','TIS-620',$objResult['name']));
+    $this->SetFont('THSarabunNew','',11);
+    $this->Text(24,40.5,iconv('UTF-8','TIS-620',$objResult['name']));
     $this->Cell(35,10,iconv( 'UTF-8','TIS-620','ห้องเรียน........................'),0,0);
-    $this->Text(73,40.5,$objResult['room']);
+    $this->SetFont('THSarabunNew','',14);
+    $this->Text(68,40.5,$objResult['room']);
     $this->Cell(25,10,iconv( 'UTF-8','TIS-620','วัน.......................'),0,0);
     $this->Text(98,40.5,iconv('UTF-8','TIS-620',$objResult['date_t']));
     $this->Cell(40,10,iconv( 'UTF-8','TIS-620','เวลาเรียน................................'),0,0);
@@ -93,6 +97,27 @@ function Header()
     $this->Cell(50,10,iconv( 'UTF-8','TIS-620','วันที่.....................................'),0,0);
     $this->Text(167,40.5,iconv('UTF-8','TIS-620',$objResult['date']));
     $this->Ln(10);
+    $this->Cell(140,5,iconv( 'UTF-8','TIS-620','สำหรับนักศึกษากรอก'),1,0,"C"); //vertically merged cell, height=2x row height=2x5=10
+    $this->Cell(30,5,iconv( 'UTF-8','TIS-620','สำหรับอาจารย์กรอก'),1,0,"C"); //vertically merged cell
+    $this->Cell(20,20,iconv( 'UTF-8','TIS-620','หมายเหตุ'),1,0,"C"); //vertically merged cell
+    $this->Cell(0,5,'',0,1); //dummy line ending, height=5(normal row height) width=09 should be invisible 
+    
+    //second line(row)
+    $this->Cell(8,15,iconv( 'UTF-8','TIS-620','ที่'),1,0,"C"); //dummy cell to align next cell, should be invisible
+    $this->Cell(20,15,iconv( 'UTF-8','TIS-620','รหัสนักศึกษา'),1,0,"C");
+    $this->Cell(48,15,iconv( 'UTF-8','TIS-620','ชื่อ - นามสกุล'),1,0,"C");
+    $this->Cell(24,15,iconv( 'UTF-8','TIS-620','เบอร์มือถือ'),1,0,"C");
+    $this->Cell(20,15,iconv( 'UTF-8','TIS-620','เวลาเข้าเรียน'),1,0,"C");
+    $this->Cell(20,15,iconv( 'UTF-8','TIS-620','ลายเซ็น'),1,0,"C");
+    $this->Cell(30,5,iconv( 'UTF-8','TIS-620','การมาเรียน'),1,0,"C");
+    $this->Cell(0,5,'',0,1); //dummy line ending, height=5(normal row height) width=09 should be invisible 
+    
+    //third line(row)
+    $this->Cell(140,15,'',0,0); //dummy cell to align next cell, should be invisible
+    $this->Cell(10,10,iconv( 'UTF-8','TIS-620','Quiz'),1,0,"C");
+    $this->Cell(10,10,iconv( 'UTF-8','TIS-620','สาย'),1,0,"C");
+    $this->Cell(10,10,iconv( 'UTF-8','TIS-620','ขาด'),1,0,"C");
+    $this->Ln();
    
     
 
@@ -164,6 +189,7 @@ function Footer()
     $this->Ln(7); 
     $this->Cell(15,10,(''),0,0);
     $this->Cell(25,10,iconv( 'UTF-8','TIS-620','*** ผู้สอนเซ็นชื่อและลงเวลาต้นชั่วโมงในลำดับสุดท้ายของนศ.ที่มาทันเวลาและท้ายชั่วโมงในบรรทัดสุดท้าย ตรงชื่องหมายเหตุ ***'),0,0);
+    
   }
 
   function headerTable()
@@ -207,7 +233,7 @@ function Footer()
     $this->SetFont('THSarabunNew','',12);
 
     $strSQL = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.section , attend_tb.quiz , attend_tb.late 
-    , attend_tb.miss , attend_tb.time , attend_tb.date , new_sub.stu_name , sub_manage.subject_name , new_sub.tel
+    , attend_tb.miss , attend_tb.time , attend_tb.date , attend_tb.first_name , new_sub.stu_name , sub_manage.subject_name , new_sub.tel
      FROM attend_tb
      INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
      INNER JOIN sub_manage ON attend_tb.sub_id = sub_manage.subject_ID 
@@ -220,10 +246,10 @@ function Footer()
        while($objResult = mysql_fetch_array($objQuery)){
        $this->Cell(8,8,iconv( 'UTF-8','TIS-620',$a),1,0,"C"); //dummy cell to align next cell, should be invisible
        $this->Cell(20,8,iconv( 'UTF-8','TIS-620',$objResult['stu_id']),1,0);
-       $this->Cell(42,8,iconv( 'UTF-8','TIS-620',$objResult['stu_name']),1,0);
-       $this->Cell(30,8,iconv( 'UTF-8','TIS-620',$objResult['tel']),1,0);
+       $this->Cell(48,8,iconv( 'UTF-8','TIS-620',$objResult['stu_name']),1,0);
+       $this->Cell(24,8,iconv( 'UTF-8','TIS-620',$objResult['tel']),1,0);
        $this->Cell(20,8,iconv( 'UTF-8','TIS-620',$objResult['time']),1,0,'C');
-       $this->Cell(20,8,iconv( 'UTF-8','TIS-620',$objResult['']),1,0);
+       $this->Cell(20,8,iconv( 'UTF-8','TIS-620',$objResult['first_name']),1,0);
        $this->Cell(10,8,iconv( 'UTF-8','TIS-620',$objResult['quiz']),1,0,'C');
        $this->Cell(10,8,iconv( 'UTF-8','TIS-620',$objResult['late']),1,0,'C');
        $this->Cell(10,8,iconv( 'UTF-8','TIS-620',$objResult['miss']),1,0,'C');
@@ -231,11 +257,11 @@ function Footer()
        $this->Ln();
        $a++;}
        if ($a < 24) {
-        for ($x = $a; $x <= 48; $x++) {
+        for ($x = $a; $x <= 24; $x++) {
             $this->Cell(8,8,iconv( 'UTF-8','TIS-620',$x),1,0,"C"); //dummy cell to align next cell, should be invisible
             $this->Cell(20,8,iconv( 'UTF-8','TIS-620',''),1,0);
-            $this->Cell(42,8,iconv( 'UTF-8','TIS-620',''),1,0);
-            $this->Cell(30,8,iconv( 'UTF-8','TIS-620',''),1,0);
+            $this->Cell(48,8,iconv( 'UTF-8','TIS-620',''),1,0);
+            $this->Cell(24,8,iconv( 'UTF-8','TIS-620',''),1,0);
             $this->Cell(20,8,iconv( 'UTF-8','TIS-620',''),1,0,'C');
             $this->Cell(20,8,iconv( 'UTF-8','TIS-620',''),1,0);
             $this->Cell(10,8,iconv( 'UTF-8','TIS-620',''),1,0,'C');
@@ -246,7 +272,23 @@ function Footer()
         } 
        
       
+    } else {
+
+      for ($x = $a; $x <= 48; $x++) {
+        $this->Cell(8,8,iconv( 'UTF-8','TIS-620',$x),1,0,"C"); //dummy cell to align next cell, should be invisible
+        $this->Cell(20,8,iconv( 'UTF-8','TIS-620',''),1,0);
+        $this->Cell(48,8,iconv( 'UTF-8','TIS-620',''),1,0);
+        $this->Cell(24,8,iconv( 'UTF-8','TIS-620',''),1,0);
+        $this->Cell(20,8,iconv( 'UTF-8','TIS-620',''),1,0,'C');
+        $this->Cell(20,8,iconv( 'UTF-8','TIS-620',''),1,0);
+        $this->Cell(10,8,iconv( 'UTF-8','TIS-620',''),1,0,'C');
+        $this->Cell(10,8,iconv( 'UTF-8','TIS-620',''),1,0,'C');
+        $this->Cell(10,8,iconv( 'UTF-8','TIS-620',''),1,0,'C');
+        $this->Cell(20,8,iconv( 'UTF-8','TIS-620',''),1,0); 
+        $this->Ln();
     } 
+
+    }
        
     
     
@@ -268,14 +310,13 @@ function Footer()
 
 $pdf = new PDF('P','mm','A4');
  
-
+$pdf->SetAutoPageBreak(true,35);
 $pdf->AddPage();
 $pdf->AddFont('THSarabunNew','','THSarabunNew.php');//ธรรมดา
 $pdf->SetFont('THSarabunNew','',12);
 
-$pdf->headerTable();
 $pdf->viewdataTable();
-$pdf->SetAutoPageBreak();
+
 $pdf->Output();
 
 

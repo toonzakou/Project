@@ -42,7 +42,7 @@ ob_start();
 <body>
 <div id="wrapper">
     <h1>ระบบเช็คชื่อนักศึกษา</h1>
-    <div class="float-right"><h3><span style="text-align: right"><small>Welcome&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;to System | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
+    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;สู่ระบบ | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 
     <div class="container-fluid">
@@ -165,7 +165,7 @@ if($_SESSION['time_cout']==0) {
     
 <?
   
-    $strSQL1 = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num , attend_tb.quiz , attend_tb.late , attend_tb.miss , attend_tb.section , attend_tb.time , new_sub.stu_name  
+    $strSQL1 = "SELECT DISTINCT attend_tb.stu_id , attend_tb.sub_id , attend_tb.num , attend_tb.date , attend_tb.quiz , attend_tb.late , attend_tb.miss , attend_tb.section , attend_tb.time , new_sub.stu_name  
     FROM attend_tb 
     INNER JOIN new_sub ON attend_tb.stu_id = new_sub.stu_id
  
@@ -181,7 +181,7 @@ if($_SESSION['time_cout']==0) {
   
     $strSQL2 = "SELECT *
     FROM new_sub
-    WHERE sub_id LIKE '$id' AND full_id = '$full'";
+    WHERE sub_id LIKE '$id' AND full_id = '$full' AND status ='ปกติ' ";
   
 /*$strSQL1 = "SELECT *
 FROM attend_tb 
@@ -481,10 +481,19 @@ function check_miss()
 <!--Grid row-->
 <div class="row">
   <div class="col-md-8">
-    
+    <?
+    if($_SESSION['count_late']==2) {
+    ?>
       <label for="inputcode" class="">กรอกรหัสนักศึกษา</label>
-      <input type="text" id="inputcode" name="inputcode" autocomplete=off  class="form-control" value ="<??>">
- 
+      <input type="text" id="inputcode" name="inputcode" autocomplete=off  class="form-control" value ="<?echo $_SESSION['tmp_id']?>"  >
+    <?
+    } else {
+    ?>
+     <label for="inputcode" class="">กรอกรหัสนักศึกษา</label>
+      <input type="text" id="inputcode" name="inputcode" autocomplete=off  class="form-control" value ="" autofocus  >
+     <?
+    }
+     ?> 
   </div>
 
   <!--Grid column-->
@@ -502,15 +511,14 @@ if($_SESSION['count_late']==0) {
 <label for="remark" class="">หมายเหตุ</label>
 <input type="text" id="remark" name="remark" class="form-control" value ="" readonly>
     <?
-  }else {
+  }else  {
 ?>
  <label for="remark" class="">หมายเหตุ</label>
-      <input type="text" id="remark" name="remark" class="form-control" value ="" >
+      <input type="text" id="remark" name="remark" class="form-control" value ="" autofocus >
 <?
-
-  }
-
+  }    
 ?>
+ 
       <div class="custom-control custom-checkbox">
 
       <?
@@ -519,15 +527,16 @@ if($_SESSION['count_late']==0) {
 <input type="checkbox" class="custom-control-input " autocomplete=off  name ="remark_check" id="remark_check" onchange="CheckCheckboxes2(this)"  >
   <label class="custom-control-label" for="remark_check">สำหรับคนมาสาย</label>
 <?
-  }else {
+  }else  {
 ?>
  <input type="checkbox" class="custom-control-input " autocomplete=off  name ="remark_check" id="remark_check" checked  >
   <label class="custom-control-label" for="remark_check">สำหรับคนมาสาย</label>
 <?
 
-  }
+  } 
 
 ?>
+
    </div>
 </div>
 </div>
@@ -563,8 +572,24 @@ if($_SESSION['count_late']==0) {
 $a=1;
 while($objResult1 = mysql_fetch_array($objQuery1))
 {
-	?>
-         <tbody>
+  if($objResult1['date'] == 'ขาดเรียน'){
+?>
+           <tbody >
+      <tr>
+            <td bgcolor="#FFCC66"><?echo $a;?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult1["stu_id"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult1["stu_name"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult1["time"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult1["quiz"];?></td>
+            <td bgcolor="#FFCC66"> <?=$objResult1["late"];?></td>
+            <td bgcolor="#FFCC66" class ="redtext"> <?=$objResult1["miss"];?></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="update_remark.php?full_id=<?=$objResult["full_id"];?>&num=<?=$objResult1["num"];?>&stu_id=<?=$objResult1["stu_id"];?>"><img src="images/button/edit.png" width="33" height="33"></a></td>
+           </tr>
+    </tbody>
+<?
+  } else {
+  ?>
+   <tbody>
       <tr>
             <td bgcolor="#FFCC66"><?echo $a;?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["stu_id"];?></td>
@@ -573,9 +598,13 @@ while($objResult1 = mysql_fetch_array($objQuery1))
             <td bgcolor="#FFCC66"> <?=$objResult1["quiz"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["late"];?></td>
             <td bgcolor="#FFCC66"> <?=$objResult1["miss"];?></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="history_select.php?full_id=<?=$objResult["full_id"];?>"><img src="images/button/speech-bubble.png" width="33" height="33"></a></td>
+            <td bgcolor="#FFCC66"> - </td>
            </tr>
     </tbody>
+  <?  
+  }
+	?> 
+        
           <?
 $a++;}
 

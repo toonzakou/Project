@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost","root","0841446192","test_project");
+$conn = mysqli_connect("localhost","root","0841446192","project_db");
 require_once('vendor/php-excel-reader/excel_reader2.php');
 require_once('vendor/SpreadsheetReader.php');
 $sub_id = $_POST['txtid'];  

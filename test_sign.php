@@ -203,7 +203,8 @@ function fncSubmit()
 
 </script>
 
-<form name="form1" class="form-horizontal" method="POST"  action="" id="menu" >
+
+<form name="form1" class="form-horizontal" method="POST"  action="../../fpdf/report.php" id="menu" >
 <!--Grid row-->
 <div class="row">
 
@@ -384,7 +385,47 @@ $Num_Rows = mysql_num_rows($objQuery2);
       
       </tr>
     </thead>
-    
+
+    <?
+
+$prefix_utf8["ว่าที่ร้อยตรี"]=39; 
+$prefix_utf8["ว่าที่ รต."]=26; // นับอักขระไทยได้ 8 ตัว คูณด้วย 3 = 24 บวกกับช่องว่าง และ จุด(.) อีก 2 รวมเป็น 26
+$prefix_utf8["นางสาว"]=18;
+$prefix_utf8["นาย"]=9;
+$prefix_utf8["นาง"]=9;
+$prefix_utf8["น.ส."]=8;
+
+foreach($prefix_utf8 as $key => $val){
+	echo "key[$key] key.length = ".strlen($key)."<br />\n";
+}
+$index =1;
+$strSQL2 = "SELECT *
+FROM new_sub ";
+
+$objQuery = mysql_query($strSQL2) or die ("Error Query[".$strSQL2."]");
+$fullname_utf8 = array();
+
+while(($row =  mysql_fetch_assoc($objQuery))) {
+$fullname_utf8[] = $row['stu_name'];
+}
+foreach($fullname_utf8 as $individual){
+	foreach($prefix_utf8 as $key => $keylength){
+		if(strstr($individual , $key)){			
+			$output[$index]["title"] = substr($individual,0,$keylength);
+			$individual = substr($individual,$keylength);
+			list($output[$index]["firstName"],$output[$index]["lastName"]) = explode(" ",trim($individual));
+		}
+  }
+  echo $output[$index]["title"]." ".$output[$index]["firstName"]." ".$output[$index]["lastName"]." ".'<br>';
+	$index++;
+}
+
+/*print_r($output);*/
+
+
+
+?>
+
 <? 
     if($Num_Rows==0){
 ?>
@@ -423,7 +464,7 @@ $a++;}
     </thead>
   </table>
     <div class="md-form mb-0 float-right">
-    <button name = "miss_button" type="submit" value="Submit" onclick="return check_save()" class="btn btn-elegant">ปริ้นรายงาน</button>
+    <button name = "miss_button" type="submit" value="Submit" onclick="" class="btn btn-elegant">ปริ้นรายงาน</button>
     </div>
 
 </div>

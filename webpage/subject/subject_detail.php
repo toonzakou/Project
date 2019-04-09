@@ -64,7 +64,7 @@ ob_start();
 <?
     $sub_id = $_GET['full_id'];
     $sec = $_GET['section'];
-    $strSQL = "SELECT  new_sub.sub_id , sub_manage.subject_name , new_sub.stu_id  , new_sub.stu_name , new_sub.tel    
+    $strSQL = "SELECT  new_sub.full_id , new_sub.sub_id , sub_manage.subject_name , new_sub.stu_id  , new_sub.stu_name , new_sub.tel  , new_sub.status 
     FROM new_sub 
     INNER JOIN sub_manage ON new_sub.sub_id = sub_manage.subject_ID 
     WHERE new_sub.full_id LIKE '$sub_id' AND (new_sub.stu_id  LIKE '%".$_POST["textfield"]."%' OR new_sub.stu_name  LIKE '%".$_POST["textfield"]."%')  ";
@@ -74,6 +74,10 @@ ob_start();
 
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
+    $objQuery1 = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
+    $objResult1 = mysql_fetch_array($objQuery1);
+    $sub_id = $objResult1['sub_id'];
+    $sub_name = $objResult1['subject_name'];
 ?>
 <br>
 <form name="form1" method="post" action="" id="menu">
@@ -83,7 +87,7 @@ ob_start();
   </div>
 <div >
 <nav class=" navbar-expand-lg ">
-  <a class="navbar-brand"><h1>รายวิชา</h1></a>
+  <a class="navbar-brand"><h1>รายวิชา <?echo $sub_name?> รหัสวิชา <?echo $sub_id?></h1></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -96,11 +100,11 @@ ob_start();
     <thead>
       <tr>
         <th bgcolor="#CCCCCC" scope="col">#</th>
-        <th bgcolor="#CCCCCC" scope="col">รหัสวิชา</th>
-        <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">รหัสนักศึกษา</th>
         <th bgcolor="#CCCCCC" scope="col">ชื่อ - สกุล</th>
         <th bgcolor="#CCCCCC" scope="col">เบอร์ติดต่อ</th>
+        <th bgcolor="#CCCCCC" scope="col">สถานะ</th>
+        <th bgcolor="#CCCCCC" scope="col">แก้ไขสถานะ</th>
       </tr>
     </thead>
   
@@ -120,11 +124,12 @@ while($objResult = mysql_fetch_array($objQuery))
          <tbody>
       <tr>
             <td bgcolor="#FFCC66"><?echo $a?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["sub_id"];?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_id"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["stu_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["tel"];?></td>
+            <td bgcolor="#FFCC66"><?=$objResult["status"];?></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="update_stu.php?full_id=<?=$objResult["full_id"];?>&stu_id=<?=$objResult["stu_id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
+          
            </tr>
     </tbody>
           <?

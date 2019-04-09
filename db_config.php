@@ -3,7 +3,7 @@
 $host = "localhost" ; 
 $username = "root" ; 
 $password = "0841446192" ; 
-$db = "test_project" ;  
+$db = "project_db" ;  
 $conn = mysql_connect($host,$username,$password) ;
 mysql_select_db($db) ;
 mysql_query("SET character_set_results=utf8");
