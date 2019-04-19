@@ -82,31 +82,38 @@ class Paginator{
 ?>
 <?
 
-include "db_config.php";
+include "../../db_config.php";
 
 ob_start();
  session_start();
 	?>
 <html>
 <div class="container-fluid">
+
+<script type="text/javascript">
+function windowOpen() {
+		var myWindow=window.open('add_sub.php','windowRef','width=200,height=200');
+		if (!myWindow.opener) myWindow.opener = self;
+	}  
+</script>
 <head>
       
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap-reboot.css" rel="stylesheet">
-    <link href="css/bootstrap-reboot.min.css" rel="stylesheet">
-    <link href="css/mdb.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap-reboot.css" rel="stylesheet">
+    <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
+    <link href="../../css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>ระบบเช็คชื่อนักศึกษา - หน้าหลัก</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
+	<title>ระบบเช็คชื่อนักศึกษา - จัดการวิชา</title>
+    <link rel="stylesheet" type="text/css" href="../../style.css"/>
   
     </head>
 <body>
 <div id="wrapper">
     <h1>ระบบเช็คชื่อนักศึกษา</h1>
-    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;(ผู้ดูแล) สู่ระบบ | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
+    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;(ผู้ดูแล) สู่ระบบ | <a href="../../logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 
     <div class="container-fluid">
@@ -126,16 +133,13 @@ ob_start();
   
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link active  " href="homepage.php">หน้าหลัก</a>
+    <a class="nav-link active  " href="homepage.php">จัดการวิชา</a>
   </li>
   <!--li class="nav-item">
     <a class="nav-link" href="webpage/user/user.php">รายชื่อ</a>
   </li-->
   <li class="nav-item">
-    <a class="nav-link " href="webpage/subject/subjects.php">วิชา</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link " href="webpage/history/history.php">ประวัติการสอน</a>
+    <a class="nav-link " href="user.php">จัดการผู้ใช้</a>
   </li>
 </ul>
   
@@ -189,6 +193,16 @@ ob_start();
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+    <li class="nav-item active">
+        <a class="nav-link" href="insert_sub.php" >เพิ่มวิชา <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="add_sub.php" >เพิ่มหลายวิชา <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
 </nav>
 </div>
 
@@ -201,7 +215,6 @@ ob_start();
         <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">หน่วยกิต</th>
         <th bgcolor="#CCCCCC" scope="col">แก้ไข</th>
-        <th bgcolor="#CCCCCC" scope="col">ลบ</th>
       </tr>
     </thead>
     
@@ -224,9 +237,7 @@ ob_start();
             <td bgcolor="#FFCC66"><?=$objResult["subject_ID"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="attend.php?sub_id=<?echo $_SESSION['sub']?>&section=<?echo $_SESSION["sec"];?>&full_id=<?=$objResult["full_id"];?>"><img src="images/button/monitor.png" width="22" height="22"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="attend.php?sub_id=<?echo $_SESSION['sub']?>&section=<?echo $_SESSION["sec"];?>&full_id=<?=$objResult["full_id"];?>"><img src="images/button/monitor.png" width="22" height="22"></a></td>
-      
+            <td bgcolor="#FFCC66">&nbsp;<a href="update_sub.php?sub_id=<?echo $objResult["subject_ID"]?>"><img src="../../images/button/edit.png" width="22" height="22"></a></td>
       </tr>
     </tbody>
     
@@ -261,9 +272,9 @@ echo $pages->display_pages()
 </form>
 </div>
 </div>   
-        <script src="js/bootstrap.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery-3.3.1.min"></script>
+        <script src="../../js/bootstrap.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/jquery-3.3.1.min"></script>
 </body>
     </div>
 </html>

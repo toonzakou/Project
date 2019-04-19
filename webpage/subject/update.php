@@ -83,13 +83,12 @@ ob_start();
         <td>
     <select name="selected" class="form-control" id="sel1">
     <option><?echo $objResult["date_t"]; ?></option>
-    <option value="วันจันทร์">วันจันทร์</option>
-    <option value="วันอังคาร">วันอังคาร</option>
-    <option value="วันพุธ">วันพุธ</option>
-    <option value="วันพฤหัสบดี">วันพฤหัสบดี</option>
-    <option value="วันศุกร์">วันศุกร์</option>
-    <option value="วันเสาร์">วันเสาร์</option>
-    <option value="วันอาทิตย์">วันอาทิตย์</option>
+    <option value="จันทร์">วันจันทร์</option>
+    <option value="อังคาร">วันอังคาร</option>
+    <option value="พุธ">วันพุธ</option>
+    <option value="พฤหัสบดี">วันพฤหัสบดี</option>
+    <option value="ศุกร์">วันศุกร์</option>
+    <option value="อาทิตย์">วันอาทิตย์</option>
     </select>
         </td>
       </tr>

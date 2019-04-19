@@ -1,8 +1,7 @@
 <?php
-$conn = mysqli_connect("localhost","root","0841446192","test_project");
+$conn = mysqli_connect("localhost","root","0841446192","project_db");
 require_once('vendor/php-excel-reader/excel_reader2.php');
 require_once('vendor/SpreadsheetReader.php');
-
 if (isset($_POST["import"]))
 {
     
@@ -24,30 +23,31 @@ if (isset($_POST["import"]))
             
             foreach ($Reader as $Row)
             {
-                $stu_id = "";
+                $sub_id = "";
                 if(isset($Row[0])) {
-                    $stu_id = mysqli_real_escape_string($conn,$Row[0]);
+                    $sub_id = mysqli_real_escape_string($conn,$Row[0]);
                 }
 
-                $name = "";
+                $sub_name = "";
                 if(isset($Row[1])) {
-                    $name = mysqli_real_escape_string($conn,$Row[1]);
+                    $sub_name = mysqli_real_escape_string($conn,$Row[1]);
                 }
-                
-                $dep = "";
+
+                $sub_credit = "";
                 if(isset($Row[2])) {
-                    $dep = mysqli_real_escape_string($conn,$Row[2]);
+                    $sub_credit = mysqli_real_escape_string($conn,$Row[2]);
                 }
                 
-                if (!empty($stu_id) || !empty($name) || !empty($dep )) {
-                    $query = "insert into barcode_tb(stu_id,stu_name,stu_dep) values('".$stu_id."','".$name."','".$dep."')";
+                if (!empty($sub_id) ) {
+                    $query = "insert into sub_manage(subject_ID,subject_name,subject_credit) values('".$sub_id."','".$sub_name."','".$sub_credit."')";
                     $result = mysqli_query($conn, $query);
                 
                     if (! empty($result)) {
                         $type = "success";
-                    /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-				    echo "<script language='javascript'>alert('Excel Data Imported into the Database');</script>";*/
-				    echo "<meta http-equiv='refresh' content='0;URL=webpage/user/user.php'>";
+                        /*echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
+                        echo "<script language='javascript'>alert('Excel Data Imported into the Database');</script>";*/
+                        
+                        echo "<meta http-equiv='refresh' content='0;URL=webpage/admin/homepage.php'>";
                     } else {
                         $type = "error";
                         echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
@@ -67,6 +67,7 @@ if (isset($_POST["import"]))
         echo "<meta http-equiv='refresh' content='0;URL=webpage/user/user.php'>";
   }
 }
+unlink($targetPath);
 ?>
 
 <!DOCTYPE html>

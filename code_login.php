@@ -24,7 +24,7 @@ session_write_close();
 		if ($_SESSION["status"] == 'admin'){
 			echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
 				echo "<script language='javascript'>alert('Welcome To System');</script>";
-				echo "<meta http-equiv='refresh' content='0;URL=homepage.php'>";
+				echo "<meta http-equiv='refresh' content='0;URL=webpage/admin/homepage.php'>";
 
 		} else{
 			echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";

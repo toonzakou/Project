@@ -20,7 +20,7 @@ ob_start();
 	}
 
 	$strDate = $strDay." ".$strMonthThai." ".$strYear ;
-  $today = date("Y/d/m");
+  $today = date("Y/m/d");
   $d_array = array(
     "Sunday" => "อาทิตย์",
     "Monday" => "จันทร์",
@@ -299,9 +299,9 @@ setInputFilter(document.getElementById("txtno"), function(value) {
     <input type="text" name = "txtroom" id="txtroom" autocomplete=off  class="form-control" value = "<?echo $room?>">
 </div>
 
-<div class="col-sm-2">
+<div class="col-sm-3">
     <label for="exampleForm2">วันที่</label>
-    <input type="text" name = "date_txt" id="date_txt" autocomplete=off  class="form-control" value = "<?  echo $d_array[date('l', strtotime($today))];?> <?echo DateThai($strDate)?>">
+    <input type="text" name = "date_txt" id="date_txt" autocomplete=off  class="form-control" value = "วัน<?  echo $d_array[date('l', strtotime($today))];?> ที่ <?echo DateThai($strDate)?>">
 </div>
 
 

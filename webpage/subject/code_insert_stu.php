@@ -13,7 +13,7 @@ ob_start();
 
 
 // เพิ่มลงฐานข้อมูล
-$strSQL = "INSERT INTO new_sub set   section = '$sec', sub_id = '$sub_id', stu_id = '$stu_id' , stu_name = '$stu_name' , full_id = '$full' , tel = '$tel";
+$strSQL = "INSERT INTO new_sub set   section = '$sec', sub_id = '$sub_id', stu_id = '$stu_id' , stu_name = '$stu_name' , full_id = '$full' , tel = '$tel';
 
 $objQuery = mysql_query($strSQL);
 
