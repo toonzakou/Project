@@ -82,7 +82,7 @@ class Paginator{
 ?>
 <?
 
-include "../../db_config.php";
+include "db_config.php";
 
 ob_start();
  session_start();
@@ -91,22 +91,22 @@ ob_start();
 <div class="container-fluid">
 <head>
       
-    <link href="../../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../css/bootstrap-reboot.css" rel="stylesheet">
-    <link href="../../css/bootstrap-reboot.min.css" rel="stylesheet">
-    <link href="../../css/mdb.min.css" rel="stylesheet">
+    <link href="css/bootstrap-reboot.css" rel="stylesheet">
+    <link href="css/bootstrap-reboot.min.css" rel="stylesheet">
+    <link href="css/mdb.min.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>ระบบเช็คชื่อนักศึกษา - วิชา</title>
-    <link rel="stylesheet" type="text/css" href="../../style.css"/>
+	<title>ระบบเช็คชื่อนักศึกษา - หน้าหลัก</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
   
     </head>
 <body>
-<div id="wrapper" >
+<div id="wrapper">
     <h1>ระบบเช็คชื่อนักศึกษา</h1>
-    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;สู่ระบบ | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
+    <div class="float-right"><h3><span style="text-align: right"><small>ยินดีต้อนรับ&nbsp;<font color="#0000FF"><u><?=$_SESSION["name"];?></u></font>&nbsp;(ผู้ดูแล) สู่ระบบ | <a href="logout.php"><font color="#636363">Logout</font></a></small></span></h3>
 </div><br>
 
     <div class="container-fluid">
@@ -126,27 +126,24 @@ ob_start();
   
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link " href="../../homepage2.php">หน้าหลัก</a>
+    <a class="nav-link active  " href="homepage.php">หน้าหลัก</a>
   </li>
   <!--li class="nav-item">
-    <a class="nav-link" href="../user/user.php">รายชื่อ</a>
+    <a class="nav-link" href="webpage/user/user.php">รายชื่อ</a>
   </li-->
   <li class="nav-item">
-    <a class="nav-link active" href="subjects.php">วิชา</a>
+    <a class="nav-link " href="webpage/subject/subjects.php">วิชา</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="../history/history.php">ประวัติการสอน</a>
+    <a class="nav-link " href="webpage/history/history.php">ประวัติการสอน</a>
   </li>
 </ul>
   
 <?
-	$name = $_SESSION["name"];
-    $teacher = $_SESSION["id"];
-    $strSQL = "SELECT subjects.id , subjects.full_id , subjects.sub_id , subjects.section , sub_manage.subject_name , sub_manage.subject_credit , subjects.date_t , subjects.star_time , subjects.fin_time , teachers.name , teachers.teac_id 
-    FROM subjects 
-    INNER JOIN teachers ON subjects.teacher_id = teachers.teac_id 
-    INNER JOIN sub_manage ON subjects.sub_id = sub_manage.subject_ID 
-    WHERE teachers.name LIKE '$name' AND (subjects.full_id LIKE '%".$_POST["textfield"]."%' OR sub_manage.subject_name LIKE '%".$_POST["textfield"]."%') ";
+	
+    $strSQL = "SELECT *
+    FROM sub_manage 
+    WHERE  (subject_ID LIKE '%".$_POST["textfield"]."%' OR subject_name LIKE '%".$_POST["textfield"]."%') ";
     $objQuery = mysql_query($strSQL) or die ("Error Query[".$strSQL."]");
     $Num_Rows = mysql_num_rows($objQuery);
 
@@ -176,7 +173,7 @@ ob_start();
         $Num_Pages = (int)$Num_Pages;
     }
     
-    $strSQL .=" order  by subjects.id ASC LIMIT $Page_Start , $Per_Page";
+    $strSQL .=" order  by Subject_ID ASC LIMIT $Page_Start , $Per_Page";
     $objQuery  = mysql_query($strSQL);
 ?>
 <br>
@@ -192,13 +189,6 @@ ob_start();
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="insert_subject.php">เพิ่มวิชา <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-  </div>
 </nav>
 </div>
 
@@ -209,16 +199,12 @@ ob_start();
         <th bgcolor="#CCCCCC" scope="col">#</th>
         <th bgcolor="#CCCCCC" scope="col">รหัสวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
-        <th bgcolor="#CCCCCC" scope="col">กลุ่ม</th>
         <th bgcolor="#CCCCCC" scope="col">หน่วยกิต</th>
-        <th bgcolor="#CCCCCC" scope="col">เวลา</th>
-        <th bgcolor="#CCCCCC" scope="col">เพิ่มนักศึกษา</th>
-        <th bgcolor="#CCCCCC" scope="col">เพิ่มนักศึกษา(Excel)</th>
-        <th bgcolor="#CCCCCC" scope="col">ดูนักศึกษา</th>
         <th bgcolor="#CCCCCC" scope="col">แก้ไข</th>
         <th bgcolor="#CCCCCC" scope="col">ลบ</th>
       </tr>
     </thead>
+    
 <? 
     if($Num_Rows==0){
 ?>
@@ -231,37 +217,27 @@ ob_start();
       $a=1;
 		  while($objResult = mysql_fetch_array($objQuery)){
 ?>
-        <tbody>
+    
+    <tbody>
       <tr>
-            <td bgcolor="#FFCC66"><?echo $a?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["sub_id"];?></td>
+            <td bgcolor="#FFCC66"><?echo $a?></td></td>
+            <td bgcolor="#FFCC66"><?=$objResult["subject_ID"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["section"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="insert_stu.php?full_id=<?=$objResult["full_id"];?>&id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/add.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="add.php?full_id=<?=$objResult["full_id"];?>&id=<?=$objResult["id"];?>&section=<?=$objResult['section']?>"><img src="../../images/button/excel.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="subject_detail.php?full_id=<?=$objResult["full_id"];?>"><img src="../../images/button/padnote.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="update.php?full_id=<?=$objResult["full_id"];?>"><img src="../../images/button/edit.png" width="33" height="33"></a></td>
-            <td bgcolor="#FFCC66">&nbsp;<a href="code_delete.php?id=<?=$objResult["id"];?>&full_id=<?=$objResult["full_id"];?>"onclick="return confirm('คุณกำลังจะลบข้อมูล?')"><img src="../../images/button/garbage.png" width="33" height="33"></a></td>
-        </tr>
+            <td bgcolor="#FFCC66">&nbsp;<a href="attend.php?sub_id=<?echo $_SESSION['sub']?>&section=<?echo $_SESSION["sec"];?>&full_id=<?=$objResult["full_id"];?>"><img src="images/button/monitor.png" width="22" height="22"></a></td>
+            <td bgcolor="#FFCC66">&nbsp;<a href="attend.php?sub_id=<?echo $_SESSION['sub']?>&section=<?echo $_SESSION["sec"];?>&full_id=<?=$objResult["full_id"];?>"><img src="images/button/monitor.png" width="22" height="22"></a></td>
+      
+      </tr>
     </tbody>
-
+    
     <?php
       $a++;}
+      }
     ?>
-<?
-    }
-?>
- 
-    
-    
-    
-   
     
     <thead>
       <tr>
-      <td colspan="12" bgcolor="#CCCCCC">&nbsp;</td>
+      <td colspan="11" bgcolor="#CCCCCC">&nbsp;</td>
       </tr>
     </thead>
   </table>
@@ -285,9 +261,9 @@ echo $pages->display_pages()
 </form>
 </div>
 </div>   
-        <script src="../../js/bootstrap.js"></script>
-        <script src="../../js/bootstrap.min.js"></script>
-        <script src="../../js/jquery-3.3.1.min"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery-3.3.1.min"></script>
 </body>
     </div>
 </html>

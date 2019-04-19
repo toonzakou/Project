@@ -107,7 +107,11 @@ function fncSubmit()
       <tr>
         <td>เทอม</td>
         <td>&nbsp;</td>
-        <td><input name="txtterm" type="text" id="txtterm" autocomplete=off  placeholder = "กรอกเทอมที่สอน" class="form-control"/></td>
+        <td><select name="term" class="form-control" id="sel1">
+        <option value = "1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        </select></td>
       </tr>
       
       <tr>
@@ -123,6 +127,7 @@ function fncSubmit()
         <?php
           }
           ?>
+          </select>
     </td>
       </tr>
 
@@ -131,7 +136,7 @@ function fncSubmit()
         <td>&nbsp;</td>
         <td><input name="txtsec" type="text" id="txtsec" autocomplete=off  placeholder = "กรอกเป็นตัวเลข"  class="form-control"/></td>
       </tr>
-      <tr>
+      <!--tr>
         <td>วันที่</td>
         <td>&nbsp;</td>
         <td>
@@ -147,7 +152,7 @@ function fncSubmit()
     </select>
         </td>
       </tr>
-      <tr>
+      <tr-->
         <td>เริ่มสอน</td>
         <td>&nbsp;</td>
         <td><input name="start_time" type="time" id="start_time" class="form-control" value="" /></td>

@@ -43,7 +43,7 @@ function Header()
 {
   $strSQL = "SELECT attend_subject.sub_id , attend_subject.section , attend_subject.num , attend_subject.room
     , attend_subject.total , attend_subject.start_t , attend_subject.fin_t , attend_subject.date , sub_manage.subject_name
-    , subjects.date_t ,teachers.name
+    ,teachers.name , attend_subject.date_thai , attend_subject.make , attend_subject.mark
      FROM attend_subject
      INNER JOIN sub_manage ON attend_subject.sub_id = sub_manage.subject_ID
      INNER JOIN subjects ON attend_subject.sub_id = subjects.sub_id
@@ -57,6 +57,7 @@ function Header()
 
     // Logo
     $this->Image('logo_nbu.png',10,6,80,10);
+    
     // Arial bold 15
     $this->AddFont('THSarabunNew','','THSarabunNew.php');
     $this->SetFont('THSarabunNew','',14);
@@ -66,6 +67,8 @@ function Header()
     $this->Cell(60);
     // Title
     $this->Cell(80,10,iconv( 'UTF-8','TIS-620','แบบฟอร์มบันทึกการเข้าห้องเรียนของนักศึกษา'),0,0,'C');
+    $this->Text(160,6.5,iconv( 'UTF-8','TIS-620',$objResult['make']));
+    $this->Text(160,11.5,iconv( 'UTF-8','TIS-620',$objResult['mark']));
     $this->Ln(10);
     $this->Cell(30,10,iconv( 'UTF-8','TIS-620','รหัสวิชา......................'),0,0);
     $this->Text(26,30.5,$objResult['sub_id']);
@@ -89,7 +92,7 @@ function Header()
     $this->SetFont('THSarabunNew','',14);
     $this->Text(68,40.5,$objResult['room']);
     $this->Cell(25,10,iconv( 'UTF-8','TIS-620','วัน.......................'),0,0);
-    $this->Text(98,40.5,iconv('UTF-8','TIS-620',$objResult['date_t']));
+    $this->Text(98,40.5,iconv('UTF-8','TIS-620',$objResult['date_thai']));
     $this->Cell(40,10,iconv( 'UTF-8','TIS-620','เวลาเรียน................................'),0,0);
     $this->Text(131,40.5,$objResult['start_t']);
     $this->Text(139,40.5,'-');
@@ -139,35 +142,35 @@ function Footer()
        $objResult = mysql_fetch_array($objQuery);
 
     // Position at 1.5 cm from bottom
-    $this->SetY(-40);
+    $this->SetY(-45);
     // Arial italic 8
     $this->AddFont('THSarabunNew','','THSarabunNew.php');
     $this->SetFont('THSarabunNew','',12);
     // Page number
   
     // Checkbox
-    $this->Image('checkbox.png',10,260,3,3);
+    $this->Image('checkbox.png',10,255,3,3);
     $this->Cell(5,10,iconv( 'UTF-8','TIS-620',''),0,0);
     
     $this->Cell(100,10,iconv( 'UTF-8','TIS-620','มีทดสอบย่อยต้นชั่วโมง 15 นาที เวลา.....................น. -......................น.'),0,0);
-    $this->Text(60,262.5,$objResult['start_t']);
-    $this->Text(80,262.5,$objResult['late_t']);
+    $this->Text(60,257.5,$objResult['start_t']);
+    $this->Text(80,257.5,$objResult['late_t']);
     // Checkbox
-    $this->Image('checkbox.png',120,260,3,3);
+    $this->Image('checkbox.png',120,255,3,3);
     $this->Cell(10,10,(''),0,0);
     $this->Cell(20,10,iconv( 'UTF-8','TIS-620','มีตำราเรียนประกอบ'),0,0);
       // Checkbox
-    $this->Image('checkbox.png',155,260,3,3);
+    $this->Image('checkbox.png',155,255,3,3);
     $this->Cell(15,10,(''),0,0);
     $this->Cell(0,10,iconv( 'UTF-8','TIS-620','มีการเช็คชื่อในใบรายวิชาที่สอน'),0,0);
 
     $this->Ln(7);   
 
-    $this->Image('checkbox.png',10,267,3,3);
+    $this->Image('checkbox.png',10,262,3,3);
     $this->Cell(5,10,(''),0,0);
     $this->Cell(65,10,iconv( 'UTF-8','TIS-620','มีสมุดทดสอบย่อยคนละ 1 เล่ม'),0,0);
 
-    $this->Image('checkbox.png',80,267,3,3);
+    $this->Image('checkbox.png',80,262,3,3);
     $this->Cell(5,10,(''),0,0);
     $this->Cell(0,10,iconv( 'UTF-8','TIS-620','มีสมุดจดบันทึก คนละ 1 เล่ม'),0,0);
 
@@ -176,15 +179,15 @@ function Footer()
     $this->Cell(20,10,iconv( 'UTF-8','TIS-620','สรุปประจำวัน'),0,0);
     $this->Cell(25,10,iconv( 'UTF-8','TIS-620','จำนวนนักศึกษา : '),0,0);
     $this->Cell(20,10,iconv( 'UTF-8','TIS-620','มา............คน'),0,0);
-    $this->Text(62,276.5,$objResult['come']);
+    $this->Text(62,271.5,$objResult['come']);
     $this->Cell(22,10,iconv( 'UTF-8','TIS-620','ขาด............คน'),0,0);
-    $this->Text(84,276.5,$objResult['miss']);
+    $this->Text(84,271.5,$objResult['miss']);
     $this->Cell(20,10,iconv( 'UTF-8','TIS-620','สาย............คน'),0,0);
-    $this->Text(106,276.5,$objResult['late']);
+    $this->Text(106,271.5,$objResult['late']);
     $this->Cell(30,10,(''),0,0);
-    $this->Line(11,278.2,29,278.2);
+    $this->Line(11,273.2,29,273.2);
     $this->Cell(30,10,iconv( 'UTF-8','TIS-620','รวมทดสอบย่อยต้นชั่วโมง...............คน'),0,0);
-    $this->Text(185,276.5,$objResult['quiz']);
+    $this->Text(185,271.5,$objResult['quiz']);
 
     $this->Ln(7); 
     $this->Cell(15,10,(''),0,0);
@@ -256,8 +259,8 @@ function Footer()
        $this->Cell(20,8,iconv( 'UTF-8','TIS-620',$objResult['date']),1,0); 
        $this->Ln();
        $a++;}
-       if ($a < 24) {
-        for ($x = $a; $x <= 24; $x++) {
+       if ($a < 23) {
+        for ($x = $a; $x <= 23; $x++) {
             $this->Cell(8,8,iconv( 'UTF-8','TIS-620',$x),1,0,"C"); //dummy cell to align next cell, should be invisible
             $this->Cell(20,8,iconv( 'UTF-8','TIS-620',''),1,0);
             $this->Cell(48,8,iconv( 'UTF-8','TIS-620',''),1,0);
@@ -274,7 +277,7 @@ function Footer()
       
     } else {
 
-      for ($x = $a; $x <= 48; $x++) {
+      for ($x = $a; $x <= 46; $x++) {
         $this->Cell(8,8,iconv( 'UTF-8','TIS-620',$x),1,0,"C"); //dummy cell to align next cell, should be invisible
         $this->Cell(20,8,iconv( 'UTF-8','TIS-620',''),1,0);
         $this->Cell(48,8,iconv( 'UTF-8','TIS-620',''),1,0);
@@ -310,7 +313,7 @@ function Footer()
 
 $pdf = new PDF('P','mm','A4');
  
-$pdf->SetAutoPageBreak(true,35);
+$pdf->SetAutoPageBreak(true,45);
 $pdf->AddPage();
 $pdf->AddFont('THSarabunNew','','THSarabunNew.php');//ธรรมดา
 $pdf->SetFont('THSarabunNew','',12);

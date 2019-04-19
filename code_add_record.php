@@ -41,7 +41,7 @@ ob_start();
 
    $name = $_SESSION["name"];
    $teacher = $_SESSION["id"];
-
+   $make_mark = $_POST['txt_make'];
    $remark = $_POST['remark'];
    $date = DateThai('$strDate');
 
@@ -133,6 +133,7 @@ $first = $output[1]["firstName"];
             $_SESSION['start'] = $start_t;
             $_SESSION['fin'] = $fin_t;
             $_SESSION['late'] = $late_time;
+            $_SESSION['mark'] = $make_mark;
             $_SESSION['time_cout'] = 1;
 
            /* echo 'ติ๊กถูก';*/

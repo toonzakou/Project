@@ -112,7 +112,7 @@ ob_start();
     if($Num_Rows==0){
 ?>
  
- <td  colspan="5" bgcolor="#FFCC66">ไม่พบข้อมูล</td>
+ <td  colspan="6" bgcolor="#FFCC66">ไม่พบข้อมูล</td>
 
 
 <?

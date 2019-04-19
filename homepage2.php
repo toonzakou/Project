@@ -92,6 +92,7 @@ ob_start();
   $_SESSION['fin'] = "";
   $_SESSION['time_cout'] = 0;
   $_SESSION['count_late'] =0;
+  $_SESSION['mark'] = "";
 	?>
 <html>
 <div class="container-fluid">
@@ -212,7 +213,6 @@ ob_start();
         <th bgcolor="#CCCCCC" scope="col">ชื่อวิชา</th>
         <th bgcolor="#CCCCCC" scope="col">กลุ่ม</th>
         <th bgcolor="#CCCCCC" scope="col">หน่วยกิต</th>
-        <th bgcolor="#CCCCCC" scope="col">วัน</th>
         <th bgcolor="#CCCCCC" scope="col">เวลา</th>
         <th bgcolor="#CCCCCC" scope="col">เช็คชื่อ</th>
       </tr>
@@ -243,7 +243,6 @@ ob_start();
             <td bgcolor="#FFCC66"><?=$objResult["subject_name"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["section"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["subject_credit"];?></td>
-            <td bgcolor="#FFCC66"><?=$objResult["date_t"];?></td>
             <td bgcolor="#FFCC66"><?=$objResult["star_time"];?> - <?=$objResult["fin_time"];?> </td>
             <td bgcolor="#FFCC66">&nbsp;<a href="attend.php?sub_id=<?echo $_SESSION['sub']?>&section=<?echo $_SESSION["sec"];?>&full_id=<?=$objResult["full_id"];?>"><img src="images/button/monitor.png" width="33" height="33"></a></td>
       </tr>

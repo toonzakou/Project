@@ -159,7 +159,7 @@ $a=1;
       $time = date('H:i');
       $strSQL1 = "INSERT INTO attend_miss set  num = '$num', full_id = '$full_id' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , miss ='$miss' , time = '$time'  ";
 
-      $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full_id' , new_full_id = '$newfull' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = 'ขาดเรียน' ";
+      $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full_id' , new_full_id = '$newfull' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$miss' , time = '$time' , date = 'รอการติดต่อ' ";
 
       $objQuery1 = mysql_query($strSQL1);
       $objQuery4 = mysql_query($strSQL4);
@@ -215,7 +215,7 @@ if ($late <> 0){
  $time = date('H:i');
   $strSQL1 = "INSERT INTO attend_miss set  num = '$num', full_id = '$full_id' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , miss ='$sum_miss' , time = '$time'  ";
 
-    $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full_id' , new_full_id = '$newfull' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$sum_miss' , time = '$time' , date = 'ขาดเรียน' ";
+    $strSQL4 = "INSERT INTO attend_tb set  num = '$num' , full_id = '$full_id' , new_full_id = '$newfull' , stu_id = '$stu_id' , sub_id = '$sub_id', section ='$sec' , quiz = '$quiz' , late = '$late' , miss ='$sum_miss' , time = '$time' , date = 'รอการติดต่อ' ";
 
     $objQuery1 = mysql_query($strSQL1);
     $objQuery4 = mysql_query($strSQL4);

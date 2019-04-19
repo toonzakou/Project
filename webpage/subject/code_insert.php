@@ -4,7 +4,7 @@ ob_start();
    session_start();
    
 $year = $_POST['txtyear'];
-$term = $_POST["txtterm"];
+$term = $_POST["term"];
 $sub_id = $_POST['select_id'];  
 $sec = $_POST['txtsec'];
 $start = $_POST['start_time'];

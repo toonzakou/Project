@@ -15,15 +15,23 @@ ob_start();
 		$_SESSION["username"] = $objResult["username"];
 		$_SESSION["password"] = $objResult["username"];
 		$_SESSION["name"] = $objResult["name"];
+		
 		/*$_SESSION["department"] = $objResult["department"];*/
-		/*$_SESSION["status"] = $objResult["Status"];*/
+		$_SESSION["status"] = $objResult["status"];
 		
 session_write_close();	
 	
-		
+		if ($_SESSION["status"] == 'admin'){
+			echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
+				echo "<script language='javascript'>alert('Welcome To System');</script>";
+				echo "<meta http-equiv='refresh' content='0;URL=homepage.php'>";
+
+		} else{
 			echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
 				echo "<script language='javascript'>alert('Welcome To System');</script>";
 				echo "<meta http-equiv='refresh' content='0;URL=homepage2.php'>";
+		}
+			
 	}
 mysql_close();
 ?>

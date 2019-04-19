@@ -20,7 +20,19 @@ ob_start();
 	}
 
 	$strDate = $strDay." ".$strMonthThai." ".$strYear ;
-	
+  $today = date("Y/d/m");
+  $d_array = array(
+    "Sunday" => "อาทิตย์",
+    "Monday" => "จันทร์",
+    "Tuesday" => "อังคาร",
+    "Wednesday" => "พุธ",
+    "Thursday" => "พฤหัสบดี",
+    "Friday" => "ศุกร์",
+    "Saturday" => "เสาร์"
+    );
+    
+   
+  $_SESSION['date_thai'] = $d_array[date('l', strtotime($today))];
 ?>
 
 <html>
@@ -144,12 +156,14 @@ ob_start();
 <nav class=" navbar-expand-lg ">
 <?
 if($_SESSION['time_cout']==0) {
+  $_SESSION['make'] = "";
 ?>  
-  <a class="navbar-brand"><h1>เช็คชื่อชื่อวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?> วันที่ <?echo DateThai($strDate)?></h1></a>
+  <label class="navbar-brand" ><h1>วิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?></h1></label>
  <?
   }else {
+  $_SESSION['make'] = "เมคอัพคลาส"." ".$_SESSION['date'];
 ?>
-    <a class="navbar-brand"><h1>เช็คชื่อชื่อวิชา  <?echo $sub_name?> (เมคอัพคลาส) กลุ่มที่ <?=$objResult["section"];?> วันที่ <?echo DateThai($strDate)?></h1></a>
+    <label class="navbar-brand"><h1>วิชา  <?echo $sub_name?> (เมคอัพคลาส) กลุ่มที่ <?=$objResult["section"];?></h1></label>
 <?
 
   }
@@ -284,10 +298,20 @@ setInputFilter(document.getElementById("txtno"), function(value) {
     <label for="exampleForm2">ห้องเรียน</label>
     <input type="text" name = "txtroom" id="txtroom" autocomplete=off  class="form-control" value = "<?echo $room?>">
 </div>
+
+<div class="col-sm-2">
+    <label for="exampleForm2">วันที่</label>
+    <input type="text" name = "date_txt" id="date_txt" autocomplete=off  class="form-control" value = "<?  echo $d_array[date('l', strtotime($today))];?> <?echo DateThai($strDate)?>">
+</div>
+
+
+
 </div>
 <!--Grid row--> 
 
+
 <br>
+
 
  <!--Grid row-->
  <div class="row">
@@ -295,16 +319,24 @@ setInputFilter(document.getElementById("txtno"), function(value) {
 <!--Grid column-->
 <div class="col-sm-2">
         <label for="exampleForm2">เวลาเริ่ม</label>
-        <input type="time" id="txt_start" name="txt_start" class="form-control" placeholder="00:00" value="<?echo date('h:i', $start_t)?>" readonly >
+        <input type="time" id="txt_start" name="txt_start" class="form-control" placeholder="00:00" value="<?echo date('H:i', $start_t)?>" readonly >
     
 </div>
 <div class="col-sm-2">
         <label for="exampleForm2">เวลาสิ้นสุด</label>
-        <input type="time" id="txt_fin" name="txt_fin" class="form-control" placeholder="00:00" value="<?echo date('h:i',$fin_t)?>" readonly>
-        <input name="txt_late" type="text" id="txt_late" class="form-control" style="display: none" value="<?echo date('h:i',$late_t)?>" />
+        <input type="time" id="txt_fin" name="txt_fin" class="form-control" placeholder="00:00" value="<?echo date('H:i',$fin_t)?>" readonly>
+        <input name="txt_late" type="text" id="txt_late" class="form-control" style="display: none" value="<?echo date('H:i',$late_t)?>" />
 </div>
 <!--Grid column-->
 
+<div class="col-sm-4">
+        <label for="exampleForm2">หมายเหตุ</label>
+        <input type="text" id="txt_make" name="txt_make" class="form-control" placeholder="" value="<?echo $_SESSION['mark']?>" readonly>
+</div>
+
+</div>
+<!--Grid row--> 
+<label></label>
 <div class="custom-control custom-checkbox">
 
 <?
@@ -327,9 +359,6 @@ if($_SESSION['time_cout']==0) {
 
  
 </div>
-</div>
-<!--Grid row--> 
-
 <br>
 
 <script type="text/javascript">
@@ -341,6 +370,7 @@ function CheckCheckboxes1(chk){
     {
       txt_start.readOnly = false;
       txt_fin.readOnly = false;
+      txt_make.readOnly = false;
       txt_start.value  ="";
       txt_fin.value  = "";
       txtfull.valu = "1";
@@ -349,6 +379,9 @@ function CheckCheckboxes1(chk){
     {
       txt_start.readOnly = true;
       txt_fin.readOnly = true;
+      txt_make.readOnly = true;
+      txt_start.value  = "<?echo date('H:i', $start_t)?>";
+      txt_fin.value  = "<?echo date('H:i',$fin_t)?>";
     }
 }
 
@@ -433,8 +466,17 @@ function check_attend()
 
 function check_miss()
             {
-              var r = confirm("ยืนยันการเพิ่มคนขาด\nโปรดตรวจสอบข้อมูลให้ถูกต้อง")
-              if (r == true) {
+              var total = <?=$total?>;
+              var sum = <?=$Num_Rows?>;
+             
+              if( total == sum ){
+
+                alert ("ไม่สามารถคำนวนนักศึกษาขาดได้\nเนื่องจากนักศึกษามาครบ");
+                return false;
+              } else {
+
+                var r = confirm("ยืนยันการเพิ่มคนขาด\nโปรดตรวจสอบข้อมูลให้ถูกต้อง")
+                if (r == true) {
                 if (document.getElementById('txtno').value==""
                  || document.getElementById('txtno').value==undefined)
                 {
@@ -455,6 +497,11 @@ function check_miss()
             } else {
               
             }
+
+
+              }
+                
+              
             }  
 
 
@@ -572,7 +619,7 @@ if($_SESSION['count_late']==0) {
 $a=1;
 while($objResult1 = mysql_fetch_array($objQuery1))
 {
-  if($objResult1['date'] == 'ขาดเรียน'){
+  if($objResult1['date'] == 'รอการติดต่อ'){
 ?>
            <tbody >
       <tr>
@@ -621,7 +668,7 @@ $a++;}
     <button name = "save_button" type="submit" value="Submit" onclick="return check_save();" class="btn btn-elegant">บันทึก</button>
     </div>
     <div class="md-form mb-0 float-right">
-    <button name = "miss_button" type="submit" value="Submit" onclick="return check_miss();" class="btn btn-elegant">เพิ่มคนขาด</button>
+    <button name = "miss_button" type="submit" value="Submit" onclick="return check_miss();" class="btn btn-elegant">คำนวณนักศึกษา</button>
     </div>
 
 </div>

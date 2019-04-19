@@ -13,7 +13,7 @@ ob_start();
 
 
 // เพิ่มลงฐานข้อมูล
-$strSQL = "INSERT INTO new_sub set full_id = '$full',   section = '$sec', sub_id = '$sub_id', stu_id = '$stu_id' , stu_name = '$stu_name' , tel ='$tel";
+$strSQL = "INSERT INTO new_sub set full_id = '$full',   section = '$sec', sub_id = '$sub_id', stu_id = '$stu_id' , stu_name = '$stu_name' , tel ='$tel'";
 
 $objQuery = mysql_query($strSQL);
 
@@ -26,7 +26,7 @@ else
 {
 	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
                 echo "<script language='javascript'>alert('ผิดพลาด');</script>";
-                echo"<script> window.location ='insert_stu.php'</script>";
+                echo"<script> window.location ='insert_attend.php'</script>";
 	
 }
 

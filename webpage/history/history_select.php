@@ -133,7 +133,7 @@ if($num == 0){
 <?
 } else {
 ?>
-  <a class="navbar-brand"><h1>การสอนรายวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?> ครั้งที่  <?echo $num?> วันที่  <?=$objResult["date"];?>    </h1></a>
+  <a class="navbar-brand"><h1>การสอนรายวิชา  <?echo $sub_name?> กลุ่มที่ <?=$objResult["section"];?> </h1></a>
 <?
 }
 ?>  
@@ -151,7 +151,7 @@ $full_id = $_GET['full_id'];
 
 $strSQL1 = "SELECT sub_manage.subject_ID , attend_subject.full_id , sub_manage.subject_name , attend_subject.start_t , attend_subject.fin_t 
 , attend_subject.section  , attend_subject.num , attend_subject.date , attend_subject.late_t , attend_subject.room , attend_subject.total , attend_subject.quiz , attend_subject.come , attend_subject.late
-, attend_subject.miss
+, attend_subject.miss , attend_subject.mark , attend_subject.date_thai
 FROM sub_manage 
 INNER JOIN attend_subject ON sub_manage.subject_ID = attend_subject.sub_id
 WHERE attend_subject.full_id = '$full_id' AND attend_subject.num = '$num'";
@@ -171,6 +171,7 @@ $objResult1 = mysql_fetch_array($objQuery1);
         $come = $objResult1['come'];
         $late = $objResult1['late'];
         $miss = $objResult1['miss'];
+        $mark =$objResult1["mark"];
 
 
   
@@ -203,7 +204,7 @@ function fncSubmit()
 
 </script>
 
-<form name="form1" class="form-horizontal" method="POST"  action="" id="menu" >
+<form name="form1" class="form-horizontal" method="POST"  action="../../fpdf/report.php" target="_blank" id="menu" >
 <!--Grid row-->
 <div class="row">
 
@@ -211,22 +212,17 @@ function fncSubmit()
 <div class="col-sm-2">
     <label for="exampleForm2">ครั้งที่สอน</label>
     <select name="selected" class="form-control" id="sel1" onchange = 'Redirect(this)'>
-                          <option value = "">เลือกครั้งที่สอน</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                          <option value="9">9</option>
-                          <option value="10">10</option>
-                          <option value="11">11</option>
-                          <option value="12">12</option>
-                          <option value="13">13</option>
-                          <option value="14">14</option>
-                          <option value="15">15</option>
+    <option value = "">เลือกครั้งที่สอน</option>   
+    <?php
+    $strSQL3 = "SELECT num FROM attend_subject WHERE full_id = '$full'";
+    $objQuery3 = mysql_query($strSQL3);
+    while($objResult3 = mysql_fetch_array($objQuery3)){
+		 ?>
+        
+        <option value = "<?=$objResult3["num"]; ?>"><?echo $objResult3["num"]?></option>
+        <?php
+          }
+          ?>
           </select>
 </div>
 
@@ -251,28 +247,76 @@ function fncSubmit()
     <input name="txt_full" type="text" id="txt_full" class="form-control" style="display: none" value="<?=$objResult["full_id"];?>" />
    
 </div>
+<div class="col-sm-2">
+    <label for="exampleForm2">วันที่</label>
+    <?
+    if($num == 0){
+    ?> 
+    <input name="txt_date" type="text" id="txt_date" class="form-control"  />
+    <?
+    } else {
+    ?>
+    <input name="txt_date" type="text" id="txt_date" class="form-control" value="<?=$objResult1["date_thai"];?> <?=$objResult1["date"];?> " />
+    <?
+    }
+    ?>
+</div>
 </div>
 <!--Grid row--> 
 
 <br>
-
- <!--Grid row-->
- <div class="row">
+<?
+if($num == 0){
+?>
+  <div class="row">
 
 <!--Grid column-->
 <div class="col-sm-2">
         <label for="exampleForm2">เวลาเริ่ม</label>
-        <input type="time" id="txt_start" name="txt_start" class="form-control" placeholder="00:00" value="<?echo date('h:i', $start_t)?>" readonly >
+        <input type="time" id="txt_start" name="txt_start" class="form-control" value="" readonly >
     
 </div>
 <div class="col-sm-2">
         <label for="exampleForm2">เวลาสิ้นสุด</label>
-        <input type="time" id="txt_fin" name="txt_fin" class="form-control" placeholder="00:00" value="<?echo date('h:i',$fin_t)?>" readonly>
-        <input name="txt_late" type="text" id="txt_late" class="form-control" style="display: none" value="<?echo date('h:i',$late_t)?>" />
+        <input type="time" id="txt_fin" name="txt_fin" class="form-control"  readonly>
+        <input name="txt_late" type="text" id="txt_late" class="form-control" style="display: none"  />
 </div>
 <!--Grid column-->
-
+<div class="col-sm-4">
+        <label for="exampleForm2">หมายเหตุ</label>
+        <input type="text" id="txt_mark" name="txt_mark" class="form-control" placeholder="" value="<?echo $mark?>" readonly>
+    
 </div>
+</div>
+<?
+} else {
+?>
+  <div class="row">
+
+<!--Grid column-->
+<div class="col-sm-2">
+        <label for="exampleForm2">เวลาเริ่ม</label>
+        <input type="time" id="txt_start" name="txt_start" class="form-control" placeholder="00:00" value="<?echo date('H:i', $start_t)?>" readonly >
+    
+</div>
+<div class="col-sm-2">
+        <label for="exampleForm2">เวลาสิ้นสุด</label>
+        <input type="time" id="txt_fin" name="txt_fin" class="form-control" placeholder="00:00" value="<?echo date('H:i',$fin_t)?>" readonly>
+        <input name="txt_late" type="text" id="txt_late" class="form-control" style="display: none" value="<?echo date('H:i',$late_t)?>" />
+</div>
+<!--Grid column-->
+<div class="col-sm-4">
+        <label for="exampleForm2">หมายเหตุ</label>
+        <input type="text" id="txt_mark" name="txt_mark" class="form-control" placeholder="" value="<?echo $mark?>" readonly>
+    
+</div>
+</div>
+<?
+}
+?>  
+
+ <!--Grid row-->
+ 
 <!--Grid row--> 
 
 <br>
@@ -349,7 +393,12 @@ function check_miss()
             } else {
               
             }
-            }  
+            }
+
+    function windowOpen() {
+		var myWindow=window.open('../../fpdf/report.php','windowRef','width=200,height=200');
+		if (!myWindow.opener) myWindow.opener = self;
+	}  
 
 
 
@@ -417,13 +466,13 @@ $a++;}
 ?>
     <thead>
       <tr>
-      <td colspan="8" bgcolor="#CCCCCC"><label name="totaltxt" id = "totaltxt" class ="bluetext" value = "">นักศึกษาทั้งหมด <?echo $total?> คน</label> <label name = 'cometxt' value = "">มาเรียน <?echo $come;?></label><label name ='quiztxt' value = ""> คน Quiz <?echo $quiz;?> คน</label> <label name ='latetxt' class ="redtext" value = "" >สาย <?echo $late?> คน </label> <label name ='misstxt' value = ""> ขาด <?echo $miss;?> คน</label>
+      <td colspan="8" bgcolor="#CCCCCC"><label name="totaltxt" id = "totaltxt" class ="bluetext" value = "">นักศึกษาทั้งหมด <?echo $total?> คน</label> <label name = 'cometxt' value = "">มาเรียน <?echo $come;?> คน </label> <label name ='quiztxt' value = ""> Quiz <?echo $quiz;?> คน</label> <label name ='latetxt' class ="redtext" value = "" >สาย <?echo $late?> คน </label> <label name ='misstxt' value = ""> ขาด <?echo $miss;?> คน</label>
 </td>
       </tr>
     </thead>
   </table>
     <div class="md-form mb-0 float-right">
-    <button name = "miss_button" type="submit" value="Submit" onclick="return check_save()" class="btn btn-elegant">ปริ้นรายงาน</button>
+    <button name = "miss_button" type="submit" value="Submit" onclick="" class="btn btn-elegant">พิมใบเช็คชื่อ</button>
     </div>
 
 </div>
