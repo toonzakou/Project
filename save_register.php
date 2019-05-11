@@ -1,6 +1,12 @@
 <?php
 	include "db_config.php";
-	
+	ob_start();
+   session_start();
+	$id = $_POST['txtid'];
+		$name = $_POST['txtname'];
+		$dep = $_POST['txtdep'];
+		$user = $_POST['txtuser'];
+		$pass = $_POST['txtpass'];
 	if(trim($_POST["txtuser"]) == "")
 	{
 		echo "กรุณากรอกชื่อผู้ใช้";
@@ -35,15 +41,25 @@
 	else
 	{	
 		
-		$strSQL = "INSERT INTO teachers (teach_id,name,teac_dep,user,password) VALUES ('".$_POST["txtid"]."', 
-		'".$_POST["txtname"]."','".$_POST["txtdep"]."','".$_POST["txtuser"]."','".$_POST["txtpass"]."')";
-		$objQuery = mysql_query($strSQL);
 		
+		$strSQL1 = "INSERT INTO teachers set teac_id = '$id', name = '$name', teac_dep = '$dep', user = '$user' , password = '$pass' , status = 'teacher'";
+
+		$objQuery1 = mysql_query($strSQL1);
+		
+		if($objQuery1)
+		{
 		echo "Register Completed!<br>";		
 	
 		echo "<br> Go to <a href='index.html'>Login page</a>";
+		}
+		else
+		{
+		echo "Register Failed!<br>";	
+		echo $strSQL1	;
+		}
 		
-	}
+		
+		}
 
 	mysql_close();
 ?>
